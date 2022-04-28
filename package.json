@@ -1,0 +1,32 @@
+{
+  "name": "all-pusher-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "tsc && node dist/test.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "HCLonely <h1606051253@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.0",
+    "nodemailer": "^6.7.3",
+    "qq-guild-bot": "^2.9.1",
+    "showdown": "^2.1.0",
+    "socks-proxy-agent": "^6.2.0",
+    "tunnel": "^0.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.27",
+    "@types/nodemailer": "^6.4.4",
+    "@types/showdown": "^2.0.0",
+    "@types/tunnel": "^0.0.3",
+    "@types/ws": "^8.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
+    "eslint": "^8.14.0",
+    "typescript": "^4.6.3"
+  }
+}

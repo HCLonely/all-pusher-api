@@ -1,0 +1,21 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": false,
+    "strict": true,
+    "declaration": false,
+    "declarationMap": false,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es6",
+    "baseUrl": "./",
+    "allowJs": true,
+    "downlevelIteration":true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
