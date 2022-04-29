@@ -1,9 +1,10 @@
 # all-pusher-api
 
-统一化推送服务API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ 频道, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher等平台.
+统一化推送服务API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher等平台.
 
 ## 已支持平台
 
+- [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp)
 - [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access)
 - [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message)
 - [邮件](https://nodemailer.com/)
@@ -155,6 +156,16 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           port: 1080
         }
       }
+    },
+    {
+      name: 'GoCqhttp',
+      config: {
+        key: {
+          token: '******',
+          baseUrl: 'http://127.0.0.1:5700',
+          user_id: '******'
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => (e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : e));
@@ -215,7 +226,9 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 })();
 ```
 
-#### customOptions
+#### 自定义接口
+
+> 这里以钉钉为例
 
 ```javascript
 (async () => {
@@ -251,6 +264,43 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 })();
 ```
 
+#### customPusher
+
+```javascript
+(async () => {
+  const { Custom } = require('all-pusher-api/dist/Custom');
+  const { createHmac } = require('crypto');
+ const sign = () => {
+    const timestamp = new Date().getTime();
+    const secret = '******';
+    const stringToSign = `${timestamp}\n${secret}`;
+    const hash = createHmac('sha256', secret)
+      .update(stringToSign, 'utf8')
+      .digest();
+    return `timestamp=${timestamp}&sign=${encodeURIComponent(hash.toString('base64'))}`;
+  };
+  console.log(await new Custom({
+    url: `https://oapi.dingtalk.com/robot/send?access_token=******&${sign()}`,
+    success: {
+      key: 'responseData.errcode',
+      value: 0
+    }
+  }).send({
+    msgtype: 'text',
+    text: {
+      content: '测试文本'
+    }
+  }));
+  /* 返回值
+  {
+    status: 200,
+    statusText: 'Success',
+    extraMessage: <AxiosResponse>
+  }
+  */
+});
+```
+
 ### 参数
 
 #### pusherConfig
@@ -262,6 +312,9 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | `token` | `string` | `null` | 大部分平台的授权token, 如果有授权信息有多个, 请使用`key` |
 | `webhook` | `string` | `null` | Discord 平台的 webhook 地址, 该平台请使用`webhook`而不是`token` |
 | `chat_id` | `string` | `null` | Telegram 平台的 chat_id |
+| `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
+| `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`二选一 |
+| `group_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标群号, 此参数与`user_id`二选一 |
 | `corpid` | `string` | `null` | 企业微信群机器人的[corpid](https://developer.work.weixin.qq.com/document/path/90665#corpid) |
 | `agentid` | `string` | `null` | 企业微信群机器人的[agentid](https://developer.work.weixin.qq.com/document/path/90665#agentid) |
 | `secret` | `string` | `null` | 企业微信群机器人的[secret](https://developer.work.weixin.qq.com/document/path/90665#secret) |
@@ -274,6 +327,9 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | - `key.webhook` | `string` | `null` | 同`webhook` |
 | - `key.secret` | `string` | `null` | 钉钉、飞书加签的密钥，可选。企业微信群机器人的`secret`, 同`secret` |
 | - `key.chat_id` | `string` | `null` | 同`chat_id` |
+| - `key.baseUrl` | `string` | `null` | 同`baseUrl` |
+| - `key.user_id` | `number` | `null` | 同`user_id` |
+| - `key.group_id` | `number` | `null` | 同`group_id` |
 | - `key.corpid` | `string` | `null` | 同`corpid` |
 | - `key.agentid` | `string` | `null` | 同`agentid` |
 | - `key.touser` | `string` | `null` | 同`touser` |
@@ -289,11 +345,36 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 |   - `key.auth.user` | `string` | `null` | 邮件发送服务器的用户名, 使用邮件推送时此选项为**必选** |
 |   - `key.auth.pass` | `string` | `null` | 邮件发送服务器的密码, 使用邮件推送时此选项为**必选** |
 | `proxy` | `object` | `null` | 代理配置, 可选，部分支持 |
-| - `proxy.protocol` | `string` | `http` | 代理协议 |
+| - `proxy.protocol` | `string` | `'http'` | 代理协议 |
 | - `proxy.host` | `string` | `null` | 代理主机地址 |
 | - `proxy.port` | `number` | `null` | 代理端口 |
 | - `proxy.username` | `string` | `null` | 代理用户名 |
 | - `proxy.password` | `string` | `null` | 代理密码 |
+
+#### CustomConfig
+
+> 自定义接口
+>
+> const customPusher = new Custom(*CustomConfig*);
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `url` | `string` | `null` | 请求链接, 必需 |
+| `method` | `string` | `'POST'` | 请求方式, 可选 |
+| `contentType` | `string` | `'application/json'` | 发送的数据类型, 等同于`hreders['Content-type']` |
+| `headers` | `AxiosRequestHeaders` | `null` | 请求头, 可选 |
+| `success` | `object` | `null` | 推送成功的判断方式, 必需 |
+| - `success.key` | `string` | `null` | [请看示例](#自定义接口) |
+| - `success.value` | `any` | `null` | [请看示例](#自定义接口) |
+| `key` | `object` | `null` | 以上参数都可以放到key中 |
+| - `key.url` | `string` | `null` | 请求链接, 必需 |
+| - `key.method` | `string` | `'POST'` | 请求方式, 可选 |
+| - `key.contentType` | `string` | `'application/json'` | 发送的数据类型, 等同于`hreders['Content-type']` |
+| - `key.headers` | `AxiosRequestHeaders` | `null` | 请求头, 可选 |
+| - `key.success` | `object` | `null` | 推送成功的判断方式, 必需 |
+| - `key.success.key` | `string` | `null` | [请看示例](#自定义接口) |
+| - `key.success.value` | `any` | `null` | [请看示例](#自定义接口) |
+| `proxy` | `object` | `null` | 代理配置, 同上 |
 
 #### pushersConfig
 
@@ -311,9 +392,15 @@ const pushersConfig: Array<pusherConfig>
 | --- | --- | --- | --- |
 | `message` | `string` | `null` | 推送的消息内容, `message`与`customOptions`至少要有一个 |
 | `title` | `string` | `null` | 部分平台支持消息标题, 不填则自动提取`message`第一行的前10个字符 |
-| `type` | `string` | `text` | 仅支持`text`, `markdown`, `html`. 具体平台支持情况请查看[支持的消息类型](#支持消息类型) |
+| `type` | `string` | `'text'` | 仅支持`text`, `markdown`, `html`. 具体平台支持情况请查看[支持的消息类型](#支持消息类型) |
 | `extraOptions` | `object` | `null` | 附加内容, 此对象中的内容会附加到请求体中, [示例](#extraOptions) |
-| `customOptions` | `object` | `null` | 自动以请求内容, 推送时会POST`customOptions`, [示例](#customOptions) |
+| `customOptions` | `object` | `null` | 自定义请求内容, 推送时会POST`customOptions`, [示例](#customOptions) |
+
+#### customSendOptions
+
+> const result = await customPusher.send(*customSendOptions*);
+
+`customSendOptions`会直接作为请求体发送, 具体请[查看示例](#自定义接口).
 
 #### pushersSendConfig
 
@@ -336,7 +423,7 @@ const pushersSendConfig: Array<{
 | --- | --- | --- | --- |
 | `status` | `number` | `null` | [状态码](#状态码) |
 | `statusText` | `string` | `null` | 状态说明文本 |
-| `extraMessage` | `AxiosResponse | Error` | `null` | 扩展信息, 用于调试, 一般为`axios`响应对象 |
+| `extraMessage` | `AxiosResponse` | `Error` | `null` | 扩展信息, 用于调试, 一般为`axios`响应对象 |
 
 #### results
 
@@ -358,6 +445,7 @@ const results: Array<{
 > `other`为部分平台支持特殊格式的消息，可通过`customOptions`传入参数，具体参数请查看相应平台的文档
 
 - Showdoc: 'text'
+- QQ(go-cqhttp): 'text', 'other'
 - Discord: 'text', 'other'
 - 飞书: 'text', 'other'
 - Server酱Turbo: 'text', 'markdown'

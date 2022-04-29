@@ -1,15 +1,15 @@
 {
   "name": "all-pusher-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "统一化推送服务API.",
   "main": "dist/index.js",
   "scripts": {
     "test": "tsc && node dist/test.js",
     "build": "tsc"
   },
-  "keywords": [],
+  "keywords": ["推送", "push"],
   "author": "HCLonely <h1606051253@gmail.com>",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "axios": "^0.27.0",
     "nodemailer": "^6.7.3",

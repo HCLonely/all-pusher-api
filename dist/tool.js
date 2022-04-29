@@ -29,14 +29,28 @@ const proxy2httpsAgent = (proxy, protocol = 'https') => {
                 proxyOptions.proxyAuth = `${proxy.username}:${proxy.password}`;
             }
             if (protocol === 'http') {
-                agent = tunnel.httpOverHttp({
-                    proxy: proxyOptions
-                });
+                if (proxy.protocol === 'https') {
+                    agent = tunnel.httpOverHttps({
+                        proxy: proxyOptions
+                    });
+                }
+                else {
+                    agent = tunnel.httpOverHttp({
+                        proxy: proxyOptions
+                    });
+                }
             }
             else {
-                agent = tunnel.httpsOverHttp({
-                    proxy: proxyOptions
-                });
+                if (proxy.protocol === 'https') {
+                    agent = tunnel.httpsOverHttps({
+                        proxy: proxyOptions
+                    });
+                }
+                else {
+                    agent = tunnel.httpsOverHttp({
+                        proxy: proxyOptions
+                    });
+                }
             }
         }
         if (!protocol || protocol === 'https') {

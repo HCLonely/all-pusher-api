@@ -69,7 +69,6 @@ class DingTalk {
         ...sendOptions.extraOptions
       };
     }
-    console.log(dingTalkOptions);
 
     const axiosOptions: AxiosRequestConfig = {
       url: `${this.baseURL}?access_token=${this._KEY}${this._SECRET ? `&${queryStringify(this.#sign())}` : ''}`,
@@ -84,6 +83,8 @@ class DingTalk {
     }
     return axios(axiosOptions).then((response) => {
       if (response.data) {
+        console.log(response.data.errcode);
+
         if (!response.data.errcode) {
           return {
             status: 200,

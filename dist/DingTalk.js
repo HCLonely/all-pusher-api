@@ -78,7 +78,6 @@ class DingTalk {
             if (sendOptions.extraOptions) {
                 dingTalkOptions = Object.assign(Object.assign({}, dingTalkOptions), sendOptions.extraOptions);
             }
-            console.log(dingTalkOptions);
             const axiosOptions = {
                 url: `${this.baseURL}?access_token=${this._KEY}${this._SECRET ? `&${(0, tool_1.queryStringify)(__classPrivateFieldGet(this, _DingTalk_instances, "m", _DingTalk_sign).call(this))}` : ''}`,
                 method: 'POST',
@@ -92,6 +91,7 @@ class DingTalk {
             }
             return (0, axios_1.default)(axiosOptions).then((response) => {
                 if (response.data) {
+                    console.log(response.data.errcode);
                     if (!response.data.errcode) {
                         return {
                             status: 200,

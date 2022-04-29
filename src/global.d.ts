@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Axios, AxiosRequestHeaders } from 'axios';
 import { type } from 'os';
 import { Embed, Ark, Config } from 'qq-guild-bot';
 declare global {
@@ -210,6 +211,47 @@ declare global {
   interface QqChannelConfig {
     key: Config,
     channelID: string
+  }
+
+  interface GoCqhttpConfig {
+    baseUrl?: string
+    token?: string
+    user_id?: string
+    group_id?: string
+    key: {
+      baseUrl?: string
+      token?: string
+      user_id?: string
+      group_id?: string
+    }
+    proxy?: proxy
+  }
+  interface GoCqhttpOptions {
+    message: string
+    user_id?: number
+    group_id?: number
+  }
+
+  interface CustomConfig {
+    url: string,
+    method?: string,
+    contentType?: string,
+    headers?: AxiosRequestHeaders,
+    success: {
+      key: string,
+      value: any
+    },
+    key?: {
+      url: string,
+      method?: string,
+      contentType?: string,
+      headers?: AxiosRequestHeaders,
+      success: {
+        key: string,
+        value: any
+      }
+    },
+    proxy?: proxy
   }
 
   /*
