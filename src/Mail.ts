@@ -65,9 +65,6 @@ class Mail {
       extraMessage: error
     }));
   }
-  test(): Promise<result> {
-    return this.send({ title: '测试标题', message: '测试内容', type: 'text' });
-  }
 }
 
 export { Mail };

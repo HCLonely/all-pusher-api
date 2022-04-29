@@ -114,9 +114,6 @@ class QqChannel {
       };
     });
   }
-  test(): Promise<result> {
-    return this.send({ title: '测试标题', message: '测试内容', type: 'text' });
-  }
   async #sign(): Promise<any> {
     return new Promise((resolve, reject) => {
       const ws = createWebsocket({

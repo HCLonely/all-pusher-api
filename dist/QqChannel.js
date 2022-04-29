@@ -127,9 +127,6 @@ class QqChannel {
             });
         });
     }
-    test() {
-        return this.send({ title: '测试标题', message: '测试内容', type: 'text' });
-    }
 }
 exports.QqChannel = QqChannel;
 _QqChannel_instances = new WeakSet(), _QqChannel_sign = function _QqChannel_sign() {

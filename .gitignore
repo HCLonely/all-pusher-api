@@ -1,5 +1,4 @@
 node_modules/
 .history/
-test.js
-test.ts
+test.*
 .vscode/

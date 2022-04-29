@@ -128,9 +128,6 @@ class WorkWeixin {
       extraMessage: error
     }));
   }
-  test(): Promise<result> {
-    return this.send({ title: '测试标题', message: '测试内容' });
-  }
 
   async #getToken(): Promise<result> {
     return axios.get(`https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${this._CORPID}&corpsecret=${this._SECRET}`)

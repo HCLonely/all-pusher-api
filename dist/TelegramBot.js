@@ -95,8 +95,5 @@ class TelegramBot {
             }));
         });
     }
-    test() {
-        return this.send({ message: '测试内容' });
-    }
 }
 exports.TelegramBot = TelegramBot;

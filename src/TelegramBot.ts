@@ -92,9 +92,6 @@ class TelegramBot {
       extraMessage: error
     }));
   }
-  test(): Promise<result> {
-    return this.send({ message: '测试内容' });
-  }
 }
 
 export { TelegramBot };

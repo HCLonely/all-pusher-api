@@ -24,6 +24,7 @@ const PushPlus_1 = require("./PushPlus");
 const Showdoc_1 = require("./Showdoc");
 const Xizhi_1 = require("./Xizhi");
 const Discord_1 = require("./Discord");
+const GoCqhttp_1 = require("./GoCqhttp");
 class PushApi {
     constructor(PushApiConfig) {
         this.pushers = [];
@@ -68,6 +69,9 @@ class PushApi {
                     break;
                 case 'discord':
                     this.pushers.push({ name: config.name, pusher: new Discord_1.Discord(config.config) });
+                    break;
+                case 'gocqhttp':
+                    this.pushers.push({ name: config.name, pusher: new GoCqhttp_1.GoCqhttp(config.config) });
                     break;
                 default:
                     break;

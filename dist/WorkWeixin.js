@@ -141,9 +141,6 @@ class WorkWeixin {
             }));
         });
     }
-    test() {
-        return this.send({ title: '测试标题', message: '测试内容' });
-    }
 }
 exports.WorkWeixin = WorkWeixin;
 _WorkWeixin_instances = new WeakSet(), _WorkWeixin_getToken = function _WorkWeixin_getToken() {

@@ -105,9 +105,6 @@ class FeiShu {
       extraMessage: error
     }));
   }
-  test(): Promise<result> {
-    return this.send({ message: '测试内容', type: 'text' });
-  }
 
   #sign(): signParam {
     const timestamp = Math.floor(new Date().getTime() / 1000);

@@ -117,9 +117,6 @@ class DingTalk {
             }));
         });
     }
-    test() {
-        return this.send({ message: '测试内容', type: 'text' });
-    }
 }
 exports.DingTalk = DingTalk;
 _DingTalk_instances = new WeakSet(), _DingTalk_sign = function _DingTalk_sign() {

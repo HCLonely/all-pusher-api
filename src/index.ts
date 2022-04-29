@@ -12,12 +12,13 @@ import { PushPlus } from './PushPlus';
 import { Showdoc } from './Showdoc';
 import { Xizhi } from './Xizhi';
 import { Discord } from './Discord';
+import { GoCqhttp } from './GoCqhttp';
 
 class PushApi {
   pushers: Array<{
     name: string,
     pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin |
-    QqChannel | PushPlus | Showdoc | Xizhi | Discord
+    QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp
   }> = [];
 
   constructor(PushApiConfig: Array<{ name: string, config: any }>) {
@@ -62,6 +63,9 @@ class PushApi {
         break;
       case 'discord':
         this.pushers.push({ name: config.name, pusher: new Discord(config.config) });
+        break;
+      case 'gocqhttp':
+        this.pushers.push({ name: config.name, pusher: new GoCqhttp(config.config) });
         break;
       default:
         break;

@@ -48,7 +48,7 @@ class Custom {
       headers: {
         'Content-type': 'application/json'
       },
-      data: sendOptions
+      data: sendOptions.extraMessage || sendOptions
     };
     if (this._HEADERS) {
       axiosOptions.headers = this._HEADERS;

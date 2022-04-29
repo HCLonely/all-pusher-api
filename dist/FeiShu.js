@@ -110,9 +110,6 @@ class FeiShu {
             }));
         });
     }
-    test() {
-        return this.send({ message: '测试内容', type: 'text' });
-    }
 }
 exports.FeiShu = FeiShu;
 _FeiShu_instances = new WeakSet(), _FeiShu_sign = function _FeiShu_sign() {

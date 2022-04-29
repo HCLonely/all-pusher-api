@@ -226,7 +226,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 })();
 ```
 
-#### 自定义接口
+#### customOptions
 
 > 这里以钉钉为例
 
@@ -264,11 +264,11 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 })();
 ```
 
-#### customPusher
+#### 自定义接口
 
 ```javascript
 (async () => {
-  const { Custom } = require('all-pusher-api/dist/Custom');
+  const { Custom } = require('all-pusher-api/dist/Custom'); // 自定义接口只能通过此方法引入
   const { createHmac } = require('crypto');
  const sign = () => {
     const timestamp = new Date().getTime();
