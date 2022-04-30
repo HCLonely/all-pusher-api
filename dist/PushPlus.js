@@ -8,12 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PushPlus = void 0;
 /* global sendOptions, PushPlusOptions, result, PushPlusConfig */
-const axios_1 = require("axios");
+const axios_1 = __importDefault(require("axios"));
 const tool_1 = require("./tool");
-const showdown_1 = require("showdown");
+const showdown_1 = __importDefault(require("showdown"));
 class PushPlus {
     constructor({ token, key, proxy }) {
         this.baseURL = 'https://pushplus.hxtrip.com/send/';

@@ -1,6 +1,8 @@
 # all-pusher-api
 
-统一化推送服务API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher等平台.
+统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher等平台.
+
+**！！！！！仅推送！！！！！不交互！！！！！！**
 
 ## 已支持平台
 
@@ -244,8 +246,8 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
       customOptions: {
         "msgtype": "actionCard",
         "actionCard": {
-          "title": "我 20 年前想打造一间苹果咖啡厅，而它正是 Apple Store 的前身",
-          "text": "![screenshot](https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png) \n\n #### 乔布斯 20 年前想打造的苹果咖啡厅 \n\n Apple Store 的设计正从原来满满的科技感走向生活化，而其生活化的走向其实可以追溯到 20 年前苹果一个建立咖啡馆的计划",
+          "title": "我 20 年前想打造一间苹果咖啡厅, 而它正是 Apple Store 的前身",
+          "text": "![screenshot](https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png) \n\n #### 乔布斯 20 年前想打造的苹果咖啡厅 \n\n Apple Store 的设计正从原来满满的科技感走向生活化, 而其生活化的走向其实可以追溯到 20 年前苹果一个建立咖啡馆的计划",
           "btnOrientation": "0",
           "btns": [
             {
@@ -313,23 +315,27 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | `webhook` | `string` | `null` | Discord 平台的 webhook 地址, 该平台请使用`webhook`而不是`token` |
 | `chat_id` | `string` | `null` | Telegram 平台的 chat_id |
 | `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
-| `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`二选一 |
-| `group_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标群号, 此参数与`user_id`二选一 |
+| `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`, `channel_id`二选一 |
+| `group_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标群号, 此参数与`user_id`, `channel_id`二选一 |
+| `channel_id` | `string` | `null` | 使用 go-cqhttp 推送时的目标频道ID, 此参数与`user_id`, `group_id`二选一, 且必须与`guild_id`同时存在 |
+| `guild_id` | `string` | `null` | 使用 go-cqhttp 推送时的目标子频道ID, 此参数必须与`channel_id`同时存在 |
 | `corpid` | `string` | `null` | 企业微信群机器人的[corpid](https://developer.work.weixin.qq.com/document/path/90665#corpid) |
 | `agentid` | `string` | `null` | 企业微信群机器人的[agentid](https://developer.work.weixin.qq.com/document/path/90665#agentid) |
 | `secret` | `string` | `null` | 企业微信群机器人的[secret](https://developer.work.weixin.qq.com/document/path/90665#secret) |
-| `touser` | `string` | `null` | 企业微信群机器人[指定接收消息的成员](https://developer.work.weixin.qq.com/document/path/90236#文本消息)，也可在[sendOptions](#sendOptions)中配置 |
-| `uids` | `Array<string>` | `null` | WxPusher 发送目标的 UID，也可在[sendOptions](#sendOptions)中配置 |
-| `topicIds` | `Array<number>` | `null` | WxPusher 发送目标的 topicId，也可在[sendOptions](#sendOptions)中配置 |
+| `touser` | `string` | `null` | 企业微信群机器人[指定接收消息的成员](https://developer.work.weixin.qq.com/document/path/90236#文本消息), 也可在[sendOptions](#sendOptions)中配置 |
+| `uids` | `Array<string>` | `null` | WxPusher 发送目标的 UID, 也可在[sendOptions](#sendOptions)中配置 |
+| `topicIds` | `Array<number>` | `null` | WxPusher 发送目标的 topicId, 也可在[sendOptions](#sendOptions)中配置 |
 | `channelID` | `string` | `null` | QQ频道的子频道 ID, 使用QQ频道推送时此选项为**必选** |
 | `key` | `object` | `null` | 所有平台的授权token都可以放到`key`中 |
 | - `key.token` | `string` | `null` | 同`token`, `token`和`key.token`至少要有一个 |
 | - `key.webhook` | `string` | `null` | 同`webhook` |
-| - `key.secret` | `string` | `null` | 钉钉、飞书加签的密钥，可选。企业微信群机器人的`secret`, 同`secret` |
+| - `key.secret` | `string` | `null` | 钉钉、飞书加签的密钥, 可选。企业微信群机器人的`secret`, 同`secret` |
 | - `key.chat_id` | `string` | `null` | 同`chat_id` |
 | - `key.baseUrl` | `string` | `null` | 同`baseUrl` |
 | - `key.user_id` | `number` | `null` | 同`user_id` |
 | - `key.group_id` | `number` | `null` | 同`group_id` |
+| - `key.channel_id` | `number` | `null` | 同`channel_id` |
+| - `key.guild_id` | `number` | `null` | 同`guild_id` |
 | - `key.corpid` | `string` | `null` | 同`corpid` |
 | - `key.agentid` | `string` | `null` | 同`agentid` |
 | - `key.touser` | `string` | `null` | 同`touser` |
@@ -337,14 +343,14 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | - `key.topicIds` | `Array<number>` | `null` | 同`topicIds` |
 | - `key.appID` | `string` | `null` | QQ频道机器人的 ID, 使用QQ频道推送时此选项为**必选** |
 | - `key.token` | `string` | `null` | QQ频道机器人的 token, 使用QQ频道推送时此选项为**必选** |
-| - `key.sandbox` | `boolean` | `false` | 使用QQ频道推送时是否启用沙箱，可选 |
+| - `key.sandbox` | `boolean` | `false` | 使用QQ频道推送时是否启用沙箱, 可选 |
 | - `key.host` | `string` | `null` | 邮件发送服务器地址, 使用邮件推送时此选项为**必选** |
 | - `key.port` | `number` | `null` | 邮件发送服务器端口, 使用邮件推送时此选项为**必选** |
 | - `key.secure` | `boolean` | `false` | 邮件发送服务器是否启用TLS/SSL, 可选 |
 | - `key.auth` | `object` | `null` | 邮件发送服务器的验证信息, 使用邮件推送时此选项为**必选** |
 |   - `key.auth.user` | `string` | `null` | 邮件发送服务器的用户名, 使用邮件推送时此选项为**必选** |
 |   - `key.auth.pass` | `string` | `null` | 邮件发送服务器的密码, 使用邮件推送时此选项为**必选** |
-| `proxy` | `object` | `null` | 代理配置, 可选，部分支持 |
+| `proxy` | `object` | `null` | 代理配置, 可选, 部分支持 |
 | - `proxy.protocol` | `string` | `'http'` | 代理协议 |
 | - `proxy.host` | `string` | `null` | 代理主机地址 |
 | - `proxy.port` | `number` | `null` | 代理端口 |
@@ -438,11 +444,11 @@ const results: Array<{
 
 ## 支持的消息类型
 
-> 所有平台支持均纯文本(`text`)格式消息，大部分支持`markdown`格式消息，部分支持`html`格式消息
+> 所有平台支持均纯文本(`text`)格式消息, 大部分支持`markdown`格式消息, 部分支持`html`格式消息
 >
 > `markdown*`为支持`html`格式不支持`markdown`格式消息时自动将`markdown`转换为`html`格式
 >
-> `other`为部分平台支持特殊格式的消息，可通过`customOptions`传入参数，具体参数请查看相应平台的文档
+> `other`为部分平台支持特殊格式的消息, 可通过`customOptions`传入参数, 具体参数请查看相应平台的文档
 
 - Showdoc: 'text'
 - QQ(go-cqhttp): 'text', 'other'
@@ -466,9 +472,9 @@ const results: Array<{
 - `11`-`Unknown Error`: 未知错误
 - `200`-`Success`: 推送成功
 - `201`-`Waiting`: 待审核
-- `100`-`Error`: 请求发送成功，服务器返回错误信息
-- `101`-`No Response Data`: 请求发送成功，但没有接收到服务器返回的数据
-- `102`-`Request Error`: 请求发送失败，一般是网络问题
+- `100`-`Error`: 请求发送成功, 服务器返回错误信息
+- `101`-`No Response Data`: 请求发送成功, 但没有接收到服务器返回的数据
+- `102`-`Request Error`: 请求发送失败, 一般是网络问题
 - `103`-`Options Format Error`: 参数格式错误
 - `104`-`Get "***" Failed`: 获取参数失败
 - `140`-`Check Sign Failed`: 签名校检失败

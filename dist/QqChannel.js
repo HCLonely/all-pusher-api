@@ -17,7 +17,7 @@ var _QqChannel_instances, _QqChannel_sign;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QqChannel = void 0;
 /* global sendOptions, result, QqChannelConfig */
-const qq_guild_bot_1 = require("qq-guild-bot");
+const src_1 = require("./bot-node-sdk/src");
 class QqChannel {
     constructor({ key, channelID }) {
         _QqChannel_instances.add(this);
@@ -67,7 +67,7 @@ class QqChannel {
             if (sendOptions.extraOptions) {
                 qqChannelOptions = Object.assign(Object.assign({}, qqChannelOptions), sendOptions.extraOptions);
             }
-            const client = (0, qq_guild_bot_1.createOpenAPI)(this._CONFIG);
+            const client = (0, src_1.createOpenAPI)(this._CONFIG);
             const ws = yield __classPrivateFieldGet(this, _QqChannel_instances, "m", _QqChannel_sign).call(this).then((ws) => ws).catch((error) => ({
                 status: 140,
                 statusText: 'Check Sign Failed',
@@ -78,11 +78,6 @@ class QqChannel {
             }
             // console.log(ws.session.ws.ws.close());
             return client.messageApi.postMessage(this.channelID, qqChannelOptions).then((response) => {
-                ws.retry = 0;
-                ws.session.ws.ws.removeAllListeners();
-                ws.session.ws.event.removeAllListeners();
-                ws.removeAllListeners();
-                ws.connect = () => { };
                 ws.disconnect();
                 if (response.data) {
                     // @ts-ignore
@@ -113,11 +108,6 @@ class QqChannel {
                     extraMessage: response
                 };
             }).catch((error) => {
-                ws.retry = 0;
-                ws.session.ws.ws.removeAllListeners();
-                ws.session.ws.event.removeAllListeners();
-                ws.removeAllListeners();
-                ws.connect = () => { };
                 ws.disconnect();
                 return {
                     status: 102,
@@ -132,7 +122,7 @@ exports.QqChannel = QqChannel;
 _QqChannel_instances = new WeakSet(), _QqChannel_sign = function _QqChannel_sign() {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
-            const ws = (0, qq_guild_bot_1.createWebsocket)(Object.assign(Object.assign({}, this._CONFIG), { maxRetry: 3 }));
+            const ws = (0, src_1.createWebsocket)(Object.assign(Object.assign({}, this._CONFIG), { maxRetry: 3 }));
             ws.on('READY', () => {
                 resolve(ws);
             });

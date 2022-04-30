@@ -1,0 +1,10 @@
+import { AxiosRequestHeaders } from 'axios';
+export declare const delayTime: (ms: number) => Promise<unknown>;
+export declare const randomDelay: (min: number, max: number) => Promise<unknown>;
+export declare const resolveString: (data: any) => string;
+export declare const toObject: (data: any) => any;
+export declare const has: (o: any, k: any) => boolean;
+export declare const getTimeStampNumber: () => number;
+export declare const addUserAgent: (header: AxiosRequestHeaders) => void;
+export declare const addAuthorization: (header: AxiosRequestHeaders, appID: string, token: string) => void;
+export declare const buildUrl: (path?: string, isSandbox?: boolean | undefined) => string;

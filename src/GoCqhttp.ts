@@ -8,8 +8,10 @@ class GoCqhttp {
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
   user_id?: number;
   group_id?: number;
+  guild_id?: string;
+  channel_id?: string;
 
-  constructor({ baseUrl, token, user_id, group_id, key, proxy }: GoCqhttpConfig) {
+  constructor({ baseUrl, token, user_id, group_id, guild_id, channel_id, key, proxy }: GoCqhttpConfig) {
     if (!baseUrl && !key?.baseUrl) {
       throw new Error('Missing Parameter: baseUrl');
     }
@@ -26,6 +28,14 @@ class GoCqhttp {
     if (group_id || key?.group_id) {
       // @ts-ignore
       this.group_id = group_id || key.group_id;
+    }
+    if (guild_id || key?.guild_id) {
+      // @ts-ignore
+      this.group_id = guild_id || key.guild_id;
+    }
+    if (channel_id || key?.channel_id) {
+      // @ts-ignore
+      this.channel_id = channel_id || key.channel_id;
     }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy, new URL(this._BASE_URL).protocol.replace(':', ''));
@@ -53,6 +63,12 @@ class GoCqhttp {
       if (this.group_id) {
         goCqhttpOptions.group_id = this.group_id;
       }
+      if (this.guild_id) {
+        goCqhttpOptions.guild_id = this.guild_id;
+      }
+      if (this.channel_id) {
+        goCqhttpOptions.channel_id = this.channel_id;
+      }
     }
     if (sendOptions.extraOptions) {
       goCqhttpOptions = {
@@ -61,8 +77,27 @@ class GoCqhttp {
       };
     }
 
+    if (
+      (goCqhttpOptions.guild_id && !goCqhttpOptions.channel_id) ||
+      (goCqhttpOptions.channel_id && !goCqhttpOptions.guild_id)
+    ) {
+      return {
+        status: 103,
+        statusText: 'Options Format Error: Both "channel_id" & "guild_id" must exist',
+        extraMessage: goCqhttpOptions
+      };
+    }
+
+    if ([goCqhttpOptions.user_id, goCqhttpOptions.group_id, goCqhttpOptions.channel_id].filter((e) => e).length > 1) {
+      return {
+        status: 103,
+        statusText: 'Options Format Error: "user_id", "group_id", and "channel_id" cannot exist at the same time',
+        extraMessage: goCqhttpOptions
+      };
+    }
+
     const axiosOptions: AxiosRequestConfig = {
-      url: `${this._BASE_URL}/send_msg`,
+      url: `${this._BASE_URL}${goCqhttpOptions.channel_id ? '/send_guild_channel_msg' : '/send_msg'}`,
       method: 'POST',
       headers: {
         'Content-type': 'application/json',

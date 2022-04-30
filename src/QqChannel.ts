@@ -1,5 +1,5 @@
 /* global sendOptions, result, QqChannelConfig */
-import { createOpenAPI, createWebsocket, Config, MessageToCreate } from 'qq-guild-bot';
+import { createOpenAPI, createWebsocket, Config, MessageToCreate } from './bot-node-sdk/src';
 
 class QqChannel {
   protected _CONFIG: Config;
@@ -65,12 +65,7 @@ class QqChannel {
     }
     // console.log(ws.session.ws.ws.close());
 
-    return client.messageApi.postMessage(this.channelID, qqChannelOptions).then((response) => {
-      ws.retry = 0;
-      ws.session.ws.ws.removeAllListeners();
-      ws.session.ws.event.removeAllListeners();
-      ws.removeAllListeners();
-      ws.connect = () => { };
+    return client.messageApi.postMessage(this.channelID, qqChannelOptions).then((response: any) => {
       ws.disconnect();
       if (response.data) {
         // @ts-ignore
@@ -100,12 +95,7 @@ class QqChannel {
         statusText: 'No Response Data',
         extraMessage: response
       };
-    }).catch((error) => {
-      ws.retry = 0;
-      ws.session.ws.ws.removeAllListeners();
-      ws.session.ws.event.removeAllListeners();
-      ws.removeAllListeners();
-      ws.connect = () => { };
+    }).catch((error: any) => {
       ws.disconnect();
       return {
         status: 102,

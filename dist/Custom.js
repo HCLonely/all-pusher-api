@@ -8,10 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Custom = void 0;
 /* global result, CustomConfig */
-const axios_1 = require("axios");
+const axios_1 = __importDefault(require("axios"));
 const tool_1 = require("./tool");
 class Custom {
     constructor({ url, method, contentType, headers, key, success, proxy }) {

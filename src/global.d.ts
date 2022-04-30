@@ -216,13 +216,17 @@ declare global {
   interface GoCqhttpConfig {
     baseUrl?: string
     token?: string
-    user_id?: string
-    group_id?: string
+    user_id?: number
+    group_id?: number
+    guild_id?: string
+    channel_id?: string
     key: {
       baseUrl?: string
       token?: string
-      user_id?: string
-      group_id?: string
+      user_id?: number
+      group_id?: number
+      guild_id?: string
+      channel_id?: string
     }
     proxy?: proxy
   }
@@ -230,6 +234,8 @@ declare global {
     message: string
     user_id?: number
     group_id?: number
+    guild_id?: string
+    channel_id?: string
   }
 
   interface CustomConfig {

@@ -1,4 +1,4 @@
-import { Config } from 'qq-guild-bot';
+import { Config } from './bot-node-sdk/src';
 declare class QqChannel {
     #private;
     protected _CONFIG: Config;

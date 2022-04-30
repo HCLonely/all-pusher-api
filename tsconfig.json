@@ -13,6 +13,7 @@
     "allowJs": true,
     "downlevelIteration":true,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
   "include": [

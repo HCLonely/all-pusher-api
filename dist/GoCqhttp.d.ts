@@ -5,7 +5,9 @@ declare class GoCqhttp {
     httpsAgent?: AxiosRequestConfig['httpsAgent'];
     user_id?: number;
     group_id?: number;
-    constructor({ baseUrl, token, user_id, group_id, key, proxy }: GoCqhttpConfig);
+    guild_id?: string;
+    channel_id?: string;
+    constructor({ baseUrl, token, user_id, group_id, guild_id, channel_id, key, proxy }: GoCqhttpConfig);
     send(sendOptions: sendOptions): Promise<result>;
 }
 export { GoCqhttp };
