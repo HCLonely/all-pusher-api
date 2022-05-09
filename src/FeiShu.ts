@@ -1,7 +1,22 @@
-/* global sendOptions, FeiShuOptions, result FeiShuConfig */
 import axios, { AxiosRequestConfig } from 'axios';
 import { createHmac } from 'crypto';
-import { proxy2httpsAgent } from './tool';
+import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface FeiShuConfig {
+  token?: string
+  key?: {
+    token: string
+    secret?: string
+  }
+  proxy?: proxy
+}
+interface FeiShuOptions {
+  msg_type?: string
+  content?: any
+  title?: string
+  messageUrl?: string
+  [name: string]: any
+}
 
 interface signParam {
   timestamp: number

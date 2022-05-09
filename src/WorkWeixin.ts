@@ -1,6 +1,34 @@
-/* global sendOptions, WorkWeixinOptions, result, WorkWeixinConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { proxy2httpsAgent } from './tool';
+import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface WorkWeixinConfig {
+  key?: {
+    corpid: string
+    secret: string
+    agentid: number
+    touser?: string
+  }
+  corpid?: string
+  secret?: string
+  agentid?: number
+  touser?: string
+  proxy?: proxy
+}
+interface WorkWeixinOptions {
+  touser?: string
+  toparty?: string
+  totag?: string
+  msgtype: string
+  agentid: number
+  text?: any
+  markdown?: any
+  safe?: number
+  enable_id_trans?: number
+  enable_duplicate_check?: number
+  duplicate_check_interval?: number
+  [name: string]: any
+}
+
 class WorkWeixin {
   protected _CORPID: string;
   protected _SECRET: string;

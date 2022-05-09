@@ -1,4 +1,3 @@
-/* global sendOptions, result */
 import { ServerChanTurbo } from './ServerChanTurbo';
 import { PushDeer } from './PushDeer';
 import { TelegramBot } from './TelegramBot';
@@ -13,6 +12,7 @@ import { Showdoc } from './Showdoc';
 import { Xizhi } from './Xizhi';
 import { Discord } from './Discord';
 import { GoCqhttp } from './GoCqhttp';
+import { result, sendOptions } from './tool';
 
 class PushApi {
   pushers: Array<{

@@ -1,7 +1,29 @@
-/* global sendOptions, WxPusherOptions, result, WxPusherConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { proxy2httpsAgent } from './tool';
+import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
 import showdown from 'showdown';
+
+interface WxPusherConfig {
+  key?: {
+    token: string,
+    uids?: Array<string>,
+    topicIds?: Array<number>,
+  }
+  token?: string,
+  uids?: Array<string>,
+  topicIds?: Array<number>,
+  proxy?: proxy
+}
+interface WxPusherOptions {
+  appToken: string
+  content: string
+  summary?: string
+  contentType: number
+  topicIds?: Array<number>
+  uids?: Array<string>
+  url?: string
+  [name: string]: any
+}
+
 class WxPusher {
   protected _KEY: string;
   readonly baseURL = 'https://wxpusher.zjiecode.com/api/send/message';

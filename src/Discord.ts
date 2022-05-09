@@ -1,6 +1,18 @@
-/* global sendOptions, DiscordOptions, result, DiscordConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { proxy2httpsAgent } from './tool';
+import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface DiscordConfig {
+  webhook?: string
+  key?: {
+    webhook: string
+  }
+  proxy?: proxy
+}
+interface DiscordOptions {
+  content?: string
+  embeds?: Array<any>
+  [name: string]: any
+}
 
 class Discord {
   protected _WEBHOOK: string;

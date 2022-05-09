@@ -1,6 +1,19 @@
-/* global sendOptions, ServerChanTurboOptions, result, ServerChanTurboConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { queryStringify, proxy2httpsAgent } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface ServerChanTurboConfig {
+  token?: string
+  key?: {
+    token: string
+  }
+  proxy?: proxy
+}
+interface ServerChanTurboOptions {
+  title?: string
+  desp?: string
+  [name: string]: any
+}
+
 class ServerChanTurbo {
   protected _KEY: string;
   readonly baseURL = 'https://sctapi.ftqq.com/';

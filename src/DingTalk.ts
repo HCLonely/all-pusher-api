@@ -1,7 +1,24 @@
-/* global sendOptions, DingTalkOptions, result, DingTalkConfig */
 import axios, { AxiosRequestConfig } from 'axios';
 import { createHmac } from 'crypto';
-import { queryStringify, proxy2httpsAgent } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface DingTalkConfig {
+  token?: string
+  key?: {
+    token: string
+    secret?: string
+  },
+  proxy?: proxy
+}
+interface DingTalkOptions {
+  msgtype?: string
+  content?: string
+  title?: string
+  messageUrl?: string
+  text?: any
+  markdown?: any
+  [name: string]: any
+}
 
 interface signParam {
   timestamp: number

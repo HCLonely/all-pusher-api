@@ -1,7 +1,22 @@
-/* global sendOptions, PushPlusOptions, result, PushPlusConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { proxy2httpsAgent } from './tool';
+import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
 import showdown from 'showdown';
+
+interface PushPlusConfig {
+  token?: string
+  key?: {
+    token: string
+  }
+  proxy?: proxy
+}
+interface PushPlusOptions {
+  title?: string
+  content: string
+  topic?: string
+  template?: string
+  [name: string]: any
+}
+
 class PushPlus {
   protected _KEY: string;
   readonly baseURL = 'https://pushplus.hxtrip.com/send/';

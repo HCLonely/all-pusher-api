@@ -1,6 +1,27 @@
-/* global result, CustomConfig */
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
-import { queryStringify, proxy2httpsAgent } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result } from './tool';
+
+interface CustomConfig {
+  url: string,
+  method?: string,
+  contentType?: string,
+  headers?: AxiosRequestHeaders,
+  success: {
+    key: string,
+    value: any
+  },
+  key?: {
+    url: string,
+    method?: string,
+    contentType?: string,
+    headers?: AxiosRequestHeaders,
+    success: {
+      key: string,
+      value: any
+    }
+  },
+  proxy?: proxy
+}
 
 class Custom {
   protected _URL: string;

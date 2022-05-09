@@ -1,6 +1,30 @@
-/* global sendOptions, GoCqhttpOptions, result, GoCqhttpConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { proxy2httpsAgent } from './tool';
+import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface GoCqhttpConfig {
+  baseUrl?: string
+  token?: string
+  user_id?: number
+  group_id?: number
+  guild_id?: string
+  channel_id?: string
+  key: {
+    baseUrl?: string
+    token?: string
+    user_id?: number
+    group_id?: number
+    guild_id?: string
+    channel_id?: string
+  }
+  proxy?: proxy
+}
+interface GoCqhttpOptions {
+  message: string
+  user_id?: number
+  group_id?: number
+  guild_id?: string
+  channel_id?: string
+}
 
 class GoCqhttp {
   protected _KEY?: string;

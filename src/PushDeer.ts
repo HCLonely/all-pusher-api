@@ -1,6 +1,21 @@
-/* global sendOptions, PushDeerOptions, result, PushDeerConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { queryStringify, proxy2httpsAgent } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface PushDeerConfig {
+  token?: string
+  key?: {
+    token: string
+  }
+  proxy?: proxy
+}
+interface PushDeerOptions {
+  text?: string
+  pushkey?: string
+  desp?: string
+  type?: string
+  [name: string]: any
+}
+
 class PushDeer {
   protected _KEY: string;
   readonly baseURL = 'https://api2.pushdeer.com/message/push';

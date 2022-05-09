@@ -1,6 +1,26 @@
-/* global sendOptions, result, TransportOptions, MailConfig */
 import * as nodemailer from 'nodemailer';
 import showdown from 'showdown';
+import { proxy, result, sendOptions } from './tool';
+
+interface TransportOptions {
+  host: string,
+  port: number,
+  secure?: boolean,
+  auth: {
+    user: string,
+    pass: string
+  }
+  proxy?: string
+}
+interface MailConfig {
+  key: TransportOptions,
+  options?: {
+    from: string,
+    to?: string
+  }
+  proxy?: proxy
+}
+
 interface mailOptions {
   from: string,
   to?: string

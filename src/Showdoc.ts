@@ -1,6 +1,19 @@
-/* global sendOptions, ShowdocOptions, result, ShowdocConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { queryStringify, proxy2httpsAgent } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface ShowdocConfig {
+  token?: string
+  key?: {
+    token: string
+  }
+  proxy?: proxy
+}
+interface ShowdocOptions {
+  title: string
+  content: string
+  [name: string]: any
+}
+
 class Showdoc {
   protected _KEY: string;
   readonly baseURL = 'https://push.showdoc.com.cn/server/api/push/';

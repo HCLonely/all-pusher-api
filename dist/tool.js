@@ -1,86 +1,99 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.proxy2httpsAgent = exports.queryStringify = void 0;
-const tunnel = __importStar(require("tunnel"));
-const socks_proxy_agent_1 = require("socks-proxy-agent");
-const queryStringify = (data) => Object.entries(data).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-exports.queryStringify = queryStringify;
+
+var tunnel = require('tunnel');
+
+var socksProxyAgent = require('socks-proxy-agent');
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () {
+            return e[k];
+          }
+        });
+      }
+    });
+  }
+
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var tunnel__namespace = /*#__PURE__*/_interopNamespace(tunnel);
+
+const queryStringify = data => Object.entries(data).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+
 const proxy2httpsAgent = (proxy, protocol = 'https') => {
-    var _a;
-    if (proxy.host && proxy.port) {
-        let agent;
-        if ((_a = proxy.protocol) === null || _a === void 0 ? void 0 : _a.includes('socks')) {
-            const proxyOptions = {
-                hostname: proxy.host,
-                port: proxy.port
-            };
-            if (proxy.username && proxy.password) {
-                proxyOptions.userId = proxy.username;
-                proxyOptions.password = proxy.password;
-            }
-            agent = new socks_proxy_agent_1.SocksProxyAgent(proxyOptions);
+  if (proxy.host && proxy.port) {
+    var _proxy$protocol;
+
+    let agent;
+
+    if ((_proxy$protocol = proxy.protocol) !== null && _proxy$protocol !== void 0 && _proxy$protocol.includes('socks')) {
+      const proxyOptions = {
+        hostname: proxy.host,
+        port: proxy.port
+      };
+
+      if (proxy.username && proxy.password) {
+        proxyOptions.userId = proxy.username;
+        proxyOptions.password = proxy.password;
+      }
+
+      agent = new socksProxyAgent.SocksProxyAgent(proxyOptions);
+    } else {
+      const proxyOptions = {
+        host: proxy.host,
+        port: proxy.port
+      };
+
+      if (proxy.username && proxy.password) {
+        proxyOptions.proxyAuth = `${proxy.username}:${proxy.password}`;
+      }
+
+      if (protocol === 'http') {
+        if (proxy.protocol === 'https') {
+          agent = tunnel__namespace.httpOverHttps({
+            proxy: proxyOptions
+          });
+        } else {
+          agent = tunnel__namespace.httpOverHttp({
+            proxy: proxyOptions
+          });
         }
-        else {
-            const proxyOptions = {
-                host: proxy.host,
-                port: proxy.port
-            };
-            if (proxy.username && proxy.password) {
-                proxyOptions.proxyAuth = `${proxy.username}:${proxy.password}`;
-            }
-            if (protocol === 'http') {
-                if (proxy.protocol === 'https') {
-                    agent = tunnel.httpOverHttps({
-                        proxy: proxyOptions
-                    });
-                }
-                else {
-                    agent = tunnel.httpOverHttp({
-                        proxy: proxyOptions
-                    });
-                }
-            }
-            else {
-                if (proxy.protocol === 'https') {
-                    agent = tunnel.httpsOverHttps({
-                        proxy: proxyOptions
-                    });
-                }
-                else {
-                    agent = tunnel.httpsOverHttp({
-                        proxy: proxyOptions
-                    });
-                }
-            }
+      } else {
+        if (proxy.protocol === 'https') {
+          agent = tunnel__namespace.httpsOverHttps({
+            proxy: proxyOptions
+          });
+        } else {
+          agent = tunnel__namespace.httpsOverHttp({
+            proxy: proxyOptions
+          });
         }
-        if (!protocol || protocol === 'https') {
-            agent.options.rejectUnauthorized = false;
-        }
-        return agent;
+      }
     }
-    return null;
+
+    if (!protocol || protocol === 'https') {
+      agent.options.rejectUnauthorized = false;
+    }
+
+    return agent;
+  }
+
+  return null;
 };
+
 exports.proxy2httpsAgent = proxy2httpsAgent;
+exports.queryStringify = queryStringify;

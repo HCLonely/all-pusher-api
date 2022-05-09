@@ -1,6 +1,19 @@
-/* global sendOptions, XizhiOptions, result, XizhiConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { queryStringify, proxy2httpsAgent } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface XizhiConfig {
+  key?: {
+    token: string
+  }
+  token?: string
+  proxy?: proxy
+}
+interface XizhiOptions {
+  title: string
+  content: string
+  [name: string]: any
+}
+
 class Xizhi {
   protected _KEY: string;
   readonly baseURL = 'https://xizhi.qqoq.net/';

@@ -1,6 +1,21 @@
-/* global sendOptions,TelegramBotOptions, result, TelegramBotConfig */
 import axios, { AxiosRequestConfig } from 'axios';
-import { queryStringify, proxy2httpsAgent } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+
+interface TelegramBotConfig {
+  key?: {
+    token: string
+    chat_id: string
+  }
+  token?: string
+  chat_id?: string
+  proxy?: proxy
+}
+interface TelegramBotOptions {
+  chat_id?: string
+  text?: string
+  parse_mode?: string
+  [name: string]: any
+}
 
 class TelegramBot {
   protected _KEY: string;

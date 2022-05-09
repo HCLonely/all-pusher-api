@@ -1,5 +1,10 @@
-/* global sendOptions, result, QqChannelConfig */
 import { createOpenAPI, createWebsocket, Config, MessageToCreate } from './bot-node-sdk/src';
+import { result, sendOptions } from './tool';
+
+interface QqChannelConfig {
+  key: Config,
+  channelID: string
+}
 
 class QqChannel {
   protected _CONFIG: Config;

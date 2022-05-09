@@ -1,7 +1,30 @@
-/* global objectData, proxy */
 import { AxiosRequestConfig } from 'axios';
 import * as tunnel from 'tunnel';
 import { SocksProxyAgent, SocksProxyAgentOptions } from 'socks-proxy-agent';
+
+interface objectData {
+  [name: string]: any
+}
+interface sendOptions {
+  message: string
+  title?: string
+  type?: string
+  to?: string
+  customOptions?: any
+  extraOptions?: any
+}
+interface result {
+  status: number
+  statusText: string
+  extraMessage: any
+}
+interface proxy {
+  host: string
+  port: number
+  protocol?: string
+  username?: string
+  password?: string
+}
 
 const queryStringify = (data: objectData): string => Object.entries(data).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
 const proxy2httpsAgent = (proxy: proxy, protocol = 'https'): AxiosRequestConfig['httpsAgent'] | null => {
@@ -54,4 +77,4 @@ const proxy2httpsAgent = (proxy: proxy, protocol = 'https'): AxiosRequestConfig[
   }
   return null;
 };
-export { queryStringify, proxy2httpsAgent };
+export { queryStringify, proxy2httpsAgent, objectData, sendOptions, result, proxy };
