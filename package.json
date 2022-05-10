@@ -1,6 +1,6 @@
 {
   "name": "all-pusher-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "统一化推送服务API.",
   "main": "dist/index.js",
   "scripts": {

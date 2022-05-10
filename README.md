@@ -20,6 +20,8 @@
 - [企业微信群机器人](https://open.work.weixin.qq.com/api/doc/90000/90136/91770)
 - [息知](https://xz.qqoq.net/#/index)
 - [WxPusher](https://wxpusher.zjiecode.com/docs/)
+- [NowPush](https://www.nowpush.app/index.html)
+- [iGot](http://hellyw.com/)
 
 ## 安装
 
@@ -166,6 +168,22 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           token: '******',
           baseUrl: 'http://127.0.0.1:5700',
           user_id: '******'
+        }
+      }
+    },
+    {
+      name: 'NowPush',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'IGot',
+      config: {
+        key: {
+          token: '******'
         }
       }
     }
@@ -454,6 +472,7 @@ const results: Array<{
 - QQ(go-cqhttp): 'text', 'other'
 - Discord: 'text', 'other'
 - 飞书: 'text', 'other'
+- NowPush: 'text', 'other'
 - Server酱Turbo: 'text', 'markdown'
 - 息知: 'text', 'markdown'
 - PushDeer: 'text', 'markdown', 'other'
