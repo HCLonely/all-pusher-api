@@ -31,7 +31,7 @@ declare class Custom {
         key: string;
         value: any;
     };
-    constructor({ url, method, contentType, headers, key, success, proxy }: CustomConfig);
+    constructor({ url, method, contentType, headers, success, key, proxy }: CustomConfig);
     send(sendOptions: any): Promise<result>;
 }
 export { Custom };

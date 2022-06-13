@@ -51,28 +51,32 @@ class WorkWeixin {
 
     _defineProperty(this, "touser", void 0);
 
-    if (!corpid && !(key !== null && key !== void 0 && key.corpid)) {
+    const $key = {
+      corpid,
+      secret,
+      agentid,
+      touser,
+      ...key
+    };
+
+    if (!$key.corpid) {
       throw new Error('Missing Parameter: corpid');
     }
 
-    if (!secret && !(key !== null && key !== void 0 && key.secret)) {
+    if (!$key.secret) {
       throw new Error('Missing Parameter: secret');
     }
 
-    if (!agentid && !(key !== null && key !== void 0 && key.agentid)) {
+    if (!$key.agentid) {
       throw new Error('Missing Parameter: agentid');
-    } // @ts-ignore
+    }
 
+    this._CORPID = $key.corpid;
+    this._SECRET = $key.corpid;
+    this._AGENT_ID = $key.agentid;
 
-    this._CORPID = corpid || key.corpid; // @ts-ignore
-
-    this._SECRET = secret || key.corpid; // @ts-ignore
-
-    this._AGENT_ID = agentid || key.agentid;
-
-    if (touser || key !== null && key !== void 0 && key.touser) {
-      // @ts-ignore
-      this.touser = touser || key.touser;
+    if ($key.touser) {
+      this.touser = $key.touser;
     }
 
     if (proxy) {

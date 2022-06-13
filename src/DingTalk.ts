@@ -4,6 +4,7 @@ import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './
 
 interface DingTalkConfig {
   token?: string
+  secret?: string
   key?: {
     token: string
     secret?: string
@@ -31,14 +32,17 @@ class DingTalk {
   readonly baseURL = 'https://oapi.dingtalk.com/robot/send';
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
 
-  constructor({ token, key, proxy }: DingTalkConfig) {
-    if (!token && !key?.token) {
+  constructor({ token, secret, key, proxy }: DingTalkConfig) {
+    const $key = {
+      token, secret,
+      ...key
+    };
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
-    // @ts-ignore
-    this._KEY = token || key.token;
-    if (key?.secret) {
-      this._SECRET = key.secret;
+    this._KEY = $key.token;
+    if ($key.secret) {
+      this._SECRET = $key.secret;
     }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);

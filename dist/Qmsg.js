@@ -47,45 +47,49 @@ class Qmsg {
 
     _defineProperty(this, "use", void 0);
 
-    if (!token && !(key !== null && key !== void 0 && key.token)) {
+    const $key = {
+      token,
+      bot,
+      type,
+      qq,
+      group,
+      pqq,
+      pgroup,
+      ...key
+    };
+
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
-    } // @ts-ignore
-
-
-    this._KEY = token || key.token;
-
-    if (type || key !== null && key !== void 0 && key.type) {
-      // @ts-ignore
-      this.type = type || key.type;
     }
 
-    if (bot || key !== null && key !== void 0 && key.bot) {
-      // @ts-ignore
-      this.use = bot || key.bot;
+    this._KEY = $key.token;
+
+    if ($key.type) {
+      this.type = $key.type;
     }
 
-    if (qq || key !== null && key !== void 0 && key.qq) {
-      this.type = 'qq'; // @ts-ignore
-
-      this.to = qq || key.qq;
+    if ($key.bot) {
+      this.use = $key.bot;
     }
 
-    if (group || key !== null && key !== void 0 && key.group) {
-      this.type = 'group'; // @ts-ignore
-
-      this.to = group || key.group;
+    if ($key.qq) {
+      this.type = 'qq';
+      this.to = $key.qq;
     }
 
-    if (pqq || key !== null && key !== void 0 && key.pqq) {
-      this.type = 'pqq'; // @ts-ignore
-
-      this.to = pqq || key.pqq;
+    if ($key.group) {
+      this.type = 'group';
+      this.to = $key.group;
     }
 
-    if (pgroup || key !== null && key !== void 0 && key.pgroup) {
-      this.type = 'pgroup'; // @ts-ignore
+    if ($key.pqq) {
+      this.type = 'pqq';
+      this.to = $key.pqq;
+    }
 
-      this.to = pgroup || key.pgroup;
+    if ($key.pgroup) {
+      this.type = 'pgroup';
+      this.to = $key.pgroup;
     }
 
     if (proxy) {
@@ -143,7 +147,7 @@ class Qmsg {
 
     return axios__default["default"](axiosOptions).then(response => {
       if (response.data) {
-        if (response.data.status === 'ok') {
+        if (response.data.success) {
           return {
             status: 200,
             statusText: 'Success',

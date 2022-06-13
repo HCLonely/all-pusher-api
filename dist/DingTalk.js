@@ -31,6 +31,7 @@ var _sign = /*#__PURE__*/new WeakSet();
 class DingTalk {
   constructor({
     token,
+    secret,
     key,
     proxy
   }) {
@@ -44,15 +45,20 @@ class DingTalk {
 
     _defineProperty(this, "httpsAgent", void 0);
 
-    if (!token && !(key !== null && key !== void 0 && key.token)) {
+    const $key = {
+      token,
+      secret,
+      ...key
+    };
+
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
-    } // @ts-ignore
+    }
 
+    this._KEY = $key.token;
 
-    this._KEY = token || key.token;
-
-    if (key !== null && key !== void 0 && key.secret) {
-      this._SECRET = key.secret;
+    if ($key.secret) {
+      this._SECRET = $key.secret;
     }
 
     if (proxy) {

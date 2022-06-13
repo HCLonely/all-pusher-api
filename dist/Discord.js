@@ -28,12 +28,16 @@ class Discord {
 
     _defineProperty(this, "httpsAgent", void 0);
 
-    if (!webhook && !(key !== null && key !== void 0 && key.webhook)) {
+    const $key = {
+      webhook,
+      ...key
+    };
+
+    if (!$key.webhook) {
       throw new Error('Missing Parameter: webhook');
-    } // @ts-ignore
+    }
 
-
-    this._WEBHOOK = webhook || key.webhook;
+    this._WEBHOOK = $key.webhook;
 
     if (proxy) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);

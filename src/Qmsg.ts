@@ -10,7 +10,7 @@ interface QmsgConfig {
   bot?: number
   type?: 'qq' | 'group' | 'pqq' | 'pgroup'
   key?: {
-    token: string
+    token?: string
     qq?: number
     group?: number
     pqq?: number
@@ -42,38 +42,35 @@ class Qmsg {
   use?: number;
 
   constructor({ token, bot, type, qq, group, pqq, pgroup, key, proxy }: QmsgConfig) {
-    if (!token && !key?.token) {
+    const $key = {
+      token, bot, type, qq, group, pqq, pgroup,
+      ...key
+    };
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
-    // @ts-ignore
-    this._KEY = token || key.token;
-    if (type || key?.type) {
-    // @ts-ignore
-      this.type = type || key.type;
+    this._KEY = $key.token;
+    if ($key.type) {
+      this.type = $key.type;
     }
-    if (bot || key?.bot) {
-      // @ts-ignore
-      this.use = bot || key.bot;
+    if ($key.bot) {
+      this.use = $key.bot;
     }
-    if (qq || key?.qq) {
+    if ($key.qq) {
       this.type = 'qq';
-      // @ts-ignore
-      this.to = qq || key.qq;
+      this.to = $key.qq;
     }
-    if (group || key?.group) {
+    if ($key.group) {
       this.type = 'group';
-      // @ts-ignore
-      this.to = group || key.group;
+      this.to = $key.group;
     }
-    if (pqq || key?.pqq) {
+    if ($key.pqq) {
       this.type = 'pqq';
-      // @ts-ignore
-      this.to = pqq || key.pqq;
+      this.to = $key.pqq;
     }
-    if (pgroup || key?.pgroup) {
+    if ($key.pgroup) {
       this.type = 'pgroup';
-      // @ts-ignore
-      this.to = pgroup || key.pgroup;
+      this.to = $key.pgroup;
     }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);

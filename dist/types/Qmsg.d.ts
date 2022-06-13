@@ -9,7 +9,7 @@ interface QmsgConfig {
     bot?: number;
     type?: 'qq' | 'group' | 'pqq' | 'pgroup';
     key?: {
-        token: string;
+        token?: string;
         qq?: number;
         group?: number;
         pqq?: number;

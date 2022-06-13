@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from 'axios';
 import { proxy, result, sendOptions } from './tool';
 interface DingTalkConfig {
     token?: string;
+    secret?: string;
     key?: {
         token: string;
         secret?: string;
@@ -14,7 +15,7 @@ declare class DingTalk {
     protected _SECRET?: string;
     readonly baseURL = "https://oapi.dingtalk.com/robot/send";
     httpsAgent?: AxiosRequestConfig['httpsAgent'];
-    constructor({ token, key, proxy }: DingTalkConfig);
+    constructor({ token, secret, key, proxy }: DingTalkConfig);
     send(sendOptions: sendOptions): Promise<result>;
 }
 export { DingTalk };

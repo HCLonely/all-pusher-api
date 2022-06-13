@@ -34,28 +34,27 @@ class Custom {
     value: any
   };
 
-  constructor({ url, method, contentType, headers, key, success, proxy }: CustomConfig) {
-    if (!url && !key?.url) {
+  constructor({ url, method, contentType, headers, success, key, proxy }: CustomConfig) {
+    const $key = {
+      url, method, contentType, headers, success,
+      ...key
+    };
+    if (!$key.url) {
       throw new Error('Missing Parameter: url');
     }
-    if (!success && !key?.success) {
+    if (!$key.success) {
       throw new Error('Missing Parameter: success');
     }
-    // @ts-ignore
-    this._URL = url || key.url;
-    // @ts-ignore
-    this.success = success || key.success;
-    if (method || key?.method) {
-      // @ts-ignore
-      this.method = method || key.method;
+    this._URL = $key.url;
+    this.success = $key.success;
+    if ($key.method) {
+      this.method = $key.method;
     }
-    if (contentType || key?.contentType) {
-      // @ts-ignore
-      this.contentType = contentType || key.contentType;
+    if ($key.contentType) {
+      this.contentType = $key.contentType;
     }
-    if (headers || key?.headers) {
-      // @ts-ignore
-      this._HEADERS = headers || key.headers;
+    if ($key.headers) {
+      this._HEADERS = $key.headers;
     }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);

@@ -39,24 +39,24 @@ class WorkWeixin {
   touser?: string;
 
   constructor({ corpid, secret, agentid, touser, key, proxy }: WorkWeixinConfig) {
-    if (!corpid && !key?.corpid) {
+    const $key = {
+      corpid, secret, agentid, touser,
+      ...key
+    };
+    if (!$key.corpid) {
       throw new Error('Missing Parameter: corpid');
     }
-    if (!secret && !key?.secret) {
+    if (!$key.secret) {
       throw new Error('Missing Parameter: secret');
     }
-    if (!agentid && !key?.agentid) {
+    if (!$key.agentid) {
       throw new Error('Missing Parameter: agentid');
     }
-    // @ts-ignore
-    this._CORPID = corpid || key.corpid;
-    // @ts-ignore
-    this._SECRET = secret || key.corpid;
-    // @ts-ignore
-    this._AGENT_ID = agentid || key.agentid;
-    if (touser || key?.touser) {
-    // @ts-ignore
-      this.touser = touser || key.touser;
+    this._CORPID = $key.corpid;
+    this._SECRET = $key.corpid;
+    this._AGENT_ID = $key.agentid;
+    if ($key.touser) {
+      this.touser = $key.touser;
     }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);

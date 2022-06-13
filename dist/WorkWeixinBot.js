@@ -18,28 +18,26 @@ function _interopDefaultLegacy(e) {
 
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 
-class PushDeer {
+class WorkWeixinBot {
   constructor({
-    token,
+    webhook,
     key,
     proxy
   }) {
-    _defineProperty(this, "_KEY", void 0);
-
-    _defineProperty(this, "baseURL", 'https://api2.pushdeer.com/message/push');
+    _defineProperty(this, "_WEBHOOK", void 0);
 
     _defineProperty(this, "httpsAgent", void 0);
 
     const $key = {
-      token,
+      webhook,
       ...key
     };
 
-    if (!$key.token) {
-      throw new Error('Missing Parameter: token');
+    if (!$key.webhook) {
+      throw new Error('Missing Parameter: webhook');
     }
 
-    this._KEY = $key.token;
+    this._WEBHOOK = $key.webhook;
 
     if (proxy) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
@@ -55,40 +53,47 @@ class PushDeer {
       };
     }
 
-    let pushDeerOptions;
+    let workWeixinOptions;
 
     if (sendOptions.customOptions) {
-      pushDeerOptions = sendOptions.customOptions;
+      workWeixinOptions = sendOptions.customOptions;
     } else {
-      pushDeerOptions = {};
-
-      if (sendOptions.title) {
-        pushDeerOptions.text = sendOptions.title;
-        pushDeerOptions.desp = sendOptions.message;
+      if (!sendOptions.type || sendOptions.type === 'text') {
+        workWeixinOptions = {
+          msgtype: 'text',
+          text: {
+            content: sendOptions.message
+          }
+        };
+      } else if (sendOptions.type === 'markdown') {
+        workWeixinOptions = {
+          msgtype: 'markdown',
+          markdown: {
+            content: sendOptions.message
+          }
+        };
       } else {
-        pushDeerOptions.text = sendOptions.message;
-      }
-
-      if (sendOptions.type) {
-        pushDeerOptions.type = sendOptions.type;
+        return {
+          status: 103,
+          statusText: 'Options Format Error',
+          extraMessage: sendOptions
+        };
       }
     }
 
-    pushDeerOptions.pushkey = this._KEY;
-
     if (sendOptions.extraOptions) {
-      pushDeerOptions = { ...pushDeerOptions,
+      workWeixinOptions = { ...workWeixinOptions,
         ...sendOptions.extraOptions
       };
     }
 
     const axiosOptions = {
-      url: this.baseURL,
+      url: this._WEBHOOK,
       method: 'POST',
       headers: {
-        'Content-type': 'application/x-www-form-urlencoded'
+        'Content-type': 'application/json'
       },
-      data: tool.queryStringify(pushDeerOptions)
+      data: workWeixinOptions
     };
 
     if (this.httpsAgent) {
@@ -97,9 +102,7 @@ class PushDeer {
 
     return axios__default["default"](axiosOptions).then(response => {
       if (response.data) {
-        var _response$data$succes, _response$data$succes2;
-
-        if (((_response$data$succes = response.data.success) === null || _response$data$succes === void 0 ? void 0 : (_response$data$succes2 = _response$data$succes[0]) === null || _response$data$succes2 === void 0 ? void 0 : _response$data$succes2.success) === 'ok' || response.data.code === 0) {
+        if (!response.data.errcode) {
           return {
             status: 200,
             statusText: 'Success',
@@ -128,4 +131,4 @@ class PushDeer {
 
 }
 
-exports.PushDeer = PushDeer;
+exports.WorkWeixinBot = WorkWeixinBot;

@@ -1,43 +1,33 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
 
-interface TelegramBotConfig {
+interface WorkWeixinBotConfig {
   key?: {
-    token: string
-    chat_id: string
+    webhook: string
   }
-  token?: string
-  chat_id?: string
+  webhook?: string
   proxy?: proxy
 }
-interface TelegramBotOptions {
-  chat_id?: string
-  text?: string
-  parse_mode?: string
+interface WorkWeixinBotOptions {
+  msgtype: string
+  text?: any
+  markdown?: any
   [name: string]: any
 }
 
-class TelegramBot {
-  protected _KEY: string;
-  protected _CHAT_ID: string;
-  readonly baseURL = 'https://api.telegram.org/bot';
+class WorkWeixinBot {
+  protected _WEBHOOK: string;
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
 
-  constructor({ token, chat_id, key, proxy }: TelegramBotConfig) {
+  constructor({ webhook, key, proxy }: WorkWeixinBotConfig) {
     const $key = {
-      token, chat_id,
+      webhook,
       ...key
     };
-    if (!$key.token) {
-      throw new Error('Missing Parameter: token');
+    if (!$key.webhook) {
+      throw new Error('Missing Parameter: webhook');
     }
-    if (!$key.chat_id) {
-      throw new Error('Missing Parameter: chat_id');
-    }
-
-    this._KEY = $key.token;
-    this._CHAT_ID = $key.chat_id;
-
+    this._WEBHOOK = $key.webhook;
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
@@ -51,41 +41,52 @@ class TelegramBot {
         extraMessage: null
       };
     }
-    let telegramBotOptions: TelegramBotOptions;
+    let workWeixinOptions: WorkWeixinBotOptions;
     if (sendOptions.customOptions) {
-      telegramBotOptions = sendOptions.customOptions;
+      workWeixinOptions = sendOptions.customOptions;
     } else {
-      telegramBotOptions = {
-        text: sendOptions.message
-      };
-      if (sendOptions.type === 'html') {
-        telegramBotOptions.parse_mode = 'HTML';
+      if (!sendOptions.type || sendOptions.type === 'text') {
+        workWeixinOptions = {
+          msgtype: 'text',
+          text: {
+            content: sendOptions.message
+          }
+        };
+      } else if (sendOptions.type === 'markdown') {
+        workWeixinOptions = {
+          msgtype: 'markdown',
+          markdown: {
+            content: sendOptions.message
+          }
+        };
+      } else {
+        return {
+          status: 103,
+          statusText: 'Options Format Error',
+          extraMessage: sendOptions
+        };
       }
-      if (sendOptions.type === 'markdown') {
-        telegramBotOptions.parse_mode = 'Markdown';
-      }
-    }
-    if (!telegramBotOptions.chat_id) {
-      telegramBotOptions.chat_id = this._CHAT_ID;
     }
     if (sendOptions.extraOptions) {
-      telegramBotOptions = {
-        ...telegramBotOptions,
+      workWeixinOptions = {
+        ...workWeixinOptions,
         ...sendOptions.extraOptions
       };
     }
-
     const axiosOptions: AxiosRequestConfig = {
-      url: `${this.baseURL}${this._KEY}/sendMessage`,
+      url: this._WEBHOOK,
       method: 'POST',
-      data: queryStringify(telegramBotOptions)
+      headers: {
+        'Content-type': 'application/json'
+      },
+      data: workWeixinOptions
     };
     if (this.httpsAgent) {
       axiosOptions.httpsAgent = this.httpsAgent;
     }
     return axios(axiosOptions).then((response) => {
       if (response.data) {
-        if (response.data.ok) {
+        if (!response.data.errcode) {
           return {
             status: 200,
             statusText: 'Success',
@@ -111,4 +112,4 @@ class TelegramBot {
   }
 }
 
-export { TelegramBot };
+export { WorkWeixinBot };

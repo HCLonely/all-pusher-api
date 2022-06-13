@@ -7,17 +7,19 @@
 ## 已支持平台
 
 - [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp)
+- [QQ(Qmsg)](https://qmsg.zendee.cn/api)
+- [QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html)
 - [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access)
 - [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message)
 - [邮件](https://nodemailer.com/)
 - [飞书群机器人](https://www.feishu.cn/hc/zh-CN/articles/360024984973)
+- [企业微信](https://open.work.weixin.qq.com/api/doc/90000/90136/91770)
+- [企业微信群机器人](https://developer.work.weixin.qq.com/document/path/91770)
+- [Telegram Bot](https://core.telegram.org/bots/api#sendmessage)
 - [PushDeer](http://pushdeer.com)
 - [PushPlus](https://pushplus.hxtrip.com/index)
-- [QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html)
 - [Server 酱](https://sct.ftqq.com)
 - [Showdoc Push](https://push.showdoc.com.cn/#/)
-- [Telegram Bot](https://core.telegram.org/bots/api#sendmessage)
-- [企业微信群机器人](https://open.work.weixin.qq.com/api/doc/90000/90136/91770)
 - [息知](https://xz.qqoq.net/#/index)
 - [WxPusher](https://wxpusher.zjiecode.com/docs/)
 - [NowPush](https://www.nowpush.app/index.html)
@@ -186,6 +188,22 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           token: '******'
         }
       }
+    },
+    {
+      name: 'Qmsg',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'WorkWeixinBot',
+      config: {
+        key: {
+          webhook: '******'
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => (e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : e));
@@ -330,7 +348,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `token` | `string` | `null` | 大部分平台的授权token, 如果有授权信息有多个, 请使用`key` |
-| `webhook` | `string` | `null` | Discord 平台的 webhook 地址, 该平台请使用`webhook`而不是`token` |
+| `webhook` | `string` | `null` | `Discord` 和 `企业微信机器人` 的 webhook 地址, 该平台请使用`webhook`而不是`token` |
 | `chat_id` | `string` | `null` | Telegram 平台的 chat_id |
 | `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
 | `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`, `channel_id`二选一 |
@@ -339,29 +357,15 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | `guild_id` | `string` | `null` | 使用 go-cqhttp 推送时的目标子频道ID, 此参数必须与`channel_id`同时存在 |
 | `corpid` | `string` | `null` | 企业微信群机器人的[corpid](https://developer.work.weixin.qq.com/document/path/90665#corpid) |
 | `agentid` | `string` | `null` | 企业微信群机器人的[agentid](https://developer.work.weixin.qq.com/document/path/90665#agentid) |
-| `secret` | `string` | `null` | 企业微信群机器人的[secret](https://developer.work.weixin.qq.com/document/path/90665#secret) |
+| `secret` | `string` | `null` | 钉钉、飞书加签的密钥[可选]/企业微信群机器人的[secret](https://developer.work.weixin.qq.com/document/path/90665#secret) |
 | `touser` | `string` | `null` | 企业微信群机器人[指定接收消息的成员](https://developer.work.weixin.qq.com/document/path/90236#文本消息), 也可在[sendOptions](#sendOptions)中配置 |
 | `uids` | `Array<string>` | `null` | WxPusher 发送目标的 UID, 也可在[sendOptions](#sendOptions)中配置 |
 | `topicIds` | `Array<number>` | `null` | WxPusher 发送目标的 topicId, 也可在[sendOptions](#sendOptions)中配置 |
+| `appID` | `string` | `null` | QQ频道机器人的 ID, 使用QQ频道推送时此选项为**必选** |
+| `token` | `string` | `null` | QQ频道机器人的 token, 使用QQ频道推送时此选项为**必选** |
+| `sandbox` | `boolean` | `false` | 使用QQ频道推送时是否启用沙箱, 可选 |
 | `channelID` | `string` | `null` | QQ频道的子频道 ID, 使用QQ频道推送时此选项为**必选** |
-| `key` | `object` | `null` | 所有平台的授权token都可以放到`key`中 |
-| - `key.token` | `string` | `null` | 同`token`, `token`和`key.token`至少要有一个 |
-| - `key.webhook` | `string` | `null` | 同`webhook` |
-| - `key.secret` | `string` | `null` | 钉钉、飞书加签的密钥, 可选。企业微信群机器人的`secret`, 同`secret` |
-| - `key.chat_id` | `string` | `null` | 同`chat_id` |
-| - `key.baseUrl` | `string` | `null` | 同`baseUrl` |
-| - `key.user_id` | `number` | `null` | 同`user_id` |
-| - `key.group_id` | `number` | `null` | 同`group_id` |
-| - `key.channel_id` | `number` | `null` | 同`channel_id` |
-| - `key.guild_id` | `number` | `null` | 同`guild_id` |
-| - `key.corpid` | `string` | `null` | 同`corpid` |
-| - `key.agentid` | `string` | `null` | 同`agentid` |
-| - `key.touser` | `string` | `null` | 同`touser` |
-| - `key.uids` | `Array<string>` | `null` | 同`uids` |
-| - `key.topicIds` | `Array<number>` | `null` | 同`topicIds` |
-| - `key.appID` | `string` | `null` | QQ频道机器人的 ID, 使用QQ频道推送时此选项为**必选** |
-| - `key.token` | `string` | `null` | QQ频道机器人的 token, 使用QQ频道推送时此选项为**必选** |
-| - `key.sandbox` | `boolean` | `false` | 使用QQ频道推送时是否启用沙箱, 可选 |
+| `key` | `object` | `null` | 以上参数都可以放到`key`中, [示例](#多平台推送) |
 | - `key.host` | `string` | `null` | 邮件发送服务器地址, 使用邮件推送时此选项为**必选** |
 | - `key.port` | `number` | `null` | 邮件发送服务器端口, 使用邮件推送时此选项为**必选** |
 | - `key.secure` | `boolean` | `false` | 邮件发送服务器是否启用TLS/SSL, 可选 |
@@ -391,13 +395,6 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | - `success.key` | `string` | `null` | [请看示例](#自定义接口) |
 | - `success.value` | `any` | `null` | [请看示例](#自定义接口) |
 | `key` | `object` | `null` | 以上参数都可以放到key中 |
-| - `key.url` | `string` | `null` | 请求链接, 必需 |
-| - `key.method` | `string` | `'POST'` | 请求方式, 可选 |
-| - `key.contentType` | `string` | `'application/json'` | 发送的数据类型, 等同于`hreders['Content-type']` |
-| - `key.headers` | `AxiosRequestHeaders` | `null` | 请求头, 可选 |
-| - `key.success` | `object` | `null` | 推送成功的判断方式, 必需 |
-| - `key.success.key` | `string` | `null` | [请看示例](#自定义接口) |
-| - `key.success.value` | `any` | `null` | [请看示例](#自定义接口) |
 | `proxy` | `object` | `null` | 代理配置, 同上 |
 
 #### pushersConfig
@@ -405,7 +402,10 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 > const pushers = new PushApi(*pushersConfig*);
 
 ```typescript
-const pushersConfig: Array<pusherConfig>
+const pushersConfig: Array<{
+  name: string,
+  config: pusherConfig
+}>
 ```
 
 #### sendOptions
@@ -470,6 +470,7 @@ const results: Array<{
 
 - Showdoc: 'text'
 - QQ(go-cqhttp): 'text', 'other'
+- Qmsg: 'text', 'other'
 - Discord: 'text', 'other'
 - 飞书: 'text', 'other'
 - NowPush: 'text', 'other'
@@ -478,6 +479,7 @@ const results: Array<{
 - PushDeer: 'text', 'markdown', 'other'
 - QQ频道: 'text', 'markdown', 'other'
 - 企业微信: 'text', 'markdown', 'other'
+- 企业微信群机器人: 'text', 'markdown', 'other'
 - 钉钉: 'text', 'markdown', 'other'
 - TelegramBot: 'text', 'markdown', 'html'
 - 邮件: 'text', 'markdown*', 'html'

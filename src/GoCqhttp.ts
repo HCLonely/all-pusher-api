@@ -36,30 +36,28 @@ class GoCqhttp {
   channel_id?: string;
 
   constructor({ baseUrl, token, user_id, group_id, guild_id, channel_id, key, proxy }: GoCqhttpConfig) {
-    if (!baseUrl && !key?.baseUrl) {
+    const $key = {
+      baseUrl, token, user_id, group_id, guild_id, channel_id,
+      ...key
+    };
+    if (!$key.baseUrl) {
       throw new Error('Missing Parameter: baseUrl');
     }
-    // @ts-ignore
-    this._BASE_URL = baseUrl || key.baseUrl;
-    if (token || key?.token) {
-      // @ts-ignore
-      this._KEY = token || key.token;
+    this._BASE_URL = $key.baseUrl;
+    if ($key.token) {
+      this._KEY = $key.token;
     }
-    if (user_id || key?.user_id) {
-      // @ts-ignore
-      this.user_id = user_id || key.user_id;
+    if ($key.user_id) {
+      this.user_id = $key.user_id;
     }
-    if (group_id || key?.group_id) {
-      // @ts-ignore
-      this.group_id = group_id || key.group_id;
+    if ($key.group_id) {
+      this.group_id = $key.group_id;
     }
-    if (guild_id || key?.guild_id) {
-      // @ts-ignore
-      this.group_id = guild_id || key.guild_id;
+    if ($key.group_id) {
+      this.group_id = $key.group_id;
     }
-    if (channel_id || key?.channel_id) {
-      // @ts-ignore
-      this.channel_id = channel_id || key.channel_id;
+    if ($key.channel_id) {
+      this.channel_id = $key.channel_id;
     }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy, new URL(this._BASE_URL).protocol.replace(':', ''));

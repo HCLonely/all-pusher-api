@@ -4,6 +4,7 @@ import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
 
 interface FeiShuConfig {
   token?: string
+  secret?: string
   key?: {
     token: string
     secret?: string
@@ -29,14 +30,17 @@ class FeiShu {
   readonly baseURL = 'https://open.feishu.cn/open-apis/bot/v2/hook/';
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
 
-  constructor({ token, key, proxy }: FeiShuConfig) {
-    if (!token && !key?.token) {
+  constructor({ token, secret, key, proxy }: FeiShuConfig) {
+    const $key = {
+      token, secret,
+      ...key
+    };
+    if (!$key.token) {
       throw new Error('Missing Parameter: key.token');
     }
-    // @ts-ignore
-    this._KEY = token || key.token;
-    if (key?.secret) {
-      this._SECRET = key.secret;
+    this._KEY = $key.token;
+    if ($key.secret) {
+      this._SECRET = $key.secret;
     }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);

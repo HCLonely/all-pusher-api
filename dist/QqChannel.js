@@ -1708,8 +1708,8 @@ var _sign = /*#__PURE__*/new WeakSet();
 
 class QqChannel {
   constructor({
-    key,
-    channelID
+    channelID,
+    key
   }) {
     _classPrivateMethodInitSpec(this, _sign);
 
@@ -1717,16 +1717,21 @@ class QqChannel {
 
     _defineProperty(this, "channelID", void 0);
 
+    const $key = {
+      channelID,
+      ...key
+    };
+
     if (!key) {
       throw new Error('Missing Parameter: key');
     }
 
-    if (!channelID) {
+    if (!$key.channelID) {
       throw new Error('Missing Parameter: channelID');
     }
 
     this._CONFIG = key;
-    this.channelID = channelID;
+    this.channelID = $key.channelID;
   }
 
   async send(sendOptions) {

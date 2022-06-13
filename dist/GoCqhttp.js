@@ -43,36 +43,40 @@ class GoCqhttp {
 
     _defineProperty(this, "channel_id", void 0);
 
-    if (!baseUrl && !(key !== null && key !== void 0 && key.baseUrl)) {
+    const $key = {
+      baseUrl,
+      token,
+      user_id,
+      group_id,
+      guild_id,
+      channel_id,
+      ...key
+    };
+
+    if (!$key.baseUrl) {
       throw new Error('Missing Parameter: baseUrl');
-    } // @ts-ignore
-
-
-    this._BASE_URL = baseUrl || key.baseUrl;
-
-    if (token || key !== null && key !== void 0 && key.token) {
-      // @ts-ignore
-      this._KEY = token || key.token;
     }
 
-    if (user_id || key !== null && key !== void 0 && key.user_id) {
-      // @ts-ignore
-      this.user_id = user_id || key.user_id;
+    this._BASE_URL = $key.baseUrl;
+
+    if ($key.token) {
+      this._KEY = $key.token;
     }
 
-    if (group_id || key !== null && key !== void 0 && key.group_id) {
-      // @ts-ignore
-      this.group_id = group_id || key.group_id;
+    if ($key.user_id) {
+      this.user_id = $key.user_id;
     }
 
-    if (guild_id || key !== null && key !== void 0 && key.guild_id) {
-      // @ts-ignore
-      this.group_id = guild_id || key.guild_id;
+    if ($key.group_id) {
+      this.group_id = $key.group_id;
     }
 
-    if (channel_id || key !== null && key !== void 0 && key.channel_id) {
-      // @ts-ignore
-      this.channel_id = channel_id || key.channel_id;
+    if ($key.group_id) {
+      this.group_id = $key.group_id;
+    }
+
+    if ($key.channel_id) {
+      this.channel_id = $key.channel_id;
     }
 
     if (proxy) {

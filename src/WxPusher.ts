@@ -32,21 +32,22 @@ class WxPusher {
   topicIds?: Array<number>;
 
   constructor({ token, uids, topicIds, key, proxy }: WxPusherConfig) {
-    if (!token && !key?.token) {
+    const $key = {
+      token, uids, topicIds,
+      ...key
+    };
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
-    // @ts-ignore
-    this._KEY = token || key.token;
+    this._KEY = $key.token;
+    if ($key.uids) {
+      this.uids = $key.uids;
+    }
+    if ($key.topicIds) {
+      this.topicIds = $key.topicIds;
+    }
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);
-    }
-    if (uids || key?.uids) {
-    // @ts-ignore
-      this.uids = uids || key.uids;
-    }
-    if (topicIds || key?.topicIds) {
-    // @ts-ignore
-      this.topicIds = topicIds || key.topicIds;
     }
   }
 

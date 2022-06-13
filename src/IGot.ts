@@ -20,11 +20,14 @@ class IGot {
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
 
   constructor({ token, key, proxy }: IGotConfig) {
-    if (!token && !key?.token) {
+    const $key = {
+      token,
+      ...key
+    };
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
-    // @ts-ignore
-    this._KEY = token || key.token;
+    this._KEY = $key.token;
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }

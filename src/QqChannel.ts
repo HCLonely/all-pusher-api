@@ -10,15 +10,19 @@ class QqChannel {
   protected _CONFIG: Config;
   channelID?: string;
 
-  constructor({ key, channelID }: QqChannelConfig) {
+  constructor({ channelID, key }: QqChannelConfig) {
+    const $key = {
+      channelID,
+      ...key
+    };
     if (!key) {
       throw new Error('Missing Parameter: key');
     }
-    if (!channelID) {
+    if (!$key.channelID) {
       throw new Error('Missing Parameter: channelID');
     }
     this._CONFIG = key;
-    this.channelID = channelID;
+    this.channelID = $key.channelID;
   }
 
   async send(sendOptions: sendOptions): Promise<result> {

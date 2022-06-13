@@ -40,25 +40,29 @@ class WxPusher {
 
     _defineProperty(this, "topicIds", void 0);
 
-    if (!token && !(key !== null && key !== void 0 && key.token)) {
+    const $key = {
+      token,
+      uids,
+      topicIds,
+      ...key
+    };
+
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
-    } // @ts-ignore
+    }
 
+    this._KEY = $key.token;
 
-    this._KEY = token || key.token;
+    if ($key.uids) {
+      this.uids = $key.uids;
+    }
+
+    if ($key.topicIds) {
+      this.topicIds = $key.topicIds;
+    }
 
     if (proxy) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
-    }
-
-    if (uids || key !== null && key !== void 0 && key.uids) {
-      // @ts-ignore
-      this.uids = uids || key.uids;
-    }
-
-    if (topicIds || key !== null && key !== void 0 && key.topicIds) {
-      // @ts-ignore
-      this.topicIds = topicIds || key.topicIds;
     }
   }
 

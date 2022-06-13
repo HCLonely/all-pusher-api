@@ -24,8 +24,8 @@ class Custom {
     method,
     contentType,
     headers,
-    key,
     success,
+    key,
     proxy
   }) {
     _defineProperty(this, "_URL", void 0);
@@ -40,32 +40,36 @@ class Custom {
 
     _defineProperty(this, "success", void 0);
 
-    if (!url && !(key !== null && key !== void 0 && key.url)) {
+    const $key = {
+      url,
+      method,
+      contentType,
+      headers,
+      success,
+      ...key
+    };
+
+    if (!$key.url) {
       throw new Error('Missing Parameter: url');
     }
 
-    if (!success && !(key !== null && key !== void 0 && key.success)) {
+    if (!$key.success) {
       throw new Error('Missing Parameter: success');
-    } // @ts-ignore
-
-
-    this._URL = url || key.url; // @ts-ignore
-
-    this.success = success || key.success;
-
-    if (method || key !== null && key !== void 0 && key.method) {
-      // @ts-ignore
-      this.method = method || key.method;
     }
 
-    if (contentType || key !== null && key !== void 0 && key.contentType) {
-      // @ts-ignore
-      this.contentType = contentType || key.contentType;
+    this._URL = $key.url;
+    this.success = $key.success;
+
+    if ($key.method) {
+      this.method = $key.method;
     }
 
-    if (headers || key !== null && key !== void 0 && key.headers) {
-      // @ts-ignore
-      this._HEADERS = headers || key.headers;
+    if ($key.contentType) {
+      this.contentType = $key.contentType;
+    }
+
+    if ($key.headers) {
+      this._HEADERS = $key.headers;
     }
 
     if (proxy) {

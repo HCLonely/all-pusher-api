@@ -19,11 +19,14 @@ class Discord {
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
 
   constructor({ webhook, key, proxy }: DiscordConfig) {
-    if (!webhook && !key?.webhook) {
+    const $key = {
+      webhook,
+      ...key
+    };
+    if (!$key.webhook) {
       throw new Error('Missing Parameter: webhook');
     }
-    // @ts-ignore
-    this._WEBHOOK = webhook || key.webhook;
+    this._WEBHOOK = $key.webhook;
     if (proxy) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }

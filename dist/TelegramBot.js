@@ -33,18 +33,22 @@ class TelegramBot {
 
     _defineProperty(this, "httpsAgent", void 0);
 
-    if (!token && !(key !== null && key !== void 0 && key.token)) {
+    const $key = {
+      token,
+      chat_id,
+      ...key
+    };
+
+    if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
 
-    if (!chat_id && !(key !== null && key !== void 0 && key.chat_id)) {
+    if (!$key.chat_id) {
       throw new Error('Missing Parameter: chat_id');
-    } // @ts-ignore
+    }
 
-
-    this._KEY = token || key.token; // @ts-ignore
-
-    this._CHAT_ID = chat_id || key.chat_id;
+    this._KEY = $key.token;
+    this._CHAT_ID = $key.chat_id;
 
     if (proxy) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
