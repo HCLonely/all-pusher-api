@@ -21,6 +21,8 @@ import { Push } from './Push';
 import { Slack } from './Slack';
 import { Pushback } from './Pushback';
 import { Zulip } from './Zulip';
+import { RocketChat } from './RocketChat';
+import { Gitter } from './Gitter';
 import { result, sendOptions } from './tool';
 
 class PushApi {
@@ -28,7 +30,7 @@ class PushApi {
     name: string,
     pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin |
     QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark |
-    GoogleChat | Push | Slack | Pushback | Zulip
+    GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter
   }> = [];
 
   constructor(PushApiConfig: Array<{ name: string, config: any }>) {
@@ -103,6 +105,12 @@ class PushApi {
         break;
       case 'zulip':
         this.pushers.push({ name: config.name, pusher: new Zulip(config.config) });
+        break;
+      case 'rocketchat':
+        this.pushers.push({ name: config.name, pusher: new RocketChat(config.config) });
+        break;
+      case 'gitter':
+        this.pushers.push({ name: config.name, pusher: new Gitter(config.config) });
         break;
       default:
         break;

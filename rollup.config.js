@@ -29,7 +29,10 @@ const subModule = [
   './GoogleChat',
   './Push',
   './Slack',
-  './Pushback'
+  './Pushback',
+  './Zulip',
+  './RocketChat',
+  './Gitter'
 ];
 const dependModule = ['crypto', 'axios', 'nodemailer', 'showdown', 'socks-proxy-agent', 'tunnel', 'ws', 'resty-client', './tool'];
 

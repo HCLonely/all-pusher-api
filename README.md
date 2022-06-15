@@ -1,6 +1,6 @@
 # all-pusher-api
 
-统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher, NowPush, iGot, Chanify, Bark, Push, Slack, Pushback, Zulip等平台.
+统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher, NowPush, iGot, Chanify, Bark, Push, Slack, Pushback, Zulip, RocketChat, Gitter等平台.
 
 **！！！！！仅推送！！！！！不交互！！！！！！**
 
@@ -31,6 +31,8 @@
 - [Slack](https://api.slack.com/messaging/webhooks)
 - [Pushback](https://pushback.io/docs/getting-started)
 - [Zulip](https://zulip.com/api/send-message)
+- [RocketChat](https://docs.rocket.chat/guides/administration/admin-panel/integrations#incoming-webhook-script)
+- [Gitter](https://developer.gitter.im/docs/messages-resource)
 
 ## 安装
 
@@ -278,6 +280,23 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           to: ['******']
         }
       }
+    },
+    {
+      name: 'RocketChat',
+      config: {
+        key: {
+          webhook: '******'
+        }
+      }
+    },
+    {
+      name: 'Gitter',
+      config: {
+        key: {
+          token: '******',
+          roomId: '******'
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => (e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : e));
@@ -425,12 +444,13 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | --- | --- | --- | --- |
 | `token` | `string` | `null` | 大部分平台的授权token, 如果有授权信息有多个, 请使用`key` |
 | `baseUrl` | `string` | `null` | 对于部分支持搭建服务端的平台, 如果使用自建服务端, 需配置此选项 |
-| `webhook` | `string` | `null` | `Discord`, `企业微信机器人`和`GoogleChat` 的 webhook 地址, 该平台请使用`webhook`而不是`token` |
+| `webhook` | `string` | `null` | `Discord`, `企业微信机器人`, `RocketChat`和`GoogleChat` 的 webhook 地址, 该平台请使用`webhook`而不是`token` |
 | `userId` | `string` | `null` | `Pushback` 平台的 User_id |
 | `chat_id` | `string` | `null` | `Telegram` 平台的 chat_id |
 | `email` | `string` | `null` | `Zulip` 平台的 bot email |
 | `domain` | `string` | `null` | `Zulip` 平台的 domain |
 | `to` | `string | Array<number | string>` | `null` | `Zulip` 平台的[发送对象](https://zulip.com/api/send-message#parameter-to) |
+| `roomId` | `string` | `null` | `Gitter` 平台发送对象d roomid |
 | `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
 | `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`, `channel_id`二选一 |
 | `group_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标群号, 此参数与`user_id`, `channel_id`二选一 |
