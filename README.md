@@ -1,6 +1,6 @@
 # all-pusher-api
 
-统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher等平台.
+统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher, NowPush, iGot, Chanify, Bark等平台.
 
 **！！！！！仅推送！！！！！不交互！！！！！！**
 
@@ -26,6 +26,7 @@
 - [iGot](http://hellyw.com/)
 - [Chanify](https://github.com/chanify/chanify-ios)
 - [Bark](https://github.com/Finb/Bark)
+- [GoogleChat](https://developers.google.com/chat/how-tos/webhooks)
 
 ## 安装
 
