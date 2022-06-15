@@ -6,7 +6,7 @@ interface sendOptions {
     message: string;
     title?: string;
     type?: string;
-    to?: string;
+    to?: string | Array<string>;
     customOptions?: any;
     extraOptions?: any;
 }

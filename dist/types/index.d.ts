@@ -17,11 +17,15 @@ import { WorkWeixinBot } from './WorkWeixinBot';
 import { Chanify } from './Chanify';
 import { Bark } from './Bark';
 import { GoogleChat } from './GoogleChat';
+import { Push } from './Push';
+import { Slack } from './Slack';
+import { Pushback } from './Pushback';
+import { Zulip } from './Zulip';
 import { result, sendOptions } from './tool';
 declare class PushApi {
     pushers: Array<{
         name: string;
-        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark | GoogleChat;
+        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark | GoogleChat | Push | Slack | Pushback | Zulip;
     }>;
     constructor(PushApiConfig: Array<{
         name: string;

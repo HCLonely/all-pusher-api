@@ -1,10 +1,10 @@
 'use strict';
 
+var _defineProperty = require("@babel/runtime/helpers/defineProperty");
+
 var _classPrivateFieldGet = require("@babel/runtime/helpers/classPrivateFieldGet");
 
 var _classPrivateFieldSet = require("@babel/runtime/helpers/classPrivateFieldSet");
-
-var _defineProperty = require("@babel/runtime/helpers/defineProperty");
 
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
 
@@ -42,6 +42,22 @@ var Discord = require('./Discord');
 
 var GoCqhttp = require('./GoCqhttp');
 
+var Qmsg = require('./Qmsg');
+
+var WorkWeixinBot = require('./WorkWeixinBot');
+
+var Chanify = require('./Chanify');
+
+var Bark = require('./Bark');
+
+var GoogleChat = require('./GoogleChat');
+
+var Push = require('./Push');
+
+var Slack = require('./Slack');
+
+var Pushback = require('./Pushback');
+
 var axios = require('axios');
 
 var tool = require('./tool');
@@ -54,43 +70,35 @@ function _interopDefaultLegacy(e) {
 
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 
-class Qmsg {
+var _baseUrl = /*#__PURE__*/new WeakMap();
+
+class Zulip {
   constructor({
     token,
-    bot,
-    type,
-    qq,
-    group,
-    pqq,
-    pgroup,
+    domain,
+    to,
+    email,
     key,
     proxy
   }) {
     _defineProperty(this, "_KEY", void 0);
 
-    _defineProperty(this, "baseURL", {
-      qq: 'https://qmsg.zendee.cn:443/send/',
-      group: 'https://qmsg.zendee.cn:443/group/',
-      pqq: 'https://qmsg.zendee.cn:443/psend/',
-      pgroup: 'https://qmsg.zendee.cn:443/pgroup/'
+    _defineProperty(this, "_EMAIL", void 0);
+
+    _classPrivateFieldInitSpec(this, _baseUrl, {
+      writable: true,
+      value: void 0
     });
-
-    _defineProperty(this, "httpsAgent", void 0);
-
-    _defineProperty(this, "type", 'qq');
 
     _defineProperty(this, "to", void 0);
 
-    _defineProperty(this, "use", void 0);
+    _defineProperty(this, "httpsAgent", void 0);
 
     const $key = {
       token,
-      bot,
-      type,
-      qq,
-      group,
-      pqq,
-      pgroup,
+      domain,
+      email,
+      to,
       ...key
     };
 
@@ -98,34 +106,21 @@ class Qmsg {
       throw new Error('Missing Parameter: token');
     }
 
+    if (!$key.domain) {
+      throw new Error('Missing Parameter: domain');
+    }
+
+    if (!$key.email) {
+      throw new Error('Missing Parameter: email');
+    }
+
     this._KEY = $key.token;
+    this._EMAIL = $key.email;
 
-    if ($key.type) {
-      this.type = $key.type;
-    }
+    _classPrivateFieldSet(this, _baseUrl, `https://${$key.domain}.zulipchat.com/api/v1/messages`);
 
-    if ($key.bot) {
-      this.use = $key.bot;
-    }
-
-    if ($key.qq) {
-      this.type = 'qq';
-      this.to = $key.qq;
-    }
-
-    if ($key.group) {
-      this.type = 'group';
-      this.to = $key.group;
-    }
-
-    if ($key.pqq) {
-      this.type = 'pqq';
-      this.to = $key.pqq;
-    }
-
-    if ($key.pgroup) {
-      this.type = 'pgroup';
-      this.to = $key.pgroup;
+    if ($key.to) {
+      this.to = $key.to;
     }
 
     if (proxy) {
@@ -142,39 +137,49 @@ class Qmsg {
       };
     }
 
-    let qmsgOptions = {
-      msg: ''
-    };
-
-    if (this.to) {
-      qmsgOptions.qq = this.to;
-    }
-
-    if (this.use) {
-      qmsgOptions.bot = this.use;
-    }
+    let zulipOptions;
 
     if (sendOptions.customOptions) {
-      qmsgOptions = sendOptions.customOptions;
+      zulipOptions = sendOptions.customOptions;
     } else {
-      qmsgOptions = {
-        msg: sendOptions.message
+      zulipOptions = {
+        content: sendOptions.message
       };
     }
 
     if (sendOptions.extraOptions) {
-      qmsgOptions = { ...qmsgOptions,
+      zulipOptions = { ...zulipOptions,
         ...sendOptions.extraOptions
       };
     }
 
+    if (!zulipOptions.to) {
+      if (!this.to) {
+        return {
+          status: 0,
+          statusText: 'Missing Parameter: to',
+          extraMessage: null
+        };
+      }
+
+      zulipOptions.to = this.to;
+    }
+
+    if (!zulipOptions.type) {
+      zulipOptions.type = 'private';
+    }
+
     const axiosOptions = {
-      url: `${this.baseURL[this.type]}${this._KEY}`,
+      url: _classPrivateFieldGet(this, _baseUrl),
       method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded'
       },
-      data: tool.queryStringify(qmsgOptions)
+      auth: {
+        username: this._EMAIL,
+        password: this._KEY
+      },
+      data: tool.queryStringify(zulipOptions)
     };
 
     if (this.httpsAgent) {
@@ -183,429 +188,7 @@ class Qmsg {
 
     return axios__default["default"](axiosOptions).then(response => {
       if (response.data) {
-        if (response.data.success) {
-          return {
-            status: 200,
-            statusText: 'Success',
-            extraMessage: response
-          };
-        }
-
-        return {
-          status: 100,
-          statusText: 'Error',
-          extraMessage: response
-        };
-      }
-
-      return {
-        status: 101,
-        statusText: 'No Response Data',
-        extraMessage: response
-      };
-    }).catch(error => ({
-      status: 102,
-      statusText: 'Request Error',
-      extraMessage: error
-    }));
-  }
-
-}
-
-class WorkWeixinBot {
-  constructor({
-    webhook,
-    key,
-    proxy
-  }) {
-    _defineProperty(this, "_WEBHOOK", void 0);
-
-    _defineProperty(this, "httpsAgent", void 0);
-
-    const $key = {
-      webhook,
-      ...key
-    };
-
-    if (!$key.webhook) {
-      throw new Error('Missing Parameter: webhook');
-    }
-
-    this._WEBHOOK = $key.webhook;
-
-    if (proxy) {
-      this.httpsAgent = tool.proxy2httpsAgent(proxy);
-    }
-  }
-
-  async send(sendOptions) {
-    if (!sendOptions.message && !sendOptions.customOptions) {
-      return {
-        status: 0,
-        statusText: 'Missing Parameter: message',
-        extraMessage: null
-      };
-    }
-
-    let workWeixinOptions;
-
-    if (sendOptions.customOptions) {
-      workWeixinOptions = sendOptions.customOptions;
-    } else {
-      if (!sendOptions.type || sendOptions.type === 'text') {
-        workWeixinOptions = {
-          msgtype: 'text',
-          text: {
-            content: sendOptions.message
-          }
-        };
-      } else if (sendOptions.type === 'markdown') {
-        workWeixinOptions = {
-          msgtype: 'markdown',
-          markdown: {
-            content: sendOptions.message
-          }
-        };
-      } else {
-        return {
-          status: 103,
-          statusText: 'Options Format Error',
-          extraMessage: sendOptions
-        };
-      }
-    }
-
-    if (sendOptions.extraOptions) {
-      workWeixinOptions = { ...workWeixinOptions,
-        ...sendOptions.extraOptions
-      };
-    }
-
-    const axiosOptions = {
-      url: this._WEBHOOK,
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      data: workWeixinOptions
-    };
-
-    if (this.httpsAgent) {
-      axiosOptions.httpsAgent = this.httpsAgent;
-    }
-
-    return axios__default["default"](axiosOptions).then(response => {
-      if (response.data) {
-        if (!response.data.errcode) {
-          return {
-            status: 200,
-            statusText: 'Success',
-            extraMessage: response
-          };
-        }
-
-        return {
-          status: 100,
-          statusText: 'Error',
-          extraMessage: response
-        };
-      }
-
-      return {
-        status: 101,
-        statusText: 'No Response Data',
-        extraMessage: response
-      };
-    }).catch(error => ({
-      status: 102,
-      statusText: 'Request Error',
-      extraMessage: error
-    }));
-  }
-
-}
-
-var _baseURL = /*#__PURE__*/new WeakMap();
-
-class Chanify {
-  constructor({
-    token,
-    baseURL,
-    key,
-    proxy
-  }) {
-    _defineProperty(this, "_KEY", void 0);
-
-    _classPrivateFieldInitSpec(this, _baseURL, {
-      writable: true,
-      value: 'https://api.chanify.net/v1/sender/'
-    });
-
-    _defineProperty(this, "httpsAgent", void 0);
-
-    const $key = {
-      token,
-      baseURL,
-      ...key
-    };
-
-    if (!$key.token) {
-      throw new Error('Missing Parameter: token');
-    }
-
-    this._KEY = $key.token;
-
-    if ($key.baseURL) {
-      _classPrivateFieldSet(this, _baseURL, $key.baseURL);
-    }
-
-    if (proxy) {
-      this.httpsAgent = tool.proxy2httpsAgent(proxy);
-    }
-  }
-
-  async send(sendOptions) {
-    if (!sendOptions.message && !sendOptions.customOptions) {
-      return {
-        status: 0,
-        statusText: 'Missing Parameter: message',
-        extraMessage: null
-      };
-    }
-
-    let chanifyOptions;
-
-    if (sendOptions.customOptions) {
-      chanifyOptions = sendOptions.customOptions;
-    } else {
-      chanifyOptions = {
-        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10),
-        text: sendOptions.message
-      };
-    }
-
-    if (sendOptions.extraOptions) {
-      chanifyOptions = { ...chanifyOptions,
-        ...sendOptions.extraOptions
-      };
-    }
-
-    const axiosOptions = {
-      url: `${_classPrivateFieldGet(this, _baseURL)}${this._KEY}`,
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded'
-      },
-      data: tool.queryStringify(chanifyOptions)
-    };
-
-    if (this.httpsAgent) {
-      axiosOptions.httpsAgent = this.httpsAgent;
-    }
-
-    return axios__default["default"](axiosOptions).then(response => {
-      if (response.status === 200) {
-        return {
-          status: 200,
-          statusText: 'Success',
-          extraMessage: response
-        };
-      }
-
-      return {
-        status: 100,
-        statusText: 'Error',
-        extraMessage: response
-      };
-    }).catch(error => ({
-      status: 102,
-      statusText: 'Request Error',
-      extraMessage: error
-    }));
-  }
-
-}
-
-var _baseURL2 = /*#__PURE__*/new WeakMap();
-
-class Bark {
-  constructor({
-    token,
-    baseURL,
-    key,
-    proxy
-  }) {
-    _defineProperty(this, "_KEY", void 0);
-
-    _classPrivateFieldInitSpec(this, _baseURL2, {
-      writable: true,
-      value: 'https://api.day.app/push'
-    });
-
-    _defineProperty(this, "httpsAgent", void 0);
-
-    const $key = {
-      token,
-      baseURL,
-      ...key
-    };
-
-    if (!$key.token) {
-      throw new Error('Missing Parameter: token');
-    }
-
-    this._KEY = $key.token;
-
-    if ($key.baseURL) {
-      _classPrivateFieldSet(this, _baseURL2, $key.baseURL);
-    }
-
-    if (proxy) {
-      this.httpsAgent = tool.proxy2httpsAgent(proxy);
-    }
-  }
-
-  async send(sendOptions) {
-    if (!sendOptions.message && !sendOptions.customOptions) {
-      return {
-        status: 0,
-        statusText: 'Missing Parameter: message',
-        extraMessage: null
-      };
-    }
-
-    let barkOptions;
-
-    if (sendOptions.customOptions) {
-      barkOptions = sendOptions.customOptions;
-    } else {
-      barkOptions = {
-        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10),
-        body: sendOptions.message
-      };
-    }
-
-    if (sendOptions.extraOptions) {
-      barkOptions = { ...barkOptions,
-        ...sendOptions.extraOptions
-      };
-    }
-
-    if (!barkOptions.device_key) {
-      barkOptions.device_key = this._KEY;
-    }
-
-    const axiosOptions = {
-      url: _classPrivateFieldGet(this, _baseURL2),
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      data: barkOptions
-    };
-
-    if (this.httpsAgent) {
-      axiosOptions.httpsAgent = this.httpsAgent;
-    }
-
-    return axios__default["default"](axiosOptions).then(response => {
-      if (response.data) {
-        if (response.data.code === 200) {
-          return {
-            status: 200,
-            statusText: 'Success',
-            extraMessage: response
-          };
-        }
-
-        return {
-          status: 100,
-          statusText: 'Error',
-          extraMessage: response
-        };
-      }
-
-      return {
-        status: 101,
-        statusText: 'No Response Data',
-        extraMessage: response
-      };
-    }).catch(error => ({
-      status: 102,
-      statusText: 'Request Error',
-      extraMessage: error
-    }));
-  }
-
-}
-
-class GoogleChat {
-  constructor({
-    webhook,
-    key,
-    proxy
-  }) {
-    _defineProperty(this, "_WEBHOOK", void 0);
-
-    _defineProperty(this, "httpsAgent", void 0);
-
-    const $key = {
-      webhook,
-      ...key
-    };
-
-    if (!$key.webhook) {
-      throw new Error('Missing Parameter: webhook');
-    }
-
-    this._WEBHOOK = $key.webhook;
-
-    if (proxy) {
-      this.httpsAgent = tool.proxy2httpsAgent(proxy);
-    }
-  }
-
-  async send(sendOptions) {
-    if (!sendOptions.message && !sendOptions.customOptions) {
-      return {
-        status: 0,
-        statusText: 'Missing Parameter: message',
-        extraMessage: null
-      };
-    }
-
-    let googleChatOptions;
-
-    if (sendOptions.customOptions) {
-      googleChatOptions = sendOptions.customOptions;
-    } else {
-      googleChatOptions = {
-        text: sendOptions.message
-      };
-    }
-
-    if (sendOptions.extraOptions) {
-      googleChatOptions = { ...googleChatOptions,
-        ...sendOptions.extraOptions
-      };
-    }
-
-    const axiosOptions = {
-      url: this._WEBHOOK,
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      data: googleChatOptions
-    };
-
-    if (this.httpsAgent) {
-      axiosOptions.httpsAgent = this.httpsAgent;
-    }
-
-    return axios__default["default"](axiosOptions).then(response => {
-      if (response.data) {
-        if (!response.data.error) {
+        if (response.data.result === 'success') {
           return {
             status: 200,
             statusText: 'Success',
@@ -742,35 +325,63 @@ class PushApi {
         case 'qmsg':
           this.pushers.push({
             name: config.name,
-            pusher: new Qmsg(config.config)
+            pusher: new Qmsg.Qmsg(config.config)
           });
           break;
 
         case 'workweixinbot':
           this.pushers.push({
             name: config.name,
-            pusher: new WorkWeixinBot(config.config)
+            pusher: new WorkWeixinBot.WorkWeixinBot(config.config)
           });
           break;
 
         case 'chanify':
           this.pushers.push({
             name: config.name,
-            pusher: new Chanify(config.config)
+            pusher: new Chanify.Chanify(config.config)
           });
           break;
 
         case 'bark':
           this.pushers.push({
             name: config.name,
-            pusher: new Bark(config.config)
+            pusher: new Bark.Bark(config.config)
           });
           break;
 
         case 'googlechat':
           this.pushers.push({
             name: config.name,
-            pusher: new GoogleChat(config.config)
+            pusher: new GoogleChat.GoogleChat(config.config)
+          });
+          break;
+
+        case 'push':
+          this.pushers.push({
+            name: config.name,
+            pusher: new Push.Push(config.config)
+          });
+          break;
+
+        case 'slack':
+          this.pushers.push({
+            name: config.name,
+            pusher: new Slack.Slack(config.config)
+          });
+          break;
+
+        case 'pushback':
+          this.pushers.push({
+            name: config.name,
+            pusher: new Pushback.Pushback(config.config)
+          });
+          break;
+
+        case 'zulip':
+          this.pushers.push({
+            name: config.name,
+            pusher: new Zulip(config.config)
           });
           break;
       }

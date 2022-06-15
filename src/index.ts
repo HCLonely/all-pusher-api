@@ -17,6 +17,10 @@ import { WorkWeixinBot } from './WorkWeixinBot';
 import { Chanify } from './Chanify';
 import { Bark } from './Bark';
 import { GoogleChat } from './GoogleChat';
+import { Push } from './Push';
+import { Slack } from './Slack';
+import { Pushback } from './Pushback';
+import { Zulip } from './Zulip';
 import { result, sendOptions } from './tool';
 
 class PushApi {
@@ -24,7 +28,7 @@ class PushApi {
     name: string,
     pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin |
     QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark |
-    GoogleChat
+    GoogleChat | Push | Slack | Pushback | Zulip
   }> = [];
 
   constructor(PushApiConfig: Array<{ name: string, config: any }>) {
@@ -87,6 +91,18 @@ class PushApi {
         break;
       case 'googlechat':
         this.pushers.push({ name: config.name, pusher: new GoogleChat(config.config) });
+        break;
+      case 'push':
+        this.pushers.push({ name: config.name, pusher: new Push(config.config) });
+        break;
+      case 'slack':
+        this.pushers.push({ name: config.name, pusher: new Slack(config.config) });
+        break;
+      case 'pushback':
+        this.pushers.push({ name: config.name, pusher: new Pushback(config.config) });
+        break;
+      case 'zulip':
+        this.pushers.push({ name: config.name, pusher: new Zulip(config.config) });
         break;
       default:
         break;
