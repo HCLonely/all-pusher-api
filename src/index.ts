@@ -12,13 +12,19 @@ import { Showdoc } from './Showdoc';
 import { Xizhi } from './Xizhi';
 import { Discord } from './Discord';
 import { GoCqhttp } from './GoCqhttp';
+import { Qmsg } from './Qmsg';
+import { WorkWeixinBot } from './WorkWeixinBot';
+import { Chanify } from './Chanify';
+import { Bark } from './Bark';
+import { GoogleChat } from './GoogleChat';
 import { result, sendOptions } from './tool';
 
 class PushApi {
   pushers: Array<{
     name: string,
     pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin |
-    QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp
+    QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark |
+    GoogleChat
   }> = [];
 
   constructor(PushApiConfig: Array<{ name: string, config: any }>) {
@@ -66,6 +72,21 @@ class PushApi {
         break;
       case 'gocqhttp':
         this.pushers.push({ name: config.name, pusher: new GoCqhttp(config.config) });
+        break;
+      case 'qmsg':
+        this.pushers.push({ name: config.name, pusher: new Qmsg(config.config) });
+        break;
+      case 'workweixinbot':
+        this.pushers.push({ name: config.name, pusher: new WorkWeixinBot(config.config) });
+        break;
+      case 'chanify':
+        this.pushers.push({ name: config.name, pusher: new Chanify(config.config) });
+        break;
+      case 'bark':
+        this.pushers.push({ name: config.name, pusher: new Bark(config.config) });
+        break;
+      case 'googlechat':
+        this.pushers.push({ name: config.name, pusher: new GoogleChat(config.config) });
         break;
       default:
         break;

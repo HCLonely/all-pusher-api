@@ -12,11 +12,16 @@ import { Showdoc } from './Showdoc';
 import { Xizhi } from './Xizhi';
 import { Discord } from './Discord';
 import { GoCqhttp } from './GoCqhttp';
+import { Qmsg } from './Qmsg';
+import { WorkWeixinBot } from './WorkWeixinBot';
+import { Chanify } from './Chanify';
+import { Bark } from './Bark';
+import { GoogleChat } from './GoogleChat';
 import { result, sendOptions } from './tool';
 declare class PushApi {
     pushers: Array<{
         name: string;
-        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp;
+        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark | GoogleChat;
     }>;
     constructor(PushApiConfig: Array<{
         name: string;

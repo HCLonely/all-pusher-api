@@ -24,6 +24,8 @@
 - [WxPusher](https://wxpusher.zjiecode.com/docs/)
 - [NowPush](https://www.nowpush.app/index.html)
 - [iGot](http://hellyw.com/)
+- [Chanify](https://github.com/chanify/chanify-ios)
+- [Bark](https://github.com/Finb/Bark)
 
 ## 安装
 
@@ -204,6 +206,34 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           webhook: '******'
         }
       }
+    },
+    {
+      name: 'Chanify',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'Bark',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'GoogleChat',
+      config: {
+        key: {
+          webhook: '******'
+        },
+        proxy: {
+          host: '127.0.0.1',
+          port: 1080
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => (e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : e));
@@ -348,7 +378,8 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `token` | `string` | `null` | 大部分平台的授权token, 如果有授权信息有多个, 请使用`key` |
-| `webhook` | `string` | `null` | `Discord` 和 `企业微信机器人` 的 webhook 地址, 该平台请使用`webhook`而不是`token` |
+| `baseUrl` | `string` | `null` | 对于部分支持搭建服务端的平台, 如果使用自建服务端, 需配置此选项 |
+| `webhook` | `string` | `null` | `Discord`, `企业微信机器人`和`GoogleChat` 的 webhook 地址, 该平台请使用`webhook`而不是`token` |
 | `chat_id` | `string` | `null` | Telegram 平台的 chat_id |
 | `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
 | `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`, `channel_id`二选一 |
@@ -474,6 +505,8 @@ const results: Array<{
 - Discord: 'text', 'other'
 - 飞书: 'text', 'other'
 - NowPush: 'text', 'other'
+- Chanify: 'text', 'other'
+- Bark: 'text', 'other'
 - Server酱Turbo: 'text', 'markdown'
 - 息知: 'text', 'markdown'
 - PushDeer: 'text', 'markdown', 'other'
