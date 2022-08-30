@@ -6,33 +6,33 @@
 
 ## 已支持平台
 
-- [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp)
-- [QQ(Qmsg)](https://qmsg.zendee.cn/api)
-- [QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html)
-- [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access)
-- [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message)
-- [邮件](https://nodemailer.com/)
-- [飞书群机器人](https://www.feishu.cn/hc/zh-CN/articles/360024984973)
-- [企业微信](https://open.work.weixin.qq.com/api/doc/90000/90136/91770)
-- [企业微信群机器人](https://developer.work.weixin.qq.com/document/path/91770)
-- [Telegram Bot](https://core.telegram.org/bots/api#sendmessage)
-- [PushDeer](http://pushdeer.com)
-- [PushPlus](https://pushplus.hxtrip.com/index)
-- [Server 酱](https://sct.ftqq.com)
-- [Showdoc Push](https://push.showdoc.com.cn/#/)
-- [息知](https://xz.qqoq.net/#/index)
-- [WxPusher](https://wxpusher.zjiecode.com/docs/)
-- [NowPush](https://www.nowpush.app/index.html)
-- [iGot](http://hellyw.com/)
-- [Chanify](https://github.com/chanify/chanify-ios)
-- [Bark](https://github.com/Finb/Bark)
-- [GoogleChat](https://developers.google.com/chat/how-tos/webhooks)
-- [Push](https://docs.push.techulus.com/api-documentation)
-- [Slack](https://api.slack.com/messaging/webhooks)
-- [Pushback](https://pushback.io/docs/getting-started)
-- [Zulip](https://zulip.com/api/send-message)
-- [RocketChat](https://docs.rocket.chat/guides/administration/admin-panel/integrations#incoming-webhook-script)
-- [Gitter](https://developer.gitter.im/docs/messages-resource)
+- [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp) -- GoCqhttp
+- [QQ(Qmsg)](https://qmsg.zendee.cn/api) -- Qmsg
+- [QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html) -- QqChannel
+- [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access) -- DingTalk
+- [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message) -- Discord
+- [邮件](https://nodemailer.com/) -- Mail
+- [飞书群机器人](https://www.feishu.cn/hc/zh-CN/articles/360024984973) -- FeiShu
+- [企业微信](https://open.work.weixin.qq.com/api/doc/90000/90136/91770) -- WorkWeixin
+- [企业微信群机器人](https://developer.work.weixin.qq.com/document/path/91770) -- WorkWeixinBot
+- [Telegram Bot](https://core.telegram.org/bots/api#sendmessage) -- TelegramBot
+- [PushDeer](http://pushdeer.com) -- PushDeer
+- [PushPlus](https://pushplus.hxtrip.com/index) -- PushPlus
+- [Server 酱](https://sct.ftqq.com) -- ServerChanTurbo
+- [Showdoc Push](https://push.showdoc.com.cn/#/) -- Showdoc
+- [息知](https://xz.qqoq.net/#/index) -- Xizhi
+- [WxPusher](https://wxpusher.zjiecode.com/docs/) -- WxPusher
+- [NowPush](https://www.nowpush.app/index.html) -- NowPush
+- [iGot](http://hellyw.com/) -- IGot
+- [Chanify](https://github.com/chanify/chanify-ios) -- Chanify
+- [Bark](https://github.com/Finb/Bark) -- Bark
+- [GoogleChat](https://developers.google.com/chat/how-tos/webhooks) -- GoogleChat
+- [Push](https://docs.push.techulus.com/api-documentation) -- Push
+- [Slack](https://api.slack.com/messaging/webhooks) -- Slack
+- [Pushback](https://pushback.io/docs/getting-started) -- Pushback
+- [Zulip](https://zulip.com/api/send-message) -- Zulip
+- [RocketChat](https://docs.rocket.chat/guides/administration/admin-panel/integrations#incoming-webhook-script) -- RocketChat
+- [Gitter](https://developer.gitter.im/docs/messages-resource) -- Gitter
 
 ## 安装
 
@@ -450,7 +450,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | `email` | `string` | `null` | `Zulip` 平台的 bot email |
 | `domain` | `string` | `null` | `Zulip` 平台的 domain |
 | `to` | `string | Array<number | string>` | `null` | `Zulip` 平台的[发送对象](https://zulip.com/api/send-message#parameter-to) |
-| `roomId` | `string` | `null` | `Gitter` 平台发送对象d roomid |
+| `roomId` | `string` | `null` | `Gitter` 平台发送对象的 roomid |
 | `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
 | `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`, `channel_id`二选一 |
 | `group_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标群号, 此参数与`user_id`, `channel_id`二选一 |
