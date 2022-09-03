@@ -9,7 +9,7 @@ interface PushPlusConfig {
 }
 declare class PushPlus {
     protected _KEY: string;
-    readonly baseURL = "https://pushplus.hxtrip.com/send/";
+    readonly baseURL = "http://www.pushplus.plus/send";
     httpsAgent?: AxiosRequestConfig['httpsAgent'];
     constructor({ token, key, proxy }: PushPlusConfig);
     send(sendOptions: sendOptions): Promise<result>;

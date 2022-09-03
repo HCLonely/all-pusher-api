@@ -17,7 +17,7 @@
 - [企业微信群机器人](https://developer.work.weixin.qq.com/document/path/91770) -- WorkWeixinBot
 - [Telegram Bot](https://core.telegram.org/bots/api#sendmessage) -- TelegramBot
 - [PushDeer](http://pushdeer.com) -- PushDeer
-- [PushPlus](https://pushplus.hxtrip.com/index) -- PushPlus
+- [PushPlus](http://www.pushplus.plus/) -- PushPlus
 - [Server 酱](https://sct.ftqq.com) -- ServerChanTurbo
 - [Showdoc Push](https://push.showdoc.com.cn/#/) -- Showdoc
 - [息知](https://xz.qqoq.net/#/index) -- Xizhi

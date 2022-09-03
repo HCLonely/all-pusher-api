@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
-import showdown from 'showdown';
 
 interface PushPlusConfig {
   token?: string
@@ -19,7 +18,7 @@ interface PushPlusOptions {
 
 class PushPlus {
   protected _KEY: string;
-  readonly baseURL = 'https://pushplus.hxtrip.com/send/';
+  readonly baseURL = 'http://www.pushplus.plus/send';
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
 
   constructor({ token, key, proxy }: PushPlusConfig) {
@@ -55,13 +54,10 @@ class PushPlus {
         pushPlusOptions.title = sendOptions.title;
       }
       if (['html', 'markdown'].includes(sendOptions.type || '')) {
-        pushPlusOptions.template = 'html';
-      }
-      if (sendOptions.type === 'markdown') {
-        // @ts-ignore
-        pushPlusOptions.content = new showdown().Converter().makeHtml(sendOptions.message);
+        pushPlusOptions.template = sendOptions.type;
       }
     }
+    pushPlusOptions.token = this._KEY;
     if (sendOptions.extraOptions) {
       pushPlusOptions = {
         ...pushPlusOptions,
@@ -70,7 +66,7 @@ class PushPlus {
     }
 
     const axiosOptions: AxiosRequestConfig = {
-      url: `${this.baseURL}${this._KEY}`,
+      url: `${this.baseURL}`,
       method: 'POST',
       headers: {
         'Content-type': 'application/json'

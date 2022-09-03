@@ -10,8 +10,6 @@ var axios = require('axios');
 
 var tool = require('./tool');
 
-var showdown = require('showdown');
-
 function _interopDefaultLegacy(e) {
   return e && typeof e === 'object' && 'default' in e ? e : {
     'default': e
@@ -19,8 +17,6 @@ function _interopDefaultLegacy(e) {
 }
 
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
-
-var showdown__default = /*#__PURE__*/_interopDefaultLegacy(showdown);
 
 class PushPlus {
   constructor({
@@ -30,7 +26,7 @@ class PushPlus {
   }) {
     _defineProperty(this, "_KEY", void 0);
 
-    _defineProperty(this, "baseURL", 'https://pushplus.hxtrip.com/send/');
+    _defineProperty(this, "baseURL", 'http://www.pushplus.plus/send');
 
     _defineProperty(this, "httpsAgent", void 0);
 
@@ -73,14 +69,11 @@ class PushPlus {
       }
 
       if (['html', 'markdown'].includes(sendOptions.type || '')) {
-        pushPlusOptions.template = 'html';
-      }
-
-      if (sendOptions.type === 'markdown') {
-        // @ts-ignore
-        pushPlusOptions.content = new showdown__default["default"]().Converter().makeHtml(sendOptions.message);
+        pushPlusOptions.template = sendOptions.type;
       }
     }
+
+    pushPlusOptions.token = this._KEY;
 
     if (sendOptions.extraOptions) {
       pushPlusOptions = { ...pushPlusOptions,
@@ -89,7 +82,7 @@ class PushPlus {
     }
 
     const axiosOptions = {
-      url: `${this.baseURL}${this._KEY}`,
+      url: `${this.baseURL}`,
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
