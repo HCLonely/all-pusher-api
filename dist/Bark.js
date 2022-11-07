@@ -60,7 +60,7 @@ class Bark {
       _classPrivateFieldSet(this, _baseURL, $key.baseURL);
     }
 
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }

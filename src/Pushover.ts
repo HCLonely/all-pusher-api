@@ -1,36 +1,42 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
+import showdown from 'showdown';
 
-interface PushConfig {
+interface PushoverConfig {
   key?: {
     token: string
-    baseURL?: string
+    user: string
   }
-  baseURL?: string
+  user?: string
   token?: string
   proxy?: proxy
 }
-interface PushOptions {
-  title: string
-  body: string
+interface PushoverOptions {
+  title?: string
+  message: string
   [name: string]: any
 }
 
-class Push {
+class Pushover {
   protected _KEY: string;
-  protected _BASE_URL = 'https://push.techulus.com/api/v1/notify/';
+  readonly baseURL = 'https://api.pushover.net/1/messages.json';
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
+  protected _USER: string;
 
-  constructor({ token, baseURL, key, proxy }: PushConfig) {
+  constructor({ token, user, key, proxy }: PushoverConfig) {
     const $key = {
       token,
-      baseURL,
+      user,
       ...key
     };
     if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
+    if (!$key.user) {
+      throw new Error('Missing Parameter: user');
+    }
     this._KEY = $key.token;
+    this._USER = $key.user;
     if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
@@ -44,36 +50,43 @@ class Push {
         extraMessage: null
       };
     }
-    let pushOptions: PushOptions;
+    let pushoverOptions: PushoverOptions;
     if (sendOptions.customOptions) {
-      pushOptions = sendOptions.customOptions;
+      pushoverOptions = sendOptions.customOptions;
     } else {
-      pushOptions = {
+      pushoverOptions = {
         title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10),
-        body: sendOptions.message
+        message: sendOptions.message
       };
+      if (['html', 'markdown'].includes(sendOptions.type || '')) {
+        pushoverOptions.html = 1;
+      }
+      if (sendOptions.type === 'markdown') {
+        // @ts-ignore
+        pushoverOptions.message = new showdown().Converter().makeHtml(sendOptions.message);
+      }
     }
     if (sendOptions.extraOptions) {
-      pushOptions = {
-        ...pushOptions,
+      pushoverOptions = {
+        ...pushoverOptions,
         ...sendOptions.extraOptions
       };
     }
 
     const axiosOptions: AxiosRequestConfig = {
-      url: `${this._BASE_URL}${this._KEY}`,
+      url: this.baseURL,
       method: 'POST',
       headers: {
-        'Content-type': 'application/json'
+        'Content-type': 'application/x-www-form-urlencoded'
       },
-      data: pushOptions
+      data: queryStringify(pushoverOptions)
     };
     if (this.httpsAgent) {
       axiosOptions.httpsAgent = this.httpsAgent;
     }
     return axios(axiosOptions).then((response) => {
       if (response.data) {
-        if (response.data.success === true) {
+        if (response.data.status === 1) {
           return {
             status: 200,
             statusText: 'Success',
@@ -99,4 +112,4 @@ class Push {
   }
 }
 
-export { Push };
+export { Pushover };

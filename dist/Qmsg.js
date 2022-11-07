@@ -92,7 +92,7 @@ class Qmsg {
       this.to = $key.pgroup;
     }
 
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }

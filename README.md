@@ -1,13 +1,13 @@
 # all-pusher-api
 
-统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher, NowPush, iGot, Chanify, Bark, Push, Slack, Pushback, Zulip, RocketChat, Gitter等平台.
+统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher, ~~NowPush~~, iGot, Chanify, Bark, Push, Slack, Pushback, Zulip, RocketChat, Gitter等平台.
 
 **！！！！！仅推送！！！！！不交互！！！！！！**
 
 ## 已支持平台
 
 - [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp) -- GoCqhttp
-- [QQ(Qmsg)](https://qmsg.zendee.cn/api) -- Qmsg
+- ~~[QQ(Qmsg)](https://qmsg.zendee.cn/api) -- Qmsg~~
 - [QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html) -- QqChannel
 - [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access) -- DingTalk
 - [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message) -- Discord
@@ -22,7 +22,7 @@
 - [Showdoc Push](https://push.showdoc.com.cn/#/) -- Showdoc
 - [息知](https://xz.qqoq.net/#/index) -- Xizhi
 - [WxPusher](https://wxpusher.zjiecode.com/docs/) -- WxPusher
-- [NowPush](https://www.nowpush.app/index.html) -- NowPush
+- ~~[NowPush](https://www.nowpush.app/index.html) -- NowPush~~
 - [iGot](http://hellyw.com/) -- IGot
 - [Chanify](https://github.com/chanify/chanify-ios) -- Chanify
 - [Bark](https://github.com/Finb/Bark) -- Bark
@@ -33,6 +33,7 @@
 - [Zulip](https://zulip.com/api/send-message) -- Zulip
 - [RocketChat](https://docs.rocket.chat/guides/administration/admin-panel/integrations#incoming-webhook-script) -- RocketChat
 - [Gitter](https://developer.gitter.im/docs/messages-resource) -- Gitter
+- [Pushover](https://pushover.net/) -- Pushover
 
 ## 安装
 
@@ -170,6 +171,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
       config: {
         webhook: '******',
         proxy: {
+          enable: true,
           host: '127.0.0.1',
           port: 1080
         }
@@ -240,6 +242,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           webhook: '******'
         },
         proxy: {
+          enable: true,
           host: '127.0.0.1',
           port: 1080
         }
@@ -295,6 +298,15 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
         key: {
           token: '******',
           roomId: '******'
+        }
+      }
+    },
+    {
+      name: 'Pushover',
+      config: {
+        key: {
+          token: '******',
+          user: '******'
         }
       }
     }
@@ -440,6 +452,8 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 
 > const pusher = new WxPusher(*pusherConfig*);
 
+[参数生成器](https://configer.hclonely.com/?fileLink=https%3A%2F%2Fgithub.com%2FHCLonely%2Fall-pusher-api%2Ftree%2Fmain%2Fconfig%2Ftemplate.yaml%3Fraw%3Dtrue)
+
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `token` | `string` | `null` | 大部分平台的授权token, 如果有授权信息有多个, 请使用`key` |
@@ -449,7 +463,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | `chat_id` | `string` | `null` | `Telegram` 平台的 chat_id |
 | `email` | `string` | `null` | `Zulip` 平台的 bot email |
 | `domain` | `string` | `null` | `Zulip` 平台的 domain |
-| `to` | `string | Array<number | string>` | `null` | `Zulip` 平台的[发送对象](https://zulip.com/api/send-message#parameter-to) |
+| `to` | `Array<number | string>` | `null` | `Zulip` 平台的[发送对象](https://zulip.com/api/send-message#parameter-to) |
 | `roomId` | `string` | `null` | `Gitter` 平台发送对象的 roomid |
 | `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
 | `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`, `channel_id`二选一 |
@@ -466,6 +480,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | `token` | `string` | `null` | QQ频道机器人的 token, 使用QQ频道推送时此选项为**必选** |
 | `sandbox` | `boolean` | `false` | 使用QQ频道推送时是否启用沙箱, 可选 |
 | `channelID` | `string` | `null` | QQ频道的子频道 ID, 使用QQ频道推送时此选项为**必选** |
+| `user` | `string` | `null` | Pushover 的 user key, 使用 Pushover 推送时此选项为**必选** |
 | `key` | `object` | `null` | 以上参数都可以放到`key`中, [示例](#多平台推送) |
 | - `key.host` | `string` | `null` | 邮件发送服务器地址, 使用邮件推送时此选项为**必选** |
 | - `key.port` | `number` | `null` | 邮件发送服务器端口, 使用邮件推送时此选项为**必选** |
@@ -474,6 +489,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 |   - `key.auth.user` | `string` | `null` | 邮件发送服务器的用户名, 使用邮件推送时此选项为**必选** |
 |   - `key.auth.pass` | `string` | `null` | 邮件发送服务器的密码, 使用邮件推送时此选项为**必选** |
 | `proxy` | `object` | `null` | 代理配置, 可选, 部分支持 |
+| - `proxy.enable` | `boolean` | `false` | 是否启用代理 |
 | - `proxy.protocol` | `string` | `'http'` | 代理协议 |
 | - `proxy.host` | `string` | `null` | 代理主机地址 |
 | - `proxy.port` | `number` | `null` | 代理端口 |
@@ -570,6 +586,7 @@ const results: Array<{
 > `other`为部分平台支持特殊格式的消息, 可通过`customOptions`传入参数, 具体参数请查看相应平台的文档
 
 - Showdoc: 'text'
+- Pushover: 'text'
 - QQ(go-cqhttp): 'text', 'other'
 - Qmsg: 'text', 'other'
 - Discord: 'text', 'other'

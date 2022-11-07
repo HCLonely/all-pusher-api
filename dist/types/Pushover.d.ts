@@ -1,19 +1,20 @@
 import { AxiosRequestConfig } from 'axios';
 import { proxy, result, sendOptions } from './tool';
-interface PushDeerConfig {
-    token?: string;
-    baseURL?: string;
+interface PushoverConfig {
     key?: {
         token: string;
-        baseURL?: string;
+        user: string;
     };
+    user?: string;
+    token?: string;
     proxy?: proxy;
 }
-declare class PushDeer {
-    #private;
+declare class Pushover {
     protected _KEY: string;
+    readonly baseURL = "https://api.pushover.net/1/messages.json";
     httpsAgent?: AxiosRequestConfig['httpsAgent'];
-    constructor({ token, key, proxy }: PushDeerConfig);
+    protected _USER: string;
+    constructor({ token, user, key, proxy }: PushoverConfig);
     send(sendOptions: sendOptions): Promise<result>;
 }
-export { PushDeer };
+export { Pushover };

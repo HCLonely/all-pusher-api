@@ -61,7 +61,7 @@ class DingTalk {
       this._SECRET = $key.secret;
     }
 
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }

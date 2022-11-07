@@ -42,7 +42,7 @@ class FeiShu {
     if ($key.secret) {
       this._SECRET = $key.secret;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

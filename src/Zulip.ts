@@ -51,7 +51,7 @@ class Zulip {
     if ($key.to) {
       this.to = $key.to;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

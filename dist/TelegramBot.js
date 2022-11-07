@@ -50,7 +50,7 @@ class TelegramBot {
     this._KEY = $key.token;
     this._CHAT_ID = $key.chat_id;
 
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }

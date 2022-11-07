@@ -46,7 +46,7 @@ class WxPusher {
     if ($key.topicIds) {
       this.topicIds = $key.topicIds;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

@@ -50,7 +50,7 @@ class Pushback {
     this._KEY = $key.token;
     this._USER_ID = $key.userId;
 
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }

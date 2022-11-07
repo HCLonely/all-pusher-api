@@ -41,7 +41,7 @@ class IGot {
 
     this._KEY = $key.token;
 
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }

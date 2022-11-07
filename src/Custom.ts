@@ -56,7 +56,7 @@ class Custom {
     if ($key.headers) {
       this._HEADERS = $key.headers;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

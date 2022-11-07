@@ -27,7 +27,7 @@ class Discord {
       throw new Error('Missing Parameter: webhook');
     }
     this._WEBHOOK = $key.webhook;
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

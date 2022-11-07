@@ -16,6 +16,7 @@ interface result {
     extraMessage: any;
 }
 interface proxy {
+    enable: boolean;
     host: string;
     port: number;
     protocol?: string;

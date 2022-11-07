@@ -34,7 +34,7 @@ class Chanify {
     if ($key.baseURL) {
       this.#baseURL = $key.baseURL;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

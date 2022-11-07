@@ -3,8 +3,10 @@ import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './
 
 interface PushDeerConfig {
   token?: string
+  baseURL?: string
   key?: {
     token: string
+    baseURL?: string
   }
   proxy?: proxy
 }
@@ -18,7 +20,7 @@ interface PushDeerOptions {
 
 class PushDeer {
   protected _KEY: string;
-  readonly baseURL = 'https://api2.pushdeer.com/message/push';
+  #baseURL = 'https://api2.pushdeer.com/message/push';
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
 
   constructor({ token, key, proxy }: PushDeerConfig) {
@@ -30,7 +32,10 @@ class PushDeer {
       throw new Error('Missing Parameter: token');
     }
     this._KEY = $key.token;
-    if (proxy) {
+    if ($key.baseURL) {
+      this.#baseURL = $key.baseURL;
+    }
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }
@@ -67,7 +72,7 @@ class PushDeer {
     }
 
     const axiosOptions: AxiosRequestConfig = {
-      url: this.baseURL,
+      url: this.#baseURL,
       method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded'

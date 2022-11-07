@@ -58,7 +58,7 @@ class WorkWeixin {
     if ($key.touser) {
       this.touser = $key.touser;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

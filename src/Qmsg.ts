@@ -72,7 +72,7 @@ class Qmsg {
       this.type = 'pgroup';
       this.to = $key.pgroup;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

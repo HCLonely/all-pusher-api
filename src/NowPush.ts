@@ -29,7 +29,7 @@ class NowPush {
       throw new Error('Missing Parameter: token');
     }
     this._KEY = $key.token;
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy);
     }
   }

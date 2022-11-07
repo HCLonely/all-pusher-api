@@ -50,7 +50,7 @@ class Gitter {
     this._KEY = $key.token;
     this._ROOM_ID = $key.roomId;
 
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }

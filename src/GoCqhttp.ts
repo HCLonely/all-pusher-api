@@ -53,13 +53,13 @@ class GoCqhttp {
     if ($key.group_id) {
       this.group_id = $key.group_id;
     }
-    if ($key.group_id) {
-      this.group_id = $key.group_id;
+    if ($key.guild_id) {
+      this.guild_id = $key.guild_id;
     }
     if ($key.channel_id) {
       this.channel_id = $key.channel_id;
     }
-    if (proxy) {
+    if (proxy && proxy.enable) {
       this.httpsAgent = proxy2httpsAgent(proxy, new URL(this._BASE_URL).protocol.replace(':', ''));
     }
   }

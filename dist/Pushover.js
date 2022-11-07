@@ -2,14 +2,6 @@
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
 
-var _classPrivateFieldGet = require("@babel/runtime/helpers/classPrivateFieldGet");
-
-var _classPrivateFieldSet = require("@babel/runtime/helpers/classPrivateFieldSet");
-
-function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
-
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
@@ -17,6 +9,8 @@ Object.defineProperty(exports, '__esModule', {
 var axios = require('axios');
 
 var tool = require('./tool');
+
+var showdown = require('showdown');
 
 function _interopDefaultLegacy(e) {
   return e && typeof e === 'object' && 'default' in e ? e : {
@@ -26,25 +20,26 @@ function _interopDefaultLegacy(e) {
 
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 
-var _baseURL = /*#__PURE__*/new WeakMap();
+var showdown__default = /*#__PURE__*/_interopDefaultLegacy(showdown);
 
-class PushDeer {
+class Pushover {
   constructor({
     token,
+    user,
     key,
     proxy
   }) {
     _defineProperty(this, "_KEY", void 0);
 
-    _classPrivateFieldInitSpec(this, _baseURL, {
-      writable: true,
-      value: 'https://api2.pushdeer.com/message/push'
-    });
+    _defineProperty(this, "baseURL", 'https://api.pushover.net/1/messages.json');
 
     _defineProperty(this, "httpsAgent", void 0);
 
+    _defineProperty(this, "_USER", void 0);
+
     const $key = {
       token,
+      user,
       ...key
     };
 
@@ -52,11 +47,12 @@ class PushDeer {
       throw new Error('Missing Parameter: token');
     }
 
-    this._KEY = $key.token;
-
-    if ($key.baseURL) {
-      _classPrivateFieldSet(this, _baseURL, $key.baseURL);
+    if (!$key.user) {
+      throw new Error('Missing Parameter: user');
     }
+
+    this._KEY = $key.token;
+    this._USER = $key.user;
 
     if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
@@ -72,40 +68,39 @@ class PushDeer {
       };
     }
 
-    let pushDeerOptions;
+    let pushoverOptions;
 
     if (sendOptions.customOptions) {
-      pushDeerOptions = sendOptions.customOptions;
+      pushoverOptions = sendOptions.customOptions;
     } else {
-      pushDeerOptions = {};
+      pushoverOptions = {
+        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10),
+        message: sendOptions.message
+      };
 
-      if (sendOptions.title) {
-        pushDeerOptions.text = sendOptions.title;
-        pushDeerOptions.desp = sendOptions.message;
-      } else {
-        pushDeerOptions.text = sendOptions.message;
+      if (['html', 'markdown'].includes(sendOptions.type || '')) {
+        pushoverOptions.html = 1;
       }
 
-      if (sendOptions.type) {
-        pushDeerOptions.type = sendOptions.type;
+      if (sendOptions.type === 'markdown') {
+        // @ts-ignore
+        pushoverOptions.message = new showdown__default["default"]().Converter().makeHtml(sendOptions.message);
       }
     }
 
-    pushDeerOptions.pushkey = this._KEY;
-
     if (sendOptions.extraOptions) {
-      pushDeerOptions = { ...pushDeerOptions,
+      pushoverOptions = { ...pushoverOptions,
         ...sendOptions.extraOptions
       };
     }
 
     const axiosOptions = {
-      url: _classPrivateFieldGet(this, _baseURL),
+      url: this.baseURL,
       method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded'
       },
-      data: tool.queryStringify(pushDeerOptions)
+      data: tool.queryStringify(pushoverOptions)
     };
 
     if (this.httpsAgent) {
@@ -114,9 +109,7 @@ class PushDeer {
 
     return axios__default["default"](axiosOptions).then(response => {
       if (response.data) {
-        var _response$data$succes, _response$data$succes2;
-
-        if (((_response$data$succes = response.data.success) === null || _response$data$succes === void 0 ? void 0 : (_response$data$succes2 = _response$data$succes[0]) === null || _response$data$succes2 === void 0 ? void 0 : _response$data$succes2.success) === 'ok' || response.data.code === 0) {
+        if (response.data.status === 1) {
           return {
             status: 200,
             statusText: 'Success',
@@ -145,4 +138,4 @@ class PushDeer {
 
 }
 
-exports.PushDeer = PushDeer;
+exports.Pushover = Pushover;

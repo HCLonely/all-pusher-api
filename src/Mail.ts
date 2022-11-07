@@ -35,7 +35,7 @@ class Mail {
     }
     this._SERVER = key;
     this.options = options;
-    if (proxy && proxy.host && proxy.port) {
+    if (proxy && proxy.enable && proxy.host && proxy.port) {
       this._SERVER.proxy = `${proxy.protocol || 'http'}://${proxy.host}:${proxy.port}`;
     }
   }

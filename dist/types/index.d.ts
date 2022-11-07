@@ -23,11 +23,12 @@ import { Pushback } from './Pushback';
 import { Zulip } from './Zulip';
 import { RocketChat } from './RocketChat';
 import { Gitter } from './Gitter';
+import { Pushover } from './Pushover';
 import { result, sendOptions } from './tool';
 declare class PushApi {
     pushers: Array<{
         name: string;
-        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark | GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter;
+        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark | GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter | Pushover;
     }>;
     constructor(PushApiConfig: Array<{
         name: string;
