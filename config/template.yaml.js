@@ -1,4 +1,4 @@
-- name: Bark
+var template = `- name: Bark
   type: json
   filename: copy
   body:
@@ -1068,3 +1068,4 @@
         password:
           name: 代理密码
           type: text
+`
