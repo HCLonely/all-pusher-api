@@ -1,6 +1,8 @@
 - name: Bark
   type: json
   filename: copy
+  quote: Bark 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -41,6 +43,8 @@
 - name: Chanify
   type: json
   filename: copy
+  quote: Chanify 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -81,6 +85,8 @@
 - name: 钉钉群机器人
   type: json
   filename: copy
+  quote: 钉钉群机器人配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -121,6 +127,8 @@
 - name: Discord
   type: json
   filename: copy
+  quote: Discord 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -157,6 +165,8 @@
 - name: 飞书群机器人
   type: json
   filename: copy
+  quote: 飞书群机器人配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -198,6 +208,8 @@
 - name: Gitter
   type: json
   filename: copy
+  quote: Gitter 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -238,6 +250,8 @@
 - name: GoCqhttp
   type: json
   filename: copy
+  quote: GoCqhttp 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -294,6 +308,8 @@
 - name: GoogleChat
   type: json
   filename: copy
+  quote: GoogleChat 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -330,6 +346,8 @@
 - name: IGot
   type: json
   filename: copy
+  quote: IGot 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -366,6 +384,8 @@
 - name: Mail
   type: json
   filename: copy
+  quote: Mail 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 邮件服务器配置信息
@@ -436,6 +456,8 @@
 - name: Push
   type: json
   filename: copy
+  quote: Push 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -472,6 +494,8 @@
 - name: Pushback
   type: json
   filename: copy
+  quote: Pushback 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -512,6 +536,8 @@
 - name: PushDeer
   type: json
   filename: copy
+  quote: PushDeer 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -552,6 +578,8 @@
 - name: Pushover
   type: json
   filename: copy
+  quote: Pushover 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -592,6 +620,8 @@
 - name: PushPlus
   type: json
   filename: copy
+  quote: PushPlus 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -628,6 +658,8 @@
 - name: QQ 频道机器人
   type: json
   filename: copy
+  quote: QQ 频道机器人配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -656,6 +688,8 @@
 - name: RocketChat
   type: json
   filename: copy
+  quote: RocketChat 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -692,6 +726,8 @@
 - name: Server 酱 Turbo
   type: json
   filename: copy
+  quote: Server 酱 Turbo 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -728,6 +764,8 @@
 - name: Showdoc
   type: json
   filename: copy
+  quote: Showdoc 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -765,6 +803,8 @@
 - name: Slack
   type: json
   filename: copy
+  quote: Slack 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -801,6 +841,8 @@
 - name: TelegramBot
   type: json
   filename: copy
+  quote: TelegramBot 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -841,6 +883,8 @@
 - name: 企业微信
   type: json
   filename: copy
+  quote: 企业微信配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -893,6 +937,8 @@
 - name: 企业微信群机器人
   type: json
   filename: copy
+  quote: 企业微信群机器人配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -929,6 +975,8 @@
 - name: WxPusher
   type: json
   filename: copy
+  quote: WxPusher 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -984,6 +1032,8 @@
 - name: 息知
   type: json
   filename: copy
+  quote: 息知配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
@@ -1020,6 +1070,8 @@
 - name: Zulip
   type: json
   filename: copy
+  quote: Zulip 配置参数生成器
+  author: HCLonely
   body:
     key:
       name: 认证信息
