@@ -452,7 +452,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 
 > const pusher = new WxPusher(*pusherConfig*);
 
-[参数生成器](https://configer.hclonely.com/?fileLink=https%3A%2F%2Fgithub.com%2FHCLonely%2Fall-pusher-api%2Ftree%2Fmain%2Fconfig%2Ftemplate.yaml%3Fraw%3Dtrue)
+[参数生成器](https://configer.hclonely.com/?fileLink=https%3A%2F%2Fraw.githubusercontent.com%2FHCLonely%2Fall-pusher-api%2Fmain%2Fconfig%2Ftemplate.yaml.js)
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
