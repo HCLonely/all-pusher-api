@@ -463,7 +463,7 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
 | `chat_id` | `string` | `null` | `Telegram` 平台的 chat_id |
 | `email` | `string` | `null` | `Zulip` 平台的 bot email |
 | `domain` | `string` | `null` | `Zulip` 平台的 domain |
-| `to` | `Array<number|string>` | `null` | `Zulip` 平台的[发送对象](https://zulip.com/api/send-message#parameter-to) |
+| `to` | `Array<number\|string>` | `null` | `Zulip` 平台的[发送对象](https://zulip.com/api/send-message#parameter-to) |
 | `roomId` | `string` | `null` | `Gitter` 平台发送对象的 roomid |
 | `baseUrl` | `string` | `null` | go-cqhttp 的http通信地址, 以`http://`或`https://`开头 |
 | `user_id` | `number` | `null` | 使用 go-cqhttp 推送时的目标 QQ 号, 此参数与`group_id`, `channel_id`二选一 |
