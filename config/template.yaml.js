@@ -381,6 +381,45 @@
         password:
           name: 代理密码
           type: text
+- name: 爱语飞飞
+  type: json
+  filename: copy
+  quote: 爱语飞飞配置参数生成器
+  author: HCLonely
+  body:
+    key:
+      name: 认证信息
+      type: object
+      body:
+        token:
+          name: Token
+          type: text
+          desp: IYUU令牌
+          required: true
+    proxy:
+      name: 代理设置(可选)
+      type: object
+      body:
+        enable:
+          name: 启用
+          type: boolean
+          defaultValue: false
+        protocol:
+          name: 代理协议
+          type: text
+          defaultValue: http
+        host:
+          name: 代理主机地址
+          type: text
+        port:
+          name: 代理端口
+          type: text
+        username:
+          name: 代理用户名
+          type: text
+        password:
+          name: 代理密码
+          type: text
 - name: Mail
   type: json
   filename: copy
@@ -429,6 +468,49 @@
           name: 接受邮件的邮箱地址
           type: text
           inputType: email
+    proxy:
+      name: 代理设置(可选)
+      type: object
+      body:
+        enable:
+          name: 启用
+          type: boolean
+          defaultValue: false
+        protocol:
+          name: 代理协议
+          type: text
+          defaultValue: http
+        host:
+          name: 代理主机地址
+          type: text
+        port:
+          name: 代理端口
+          type: text
+        username:
+          name: 代理用户名
+          type: text
+        password:
+          name: 代理密码
+          type: text
+- name: Ntfy
+  type: json
+  filename: copy
+  quote: Ntfy 配置参数生成器
+  author: HCLonely
+  body:
+    key:
+      name: 认证信息
+      type: object
+      body:
+        token:
+          name: Token
+          desp: topic
+          type: text
+          required: true
+        baseURL:
+          name: baseURL
+          desp: 如果使用自建服务端, 需配置此选项. baseURL为"mytopic"前面的部分.
+          type: text
     proxy:
       name: 代理设置(可选)
       type: object
@@ -1041,6 +1123,45 @@
       body:
         token:
           name: key
+          type: text
+          required: true
+    proxy:
+      name: 代理设置(可选)
+      type: object
+      body:
+        enable:
+          name: 启用
+          type: boolean
+          defaultValue: false
+        protocol:
+          name: 代理协议
+          type: text
+          defaultValue: http
+        host:
+          name: 代理主机地址
+          type: text
+        port:
+          name: 代理端口
+          type: text
+        username:
+          name: 代理用户名
+          type: text
+        password:
+          name: 代理密码
+          type: text
+- name: 一封传话
+  type: json
+  filename: copy
+  quote: 一封传话配置参数生成器
+  author: HCLonely
+  body:
+    key:
+      name: 认证信息
+      type: object
+      body:
+        token:
+          name: Token
+          desp: API口令码
           type: text
           required: true
     proxy:

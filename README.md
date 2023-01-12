@@ -34,6 +34,9 @@
 - [RocketChat](https://docs.rocket.chat/guides/administration/admin-panel/integrations#incoming-webhook-script) -- RocketChat
 - [Gitter](https://developer.gitter.im/docs/messages-resource) -- Gitter
 - [Pushover](https://pushover.net/) -- Pushover
+- [爱语飞飞](https://iyuu.cn/) -- Iyuu
+- [Ntfy](https://docs.ntfy.sh/publish/) -- Ntfy
+- [一封传话](https://www.phprm.com/push/h5/) -- YiFengChuanHua
 
 ## 安装
 
@@ -307,6 +310,22 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
         key: {
           token: '******',
           user: '******'
+        }
+      }
+    },
+    {
+      name: 'Iyuu',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'YiFengChuanHua',
+      config: {
+        key: {
+          token: '******'
         }
       }
     }
@@ -587,6 +606,7 @@ const results: Array<{
 
 - Showdoc: 'text'
 - Pushover: 'text'
+- 爱语飞飞: 'text'
 - QQ(go-cqhttp): 'text', 'other'
 - Qmsg: 'text', 'other'
 - Discord: 'text', 'other'
@@ -602,6 +622,7 @@ const results: Array<{
 - 企业微信群机器人: 'text', 'markdown', 'other'
 - 钉钉: 'text', 'markdown', 'other'
 - TelegramBot: 'text', 'markdown', 'html'
+- 一封传话: 'text', 'markdown', 'html'
 - 邮件: 'text', 'markdown*', 'html'
 - PushPlus: 'text', 'markdown*', 'html'
 - WxPusher: 'text', 'markdown*', 'html'

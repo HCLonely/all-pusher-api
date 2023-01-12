@@ -1,6 +1,14 @@
 'use strict';
 
+var _classPrivateFieldGet = require("@babel/runtime/helpers/classPrivateFieldGet");
+
+var _classPrivateFieldSet = require("@babel/runtime/helpers/classPrivateFieldSet");
+
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
+
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 
 Object.defineProperty(exports, '__esModule', {
   value: true
@@ -160,6 +168,309 @@ class Pushover {
     return axios__default["default"](axiosOptions).then(response => {
       if (response.data) {
         if (response.data.status === 1) {
+          return {
+            status: 200,
+            statusText: 'Success',
+            extraMessage: response
+          };
+        }
+
+        return {
+          status: 100,
+          statusText: 'Error',
+          extraMessage: response
+        };
+      }
+
+      return {
+        status: 101,
+        statusText: 'No Response Data',
+        extraMessage: response
+      };
+    }).catch(error => ({
+      status: 102,
+      statusText: 'Request Error',
+      extraMessage: error
+    }));
+  }
+
+}
+
+class Iyuu {
+  constructor({
+    token,
+    key,
+    proxy
+  }) {
+    _defineProperty(this, "_KEY", void 0);
+
+    _defineProperty(this, "baseURL", 'https://iyuu.cn/');
+
+    _defineProperty(this, "httpsAgent", void 0);
+
+    const $key = {
+      token,
+      ...key
+    };
+
+    if (!$key.token) {
+      throw new Error('Missing Parameter: token');
+    }
+
+    this._KEY = $key.token;
+
+    if (proxy && proxy.enable) {
+      this.httpsAgent = tool.proxy2httpsAgent(proxy);
+    }
+  }
+
+  async send(sendOptions) {
+    if (!sendOptions.message && !sendOptions.customOptions) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: message',
+        extraMessage: null
+      };
+    }
+
+    let iyuuOptions;
+
+    if (sendOptions.customOptions) {
+      iyuuOptions = sendOptions.customOptions;
+    } else {
+      iyuuOptions = {
+        text: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10),
+        desp: sendOptions.message
+      };
+    }
+
+    if (sendOptions.extraOptions) {
+      iyuuOptions = { ...iyuuOptions,
+        ...sendOptions.extraOptions
+      };
+    }
+
+    const axiosOptions = {
+      url: `${this.baseURL}${this._KEY}.send`,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded'
+      },
+      data: tool.queryStringify(iyuuOptions)
+    };
+
+    if (this.httpsAgent) {
+      axiosOptions.httpsAgent = this.httpsAgent;
+    }
+
+    return axios__default["default"](axiosOptions).then(response => {
+      if (response.data) {
+        if (response.data.errcode === 0) {
+          return {
+            status: 200,
+            statusText: 'Success',
+            extraMessage: response
+          };
+        }
+
+        return {
+          status: 100,
+          statusText: 'Error',
+          extraMessage: response
+        };
+      }
+
+      return {
+        status: 101,
+        statusText: 'No Response Data',
+        extraMessage: response
+      };
+    }).catch(error => ({
+      status: 102,
+      statusText: 'Request Error',
+      extraMessage: error
+    }));
+  }
+
+}
+
+var _baseURL = /*#__PURE__*/new WeakMap();
+
+class Ntfy {
+  constructor({
+    token,
+    baseURL,
+    key,
+    proxy
+  }) {
+    _defineProperty(this, "_KEY", void 0);
+
+    _classPrivateFieldInitSpec(this, _baseURL, {
+      writable: true,
+      value: 'https://ntfy.sh/'
+    });
+
+    _defineProperty(this, "httpsAgent", void 0);
+
+    const $key = {
+      token,
+      baseURL,
+      ...key
+    };
+
+    if (!$key.token) {
+      throw new Error('Missing Parameter: token');
+    }
+
+    this._KEY = $key.token;
+
+    if ($key.baseURL) {
+      _classPrivateFieldSet(this, _baseURL, $key.baseURL);
+    }
+
+    if (proxy && proxy.enable) {
+      this.httpsAgent = tool.proxy2httpsAgent(proxy);
+    }
+  }
+
+  async send(sendOptions) {
+    if (!sendOptions.message && !sendOptions.customOptions) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: message',
+        extraMessage: null
+      };
+    }
+
+    let ntfyOptions;
+
+    if (sendOptions.customOptions) {
+      ntfyOptions = sendOptions.customOptions;
+    } else {
+      ntfyOptions = {
+        topic: this._KEY,
+        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10),
+        message: sendOptions.message
+      };
+    }
+
+    if (sendOptions.extraOptions) {
+      ntfyOptions = { ...ntfyOptions,
+        ...sendOptions.extraOptions
+      };
+    }
+
+    const axiosOptions = {
+      url: `${_classPrivateFieldGet(this, _baseURL)}`,
+      method: 'POST',
+      data: JSON.stringify(ntfyOptions)
+    };
+
+    if (this.httpsAgent) {
+      axiosOptions.httpsAgent = this.httpsAgent;
+    }
+
+    return axios__default["default"](axiosOptions).then(response => {
+      if (response.data) {
+        if (response.data.topic === this._KEY) {
+          return {
+            status: 200,
+            statusText: 'Success',
+            extraMessage: response
+          };
+        }
+
+        return {
+          status: 100,
+          statusText: 'Error',
+          extraMessage: response
+        };
+      }
+
+      return {
+        status: 101,
+        statusText: 'No Response Data',
+        extraMessage: response
+      };
+    }).catch(error => ({
+      status: 102,
+      statusText: 'Request Error',
+      extraMessage: error
+    }));
+  }
+
+}
+
+class YiFengChuanHua {
+  constructor({
+    token,
+    key,
+    proxy
+  }) {
+    _defineProperty(this, "_KEY", void 0);
+
+    _defineProperty(this, "baseURL", 'https://www.phprm.com/services/push/trigger/');
+
+    _defineProperty(this, "httpsAgent", void 0);
+
+    const $key = {
+      token,
+      ...key
+    };
+
+    if (!$key.token) {
+      throw new Error('Missing Parameter: token');
+    }
+
+    this._KEY = $key.token;
+
+    if (proxy && proxy.enable) {
+      this.httpsAgent = tool.proxy2httpsAgent(proxy);
+    }
+  }
+
+  async send(sendOptions) {
+    if (!sendOptions.message && !sendOptions.customOptions) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: message',
+        extraMessage: null
+      };
+    }
+
+    let yiFengChuanHuaOptions;
+
+    if (sendOptions.customOptions) {
+      yiFengChuanHuaOptions = sendOptions.customOptions;
+    } else {
+      yiFengChuanHuaOptions = {
+        head: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10),
+        body: sendOptions.message
+      };
+    }
+
+    if (sendOptions.extraOptions) {
+      yiFengChuanHuaOptions = { ...yiFengChuanHuaOptions,
+        ...sendOptions.extraOptions
+      };
+    }
+
+    const axiosOptions = {
+      url: `${this.baseURL}${this._KEY}`,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      data: yiFengChuanHuaOptions
+    };
+
+    if (this.httpsAgent) {
+      axiosOptions.httpsAgent = this.httpsAgent;
+    }
+
+    return axios__default["default"](axiosOptions).then(response => {
+      if (response.data) {
+        if (response.data.code === 0) {
           return {
             status: 200,
             statusText: 'Success',
@@ -374,6 +685,27 @@ class PushApi {
           this.pushers.push({
             name: config.name,
             pusher: new Pushover(config.config)
+          });
+          break;
+
+        case 'iyuu':
+          this.pushers.push({
+            name: config.name,
+            pusher: new Iyuu(config.config)
+          });
+          break;
+
+        case 'ntfy':
+          this.pushers.push({
+            name: config.name,
+            pusher: new Ntfy(config.config)
+          });
+          break;
+
+        case 'yifengchuanhua':
+          this.pushers.push({
+            name: config.name,
+            pusher: new YiFengChuanHua(config.config)
           });
           break;
       }
