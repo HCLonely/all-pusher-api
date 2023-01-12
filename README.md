@@ -322,6 +322,14 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
       }
     },
     {
+      name: 'Ntfy',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
       name: 'YiFengChuanHua',
       config: {
         key: {
