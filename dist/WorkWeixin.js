@@ -72,7 +72,7 @@ class WorkWeixin {
     }
 
     this._CORPID = $key.corpid;
-    this._SECRET = $key.corpid;
+    this._SECRET = $key.secret;
     this._AGENT_ID = $key.agentid;
 
     if ($key.touser) {

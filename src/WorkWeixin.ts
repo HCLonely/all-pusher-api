@@ -53,7 +53,7 @@ class WorkWeixin {
       throw new Error('Missing Parameter: agentid');
     }
     this._CORPID = $key.corpid;
-    this._SECRET = $key.corpid;
+    this._SECRET = $key.secret;
     this._AGENT_ID = $key.agentid;
     if ($key.touser) {
       this.touser = $key.touser;
