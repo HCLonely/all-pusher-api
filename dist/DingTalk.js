@@ -1,33 +1,22 @@
 'use strict';
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
-
 function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
-
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
 var axios = require('axios');
-
 var crypto = require('crypto');
-
 var tool = require('./tool');
-
 function _interopDefaultLegacy(e) {
   return e && typeof e === 'object' && 'default' in e ? e : {
     'default': e
   };
 }
-
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
-
 var _sign = /*#__PURE__*/new WeakSet();
-
 class DingTalk {
   constructor({
     token,
@@ -36,36 +25,26 @@ class DingTalk {
     proxy
   }) {
     _classPrivateMethodInitSpec(this, _sign);
-
     _defineProperty(this, "_KEY", void 0);
-
     _defineProperty(this, "_SECRET", void 0);
-
     _defineProperty(this, "baseURL", 'https://oapi.dingtalk.com/robot/send');
-
     _defineProperty(this, "httpsAgent", void 0);
-
     const $key = {
       token,
       secret,
       ...key
     };
-
     if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
-
     this._KEY = $key.token;
-
     if ($key.secret) {
       this._SECRET = $key.secret;
     }
-
     if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }
-
   async send(sendOptions) {
     if (!sendOptions.message && !sendOptions.customOptions) {
       return {
@@ -74,9 +53,7 @@ class DingTalk {
         extraMessage: null
       };
     }
-
     let dingTalkOptions;
-
     if (sendOptions.customOptions) {
       dingTalkOptions = sendOptions.customOptions;
     } else {
@@ -103,13 +80,12 @@ class DingTalk {
         };
       }
     }
-
     if (sendOptions.extraOptions) {
-      dingTalkOptions = { ...dingTalkOptions,
+      dingTalkOptions = {
+        ...dingTalkOptions,
         ...sendOptions.extraOptions
       };
     }
-
     const axiosOptions = {
       url: `${this.baseURL}?access_token=${this._KEY}${this._SECRET ? `&${tool.queryStringify(_classPrivateMethodGet(this, _sign, _sign2).call(this))}` : ''}`,
       method: 'POST',
@@ -118,15 +94,12 @@ class DingTalk {
       },
       data: dingTalkOptions
     };
-
     if (this.httpsAgent) {
       axiosOptions.httpsAgent = this.httpsAgent;
     }
-
     return axios__default["default"](axiosOptions).then(response => {
       if (response.data) {
         console.log(response.data.errcode);
-
         if (!response.data.errcode) {
           return {
             status: 200,
@@ -134,14 +107,12 @@ class DingTalk {
             extraMessage: response
           };
         }
-
         return {
           status: 100,
           statusText: 'Error',
           extraMessage: response
         };
       }
-
       return {
         status: 101,
         statusText: 'No Response Data',
@@ -153,9 +124,7 @@ class DingTalk {
       extraMessage: error
     }));
   }
-
 }
-
 function _sign2() {
   const timestamp = new Date().getTime();
   const stringToSign = `${timestamp}\n${this._SECRET}`;
@@ -165,5 +134,4 @@ function _sign2() {
     sign: encodeURIComponent(hash.toString('base64'))
   };
 }
-
 exports.DingTalk = DingTalk;

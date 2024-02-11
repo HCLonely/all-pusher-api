@@ -1,6 +1,6 @@
 {
   "name": "all-pusher-api",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "统一化推送服务API.",
   "main": "dist/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/runtime": "^7.17.9",
-    "axios": "^0.27.0",
+    "axios": "^1.6.7",
     "nodemailer": "^6.7.3",
     "qq-guild-bot": "^2.9.1",
     "resty-client": "^0.0.5",

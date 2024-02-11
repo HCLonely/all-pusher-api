@@ -1,33 +1,22 @@
 'use strict';
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
-
 var _classPrivateFieldGet = require("@babel/runtime/helpers/classPrivateFieldGet");
-
 var _classPrivateFieldSet = require("@babel/runtime/helpers/classPrivateFieldSet");
-
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
-
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
 var axios = require('axios');
-
 var tool = require('./tool');
-
 function _interopDefaultLegacy(e) {
   return e && typeof e === 'object' && 'default' in e ? e : {
     'default': e
   };
 }
-
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
-
 var _baseUrl = /*#__PURE__*/new WeakMap();
-
 class Zulip {
   constructor({
     token,
@@ -38,18 +27,13 @@ class Zulip {
     proxy
   }) {
     _defineProperty(this, "_KEY", void 0);
-
     _defineProperty(this, "_EMAIL", void 0);
-
     _classPrivateFieldInitSpec(this, _baseUrl, {
       writable: true,
       value: void 0
     });
-
     _defineProperty(this, "to", void 0);
-
     _defineProperty(this, "httpsAgent", void 0);
-
     const $key = {
       token,
       domain,
@@ -57,33 +41,25 @@ class Zulip {
       to,
       ...key
     };
-
     if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
-
     if (!$key.domain) {
       throw new Error('Missing Parameter: domain');
     }
-
     if (!$key.email) {
       throw new Error('Missing Parameter: email');
     }
-
     this._KEY = $key.token;
     this._EMAIL = $key.email;
-
     _classPrivateFieldSet(this, _baseUrl, `https://${$key.domain}.zulipchat.com/api/v1/messages`);
-
     if ($key.to) {
       this.to = $key.to;
     }
-
     if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
   }
-
   async send(sendOptions) {
     if (!sendOptions.message && !sendOptions.customOptions) {
       return {
@@ -92,9 +68,7 @@ class Zulip {
         extraMessage: null
       };
     }
-
     let zulipOptions;
-
     if (sendOptions.customOptions) {
       zulipOptions = sendOptions.customOptions;
     } else {
@@ -102,13 +76,12 @@ class Zulip {
         content: sendOptions.message
       };
     }
-
     if (sendOptions.extraOptions) {
-      zulipOptions = { ...zulipOptions,
+      zulipOptions = {
+        ...zulipOptions,
         ...sendOptions.extraOptions
       };
     }
-
     if (!zulipOptions.to) {
       if (!this.to) {
         return {
@@ -117,14 +90,11 @@ class Zulip {
           extraMessage: null
         };
       }
-
       zulipOptions.to = this.to;
     }
-
     if (!zulipOptions.type) {
       zulipOptions.type = 'private';
     }
-
     const axiosOptions = {
       url: _classPrivateFieldGet(this, _baseUrl),
       method: 'POST',
@@ -137,11 +107,9 @@ class Zulip {
       },
       data: tool.queryStringify(zulipOptions)
     };
-
     if (this.httpsAgent) {
       axiosOptions.httpsAgent = this.httpsAgent;
     }
-
     return axios__default["default"](axiosOptions).then(response => {
       if (response.data) {
         if (response.data.result === 'success') {
@@ -151,14 +119,12 @@ class Zulip {
             extraMessage: response
           };
         }
-
         return {
           status: 100,
           statusText: 'Error',
           extraMessage: response
         };
       }
-
       return {
         status: 101,
         statusText: 'No Response Data',
@@ -170,7 +136,5 @@ class Zulip {
       extraMessage: error
     }));
   }
-
 }
-
 exports.Zulip = Zulip;
