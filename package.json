@@ -1,0 +1,48 @@
+{
+  "name": "all-pusher-api",
+  "version": "1.2.3",
+  "description": "统一化推送服务API.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "tsc && node dist/test.js",
+    "build": "rollup --config rollup.config.mjs"
+  },
+  "keywords": [
+    "推送",
+    "push"
+  ],
+  "author": "HCLonely <h1606051253@gmail.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@babel/runtime": "^7.24.0",
+    "axios": "^1.6.7",
+    "nodemailer": "^6.9.12",
+    "qq-guild-bot": "^2.9.5",
+    "resty-client": "^0.0.5",
+    "showdown": "^2.1.0",
+    "socks-proxy-agent": "^8.0.2",
+    "tunnel": "^0.0.6",
+    "ws": "^8.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HCLonely/all-pusher-api.git"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-json": "^6.1.0",
+    "@types/node": "^20.11.27",
+    "@types/nodemailer": "^6.4.14",
+    "@types/showdown": "^2.0.6",
+    "@types/tunnel": "^0.0.7",
+    "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "eslint": "^8.57.0",
+    "rollup": "^4.13.0",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.4.2"
+  }
+}

@@ -1,0 +1,22 @@
+name: Api Test
+on:
+  schedule:
+    - cron: '36 11 * * 6'
+env:
+  version: 3.1.2
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 21.x
+      - run: npm install
+      - run: npm run build
+      - name: Test
+        env:
+          CONFIG: ${{secrets.CONFIG}}
+        run: node test/all-push-api.js
