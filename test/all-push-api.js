@@ -3,7 +3,7 @@
 const { PushApi } = require('./index');
 const config = JSON.parse(process.env.CONFIG);
 (async () => {
-  console.log((await new PushApi([
+  const results = (await new PushApi([
     {
       name: 'ServerChanTurbo',
       config: {
@@ -256,5 +256,9 @@ const config = JSON.parse(process.env.CONFIG);
       }
     }
   ])
-    .send({ message: '测试文本' })).map((e) => ((e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : `${e.name} 测试失败`)));
+    .send({ message: '测试文本' })).map((e) => ((e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : `${e.name} 测试失败`));
+  console.log(results);
+  if (results.find((e) => e.includes('失败'))) {
+    throw results.filter((e) => e.includes('失败')).join('\n');
+  }
 })();

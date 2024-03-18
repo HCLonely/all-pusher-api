@@ -4,7 +4,7 @@
   "description": "统一化推送服务API.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "tsc && node dist/test.js",
+    "test": "tsc && node test/test.js",
     "build": "rollup --config rollup.config.mjs"
   },
   "keywords": [
