@@ -37,6 +37,7 @@
 - [爱语飞飞](https://iyuu.cn/) -- Iyuu
 - [Ntfy](https://docs.ntfy.sh/publish/) -- Ntfy
 - [一封传话](https://www.phprm.com/push/h5/) -- YiFengChuanHua
+- [WPush](https://wpush.cn/) -- WPush
 
 ## 安装
 
@@ -314,6 +315,14 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
     },
     {
       name: 'YiFengChuanHua',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'WPush',
       config: {
         key: {
           token: '******'
@@ -607,6 +616,7 @@ const results: Array<{
 - Bark: 'text', 'other'
 - Server酱Turbo: 'text', 'markdown'
 - 息知: 'text', 'markdown'
+- WPush: 'text', 'markdown'
 - PushDeer: 'text', 'markdown', 'other'
 - QQ频道: 'text', 'markdown', 'other'
 - 企业微信: 'text', 'markdown', 'other'

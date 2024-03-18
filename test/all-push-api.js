@@ -254,6 +254,14 @@ const config = JSON.parse(process.env.CONFIG);
           token: config.YiFengChuanHua.token
         }
       }
+    },
+    {
+      name: 'WPush',
+      config: {
+        key: {
+          token: config.WPush.token
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => ((e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : `${e.name} 测试失败`));

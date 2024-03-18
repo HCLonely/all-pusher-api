@@ -32,7 +32,12 @@ const subModule = [
   './Pushback',
   './Zulip',
   './RocketChat',
-  './Gitter'
+  './Gitter',
+  './Pushover',
+  './Iyuu',
+  './Ntfy',
+  './YiFengChuanHua',
+  './WPush'
 ];
 const dependModule = ['crypto', 'axios', 'nodemailer', 'showdown', 'socks-proxy-agent', 'tunnel', 'ws', 'resty-client', './tool'];
 

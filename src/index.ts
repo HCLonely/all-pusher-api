@@ -27,6 +27,7 @@ import { Pushover } from './Pushover';
 import { Iyuu } from './Iyuu';
 import { Ntfy } from './Ntfy';
 import { YiFengChuanHua } from './YiFengChuanHua';
+import { WPush } from './WPush';
 import { result, sendOptions } from './tool';
 
 class PushApi {
@@ -34,7 +35,8 @@ class PushApi {
     name: string,
     pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin |
     QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark |
-    GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter | Pushover | Iyuu | Ntfy | YiFengChuanHua
+    GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter | Pushover | Iyuu | Ntfy | YiFengChuanHua |
+    WPush
   }> = [];
 
   constructor(PushApiConfig: Array<{ name: string, config: any }>) {
@@ -127,6 +129,9 @@ class PushApi {
         break;
       case 'yifengchuanhua':
         this.pushers.push({ name: config.name, pusher: new YiFengChuanHua(config.config) });
+        break;
+      case 'wpush':
+        this.pushers.push({ name: config.name, pusher: new WPush(config.config) });
         break;
       default:
         break;
