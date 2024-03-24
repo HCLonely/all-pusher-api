@@ -190,7 +190,7 @@ const config = JSON.parse(process.env.CONFIG);
       name: 'Slack',
       config: {
         key: {
-          webhook: config.Slack.token
+          webhook: config.Slack.webhook
         }
       }
     },
