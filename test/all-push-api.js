@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
-const { PushApi } = require('./index');
+const { PushApi } = require('../dist/index.js');
 const config = JSON.parse(process.env.CONFIG);
 (async () => {
   const results = (await new PushApi([

@@ -5,7 +5,7 @@ on:
 env:
   version: 3.1.2
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
