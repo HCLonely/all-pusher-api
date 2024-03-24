@@ -1,3 +1,5 @@
+const { WPush } = require("../dist/WPush")
+
 - name: Bark
   type: json
   filename: copy
@@ -1202,8 +1204,8 @@
           name: api key
           type: text
           required: true
-        domain:
-          name: yourZulipDomain
+        site:
+          name: site
           type: text
           required: true
         email:
@@ -1212,11 +1214,47 @@
           required: true
         to:
           name: 发送对象Id
-          type: array
-          body:
-            - name: id
-              type: text
-              repeat: true
+          type: text
+          required: true
+    proxy:
+      name: 代理设置(可选)
+      type: object
+      body:
+        enable:
+          name: 启用
+          type: boolean
+          defaultValue: false
+        protocol:
+          name: 代理协议
+          type: text
+          defaultValue: http
+        host:
+          name: 代理主机地址
+          type: text
+        port:
+          name: 代理端口
+          type: text
+        username:
+          name: 代理用户名
+          type: text
+        password:
+          name: 代理密码
+          type: text
+- name: WPush
+  type: json
+  filename: copy
+  quote: WPush配置参数生成器
+  author: HCLonely
+  body:
+    key:
+      name: 认证信息
+      type: object
+      body:
+        token:
+          name: Token
+          desp: Token
+          type: text
+          required: true
     proxy:
       name: 代理设置(可选)
       type: object
