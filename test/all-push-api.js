@@ -25,7 +25,7 @@ const config = JSON.parse(process.env.CONFIG);
       config: {
         key: {
           token: config.WxPusher.token,
-          uids: [config.WxPusher.uid]
+          uids: config.WxPusher.uids
         }
       }
     },
@@ -210,7 +210,7 @@ const config = JSON.parse(process.env.CONFIG);
           site: config.Zulip.site,
           token: config.Zulip.token,
           email: config.Zulip.email,
-          to: `[${config.Zulip.userId}]`
+          to: config.Zulip.to
         }
       }
     }, /*
