@@ -10,7 +10,7 @@ class YiFengChuanHua {
     proxy
   }) {
     _defineProperty(this, "_KEY", void 0);
-    _defineProperty(this, "baseURL", 'https://www.phprm.com/services/push/trigger/');
+    _defineProperty(this, "baseURL", 'https://www.phprm.com/services/push/send/');
     _defineProperty(this, "httpsAgent", void 0);
     const $key = {
       token,

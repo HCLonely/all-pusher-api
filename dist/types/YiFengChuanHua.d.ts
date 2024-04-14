@@ -9,7 +9,7 @@ interface YiFengChuanHuaConfig {
 }
 declare class YiFengChuanHua {
     protected _KEY: string;
-    readonly baseURL = "https://www.phprm.com/services/push/trigger/";
+    readonly baseURL = "https://www.phprm.com/services/push/send/";
     httpsAgent?: AxiosRequestConfig['httpsAgent'];
     constructor({ token, key, proxy }: YiFengChuanHuaConfig);
     send(sendOptions: sendOptions): Promise<result>;
