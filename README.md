@@ -38,6 +38,9 @@
 - [Ntfy](https://docs.ntfy.sh/publish/) -- Ntfy
 - [一封传话](https://www.phprm.com/push/h5/) -- YiFengChuanHua
 - [WPush](https://wpush.cn/) -- WPush
+- [PushBullet](https://www.pushbullet.com/) -- PushBullet
+- [SimplePush](https://simplepush.io/) -- SimplePush
+- [AnPush](https://anpush.com/) -- AnPush
 
 ## 安装
 
@@ -328,6 +331,31 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           token: '******'
         }
       }
+    },
+    {
+      name: 'PushBullet',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'SimplePush',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
+    },
+    {
+      name: 'AnPush',
+      config: {
+        key: {
+          token: '******',
+          channel: '******'
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => (e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : e));
@@ -607,16 +635,19 @@ const results: Array<{
 - Showdoc: 'text'
 - Pushover: 'text'
 - 爱语飞飞: 'text'
+- SimplePush: 'text'
 - QQ(go-cqhttp): 'text', 'other'
 - ~~Qmsg: 'text', 'other'~~
 - Discord: 'text', 'other'
 - 飞书: 'text', 'other'
+- PushBullet: 'text', 'other'
 - ~~NowPush: 'text', 'other'~~
 - Chanify: 'text', 'other'
 - Bark: 'text', 'other'
 - Server酱Turbo: 'text', 'markdown'
 - 息知: 'text', 'markdown'
 - WPush: 'text', 'markdown'
+- AnPush: 'text', 'markdown'
 - PushDeer: 'text', 'markdown', 'other'
 - QQ频道: 'text', 'markdown', 'other'
 - 企业微信: 'text', 'markdown', 'other'

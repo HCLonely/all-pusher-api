@@ -262,6 +262,31 @@ const config = JSON.parse(process.env.CONFIG);
           token: config.WPush.token
         }
       }
+    },
+    {
+      name: 'PushBullet',
+      config: {
+        key: {
+          token: config.PushBullet.token
+        }
+      }
+    },
+    {
+      name: 'SimplePush',
+      config: {
+        key: {
+          token: config.SimplePush.token
+        }
+      }
+    },
+    {
+      name: 'AnPush',
+      config: {
+        key: {
+          token: config.AnPush.token,
+          channel: config.AnPush.channel
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => ((e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : `${e.name} 测试失败`));

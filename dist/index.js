@@ -31,6 +31,266 @@ var Iyuu = require('./Iyuu');
 var Ntfy = require('./Ntfy');
 var YiFengChuanHua = require('./YiFengChuanHua');
 var WPush = require('./WPush');
+var axios = require('axios');
+var tool = require('./tool');
+class PushBullet {
+  constructor({
+    token,
+    key,
+    proxy
+  }) {
+    _defineProperty(this, "_KEY", void 0);
+    _defineProperty(this, "baseURL", 'https://api.pushbullet.com/v2/pushes');
+    _defineProperty(this, "httpsAgent", void 0);
+    const $key = {
+      token,
+      ...key
+    };
+    if (!$key.token) {
+      throw new Error('Missing Parameter: token');
+    }
+    this._KEY = $key.token;
+    if (proxy && proxy.enable) {
+      this.httpsAgent = tool.proxy2httpsAgent(proxy);
+    }
+  }
+  async send(sendOptions) {
+    if (!sendOptions.message && !sendOptions.customOptions) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: message',
+        extraMessage: null
+      };
+    }
+    let pushBulletOptions;
+    if (sendOptions.customOptions) {
+      pushBulletOptions = sendOptions.customOptions;
+    } else {
+      pushBulletOptions = {
+        type: 'note',
+        body: sendOptions.message,
+        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10)
+      };
+    }
+    if (sendOptions.extraOptions) {
+      pushBulletOptions = {
+        ...pushBulletOptions,
+        ...sendOptions.extraOptions
+      };
+    }
+    const axiosOptions = {
+      url: this.baseURL,
+      method: 'POST',
+      headers: {
+        'Access-Token': this._KEY,
+        'Content-type': 'application/json'
+      },
+      data: pushBulletOptions
+    };
+    if (this.httpsAgent) {
+      axiosOptions.httpsAgent = this.httpsAgent;
+    }
+    return axios(axiosOptions).then(response => {
+      if (response.data) {
+        if (response.status === 200) {
+          return {
+            status: 200,
+            statusText: 'Success',
+            extraMessage: response
+          };
+        }
+        return {
+          status: 100,
+          statusText: 'Error',
+          extraMessage: response
+        };
+      }
+      return {
+        status: 101,
+        statusText: 'No Response Data',
+        extraMessage: response
+      };
+    }).catch(error => ({
+      status: 102,
+      statusText: 'Request Error',
+      extraMessage: error
+    }));
+  }
+}
+class SimplePush {
+  constructor({
+    token,
+    key,
+    proxy
+  }) {
+    _defineProperty(this, "_KEY", void 0);
+    _defineProperty(this, "baseURL", 'https://api.simplepush.io/send');
+    _defineProperty(this, "httpsAgent", void 0);
+    const $key = {
+      token,
+      ...key
+    };
+    if (!$key.token) {
+      throw new Error('Missing Parameter: token');
+    }
+    this._KEY = $key.token;
+    if (proxy && proxy.enable) {
+      this.httpsAgent = tool.proxy2httpsAgent(proxy);
+    }
+  }
+  async send(sendOptions) {
+    if (!sendOptions.message && !sendOptions.customOptions) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: message',
+        extraMessage: null
+      };
+    }
+    let simplePushOptions;
+    if (sendOptions.customOptions) {
+      simplePushOptions = sendOptions.customOptions;
+    } else {
+      simplePushOptions = {
+        key: this._KEY,
+        msg: sendOptions.message
+      };
+      if (sendOptions.title) {
+        simplePushOptions.title = sendOptions.title;
+      }
+    }
+    if (sendOptions.extraOptions) {
+      simplePushOptions = {
+        ...simplePushOptions,
+        ...sendOptions.extraOptions
+      };
+    }
+    const axiosOptions = {
+      url: this.baseURL,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded'
+      },
+      data: simplePushOptions
+    };
+    if (this.httpsAgent) {
+      axiosOptions.httpsAgent = this.httpsAgent;
+    }
+    return axios(axiosOptions).then(response => {
+      if (response.data) {
+        if (response.data.status === 'OK') {
+          return {
+            status: 200,
+            statusText: 'Success',
+            extraMessage: response
+          };
+        }
+        return {
+          status: 100,
+          statusText: 'Error',
+          extraMessage: response
+        };
+      }
+      return {
+        status: 101,
+        statusText: 'No Response Data',
+        extraMessage: response
+      };
+    }).catch(error => ({
+      status: 102,
+      statusText: 'Request Error',
+      extraMessage: error
+    }));
+  }
+}
+class AnPush {
+  constructor({
+    token,
+    key,
+    channel,
+    proxy
+  }) {
+    _defineProperty(this, "_KEY", void 0);
+    _defineProperty(this, "baseURL", 'https://api.anpush.com/push/');
+    _defineProperty(this, "httpsAgent", void 0);
+    _defineProperty(this, "channel", void 0);
+    const $key = {
+      token,
+      channel,
+      ...key
+    };
+    if (!$key.token) {
+      throw new Error('Missing Parameter: token');
+    }
+    if ($key.channel) {
+      this.channel = $key.channel;
+    }
+    this._KEY = $key.token;
+    if (proxy && proxy.enable) {
+      this.httpsAgent = tool.proxy2httpsAgent(proxy);
+    }
+  }
+  async send(sendOptions) {
+    if (!sendOptions.message && !sendOptions.customOptions) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: message',
+        extraMessage: null
+      };
+    }
+    let anPushOptions;
+    if (sendOptions.customOptions) {
+      anPushOptions = sendOptions.customOptions;
+    } else {
+      anPushOptions = {
+        channel: this.channel,
+        content: sendOptions.message,
+        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10)
+      };
+    }
+    if (sendOptions.extraOptions) {
+      anPushOptions = {
+        ...anPushOptions,
+        ...sendOptions.extraOptions
+      };
+    }
+    const axiosOptions = {
+      url: `${this.baseURL}${this._KEY}`,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded'
+      },
+      data: anPushOptions
+    };
+    if (this.httpsAgent) {
+      axiosOptions.httpsAgent = this.httpsAgent;
+    }
+    return axios(axiosOptions).then(response => {
+      if (response.data) {
+        if (response.data.code === 200) {
+          return {
+            status: 200,
+            statusText: 'Success',
+            extraMessage: response
+          };
+        }
+        return {
+          status: 100,
+          statusText: 'Error',
+          extraMessage: response
+        };
+      }
+      return {
+        status: 101,
+        statusText: 'No Response Data',
+        extraMessage: response
+      };
+    }).catch(error => ({
+      status: 102,
+      statusText: 'Request Error',
+      extraMessage: error
+    }));
+  }
+}
 class PushApi {
   constructor(PushApiConfig) {
     _defineProperty(this, "pushers", []);
@@ -215,6 +475,24 @@ class PushApi {
           this.pushers.push({
             name: config.name,
             pusher: new WPush.WPush(config.config)
+          });
+          break;
+        case 'pushbullet':
+          this.pushers.push({
+            name: config.name,
+            pusher: new PushBullet(config.config)
+          });
+          break;
+        case 'simplepush':
+          this.pushers.push({
+            name: config.name,
+            pusher: new SimplePush(config.config)
+          });
+          break;
+        case 'anpush':
+          this.pushers.push({
+            name: config.name,
+            pusher: new AnPush(config.config)
           });
           break;
       }

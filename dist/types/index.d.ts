@@ -28,11 +28,14 @@ import { Iyuu } from './Iyuu';
 import { Ntfy } from './Ntfy';
 import { YiFengChuanHua } from './YiFengChuanHua';
 import { WPush } from './WPush';
+import { PushBullet } from './PushBullet';
+import { SimplePush } from './SimplePush';
+import { AnPush } from './AnPush';
 import { result, sendOptions } from './tool';
 declare class PushApi {
     pushers: Array<{
         name: string;
-        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark | GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter | Pushover | Iyuu | Ntfy | YiFengChuanHua | WPush;
+        pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin | QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark | GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter | Pushover | Iyuu | Ntfy | YiFengChuanHua | WPush | PushBullet | SimplePush | AnPush;
     }>;
     constructor(PushApiConfig: Array<{
         name: string;
