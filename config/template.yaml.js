@@ -1163,7 +1163,7 @@ const { WPush } = require("../dist/WPush")
       body:
         token:
           name: Token
-          desp: API口令码
+          desp: 通道code
           type: text
           required: true
     proxy:
