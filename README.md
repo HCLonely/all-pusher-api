@@ -18,7 +18,7 @@
 - [Telegram Bot](https://core.telegram.org/bots/api#sendmessage) -- TelegramBot
 - [PushDeer](http://pushdeer.com) -- PushDeer
 - [PushPlus](http://www.pushplus.plus/) -- PushPlus
-- [Server 酱](https://sct.ftqq.com) -- ServerChanTurbo
+- [Server 酱](https://sct.ftqq.com/r/13265) -- ServerChanTurbo
 - [Showdoc Push](https://push.showdoc.com.cn/#/) -- Showdoc
 - [息知](https://xz.qqoq.net/#/index) -- Xizhi
 - [WxPusher](https://wxpusher.zjiecode.com/docs/) -- WxPusher
