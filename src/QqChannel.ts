@@ -106,6 +106,13 @@ class QqChannel {
       };
     }).catch((error: any) => {
       ws.disconnect();
+      if (error.code === 304023) {
+        return {
+          status: 201,
+          statusText: 'Waiting',
+          extraMessage: error
+        };
+      }
       return {
         status: 102,
         statusText: 'Request Error',
