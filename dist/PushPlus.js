@@ -73,6 +73,13 @@ class PushPlus {
             extraMessage: response
           };
         }
+        if (response.data.code === 905) {
+          return {
+            status: 205,
+            statusText: 'Error',
+            extraMessage: response
+          };
+        }
         return {
           status: 100,
           statusText: 'Error',
