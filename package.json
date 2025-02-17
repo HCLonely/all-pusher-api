@@ -16,6 +16,13 @@
   "bin": {
     "all-pusher-api": "cli.js"
   },
+  "files": [
+    "dist",
+    "cli.js",
+    "README.md",
+    "LICENSE",
+    "config"
+  ],
   "dependencies": {
     "@babel/runtime": "^7.24.0",
     "commander": "^12.0.0",
