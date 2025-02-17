@@ -1,0 +1,20 @@
+# Source files
+src/
+test/
+
+# Config files
+tsconfig.json
+rollup.config.mjs
+.eslintrc.json
+
+# Development files
+.git/
+.gitignore
+.eslintignore
+.vscode/
+.idea/
+
+# Build artifacts
+node_modules/
+*.log
+.DS_Store
