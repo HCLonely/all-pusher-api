@@ -13,20 +13,8 @@
   ],
   "author": "HCLonely <h1606051253@gmail.com>",
   "license": "Apache-2.0",
-  "bin": {
-    "all-pusher-api": "cli.js"
-  },
-  "files": [
-    "dist",
-    "cli.js",
-    "README.md",
-    "LICENSE",
-    "config"
-  ],
   "dependencies": {
     "@babel/runtime": "^7.24.0",
-    "commander": "^12.0.0",
-    "js-yaml": "^4.1.0",
     "axios": "^1.6.7",
     "nodemailer": "^6.9.12",
     "qq-guild-bot": "^2.9.5",
