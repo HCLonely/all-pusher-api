@@ -1,5 +1,3 @@
-const { WPush } = require("../dist/WPush")
-
 - name: Bark
   type: json
   filename: copy
