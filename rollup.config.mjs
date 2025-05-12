@@ -37,9 +37,13 @@ const subModule = [
   './Iyuu',
   './Ntfy',
   './YiFengChuanHua',
-  './WPush'
+  './WPush',
+  './PushBullet',
+  'SimplePush',
+  // 'AnPush',
+  'PushMe'
 ];
-const dependModule = ['crypto', 'axios', 'nodemailer', 'showdown', 'socks-proxy-agent', 'tunnel', 'ws', 'resty-client', './tool'];
+const dependModule = ['fs', 'path', 'crypto', 'axios', 'nodemailer', 'showdown', 'socks-proxy-agent', 'tunnel', 'ws', 'resty-client', 'commander', './tool'];
 
 export default () => fs.readdirSync('src').filter((fileName) => !['test.ts', 'bot-node-sdk'].includes(fileName) && !/\.d\.ts$/.test(fileName))
   .map((fileName) => ({

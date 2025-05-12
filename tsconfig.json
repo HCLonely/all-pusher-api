@@ -8,7 +8,7 @@
     "declarationDir": "./dist/types/",
     "declarationMap": false,
     "moduleResolution": "node",
-    "module": "es2015",
+    "module": "es2020",
     "target": "esnext",
     "baseUrl": "./",
     "allowJs": true,

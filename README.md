@@ -40,7 +40,8 @@
 - [WPush](https://wpush.cn/) -- WPush
 - [PushBullet](https://www.pushbullet.com/) -- PushBullet
 - [SimplePush](https://simplepush.io/) -- SimplePush
-- [AnPush](https://anpush.com/) -- AnPush
+- ~~[AnPush](https://anpush.com/) -- AnPush~~
+- [PushMe](https://push.i-i.me/) -- PushMe
 
 ## 安装
 
@@ -356,6 +357,14 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
           channel: '******'
         }
       }
+    },
+    {
+      name: 'PushMe',
+      config: {
+        key: {
+          token: '******'
+        }
+      }
     }
   ])
     .send({ message: '测试文本' })).map((e) => (e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : e));
@@ -492,6 +501,37 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
   */
 });
 ```
+
+### 命令行使用
+
+#### 全局安装
+
+```bash
+npm install all-pusher-api -g
+```
+
+#### 快速使用
+
+```bash
+allpush send -m '测试文本' -c '{\"name\":\"ServerChanTurbo\",\"config\":{\"key\":{\"token\":\"******\"}}}'
+allpush send -m '测试文本' -f './config.json'
+
+allpush send -h
+
+# Usage: allpush send [options]
+#
+# 向配置的推送平台发送消息
+#
+# Options:
+#   -c, --config <config>     JSON 配置字符串，需对引号进行转义。在线生成: https://configer.hclonely.com/?fileLink=https://raw.githubusercontent.com/HCLonely/all-pusher-api/main/config/template.yaml.js
+#   -f, --config-file <path>  JSON 配置文件路径。在线生成: https://configer.hclonely.com/?fileLink=https://raw.githubusercontent.com/HCLonely/all-pusher-api/main/config/template.yaml.js
+#   -m, --message <text>      要发送的消息内容
+#   -t, --title <text>        消息标题
+#   -h, --help                显示帮助信息
+```
+
+> 使用-c选项时JSON字符串要压缩为单行，双引号要转义！
+> 使用多个通道同时推送时建议使用-f选项而不是-c选项！
 
 ### 参数
 
@@ -655,6 +695,7 @@ const results: Array<{
 - 钉钉: 'text', 'markdown', 'other'
 - TelegramBot: 'text', 'markdown', 'html'
 - 一封传话: 'text', 'markdown', 'html'
+- PushMe: 'text', 'markdown', 'html'
 - 邮件: 'text', 'markdown*', 'html'
 - PushPlus: 'text', 'markdown*', 'html'
 - WxPusher: 'text', 'markdown*', 'html'

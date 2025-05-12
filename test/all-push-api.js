@@ -279,12 +279,20 @@ const config = JSON.parse(process.env.CONFIG);
         }
       }
     },
+    // {
+    //   name: 'AnPush',
+    //   config: {
+    //     key: {
+    //       token: config.AnPush.token,
+    //       channel: config.AnPush.channel
+    //     }
+    //   }
+    // },
     {
-      name: 'AnPush',
+      name: 'PushMe',
       config: {
         key: {
-          token: config.AnPush.token,
-          channel: config.AnPush.channel
+          token: config.PushMe.token
         }
       }
     }

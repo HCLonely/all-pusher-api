@@ -1,10 +1,13 @@
 {
   "name": "all-pusher-api",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "统一化推送服务API.",
   "main": "dist/index.js",
+  "bin": {
+    "allpush": "dist/cli.js"
+  },
   "scripts": {
-    "test": "tsc && node test/test.js",
+    "test": "node test/test.js",
     "build": "rollup --config rollup.config.mjs"
   },
   "keywords": [
@@ -16,6 +19,7 @@
   "dependencies": {
     "@babel/runtime": "^7.24.0",
     "axios": "^1.6.7",
+    "commander": "^13.1.0",
     "nodemailer": "^6.9.12",
     "qq-guild-bot": "^2.9.5",
     "resty-client": "^0.0.5",

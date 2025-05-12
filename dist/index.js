@@ -1,6 +1,10 @@
 'use strict';
 
+var _classPrivateFieldGet = require("@babel/runtime/helpers/classPrivateFieldGet");
+var _classPrivateFieldSet = require("@babel/runtime/helpers/classPrivateFieldSet");
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 var ServerChanTurbo = require('./ServerChanTurbo');
 var PushDeer = require('./PushDeer');
 var TelegramBot = require('./TelegramBot');
@@ -31,92 +35,9 @@ var Iyuu = require('./Iyuu');
 var Ntfy = require('./Ntfy');
 var YiFengChuanHua = require('./YiFengChuanHua');
 var WPush = require('./WPush');
+var PushBullet = require('./PushBullet');
 var axios = require('axios');
 var tool = require('./tool');
-class PushBullet {
-  constructor({
-    token,
-    key,
-    proxy
-  }) {
-    _defineProperty(this, "_KEY", void 0);
-    _defineProperty(this, "baseURL", 'https://api.pushbullet.com/v2/pushes');
-    _defineProperty(this, "httpsAgent", void 0);
-    const $key = {
-      token,
-      ...key
-    };
-    if (!$key.token) {
-      throw new Error('Missing Parameter: token');
-    }
-    this._KEY = $key.token;
-    if (proxy && proxy.enable) {
-      this.httpsAgent = tool.proxy2httpsAgent(proxy);
-    }
-  }
-  async send(sendOptions) {
-    if (!sendOptions.message && !sendOptions.customOptions) {
-      return {
-        status: 0,
-        statusText: 'Missing Parameter: message',
-        extraMessage: null
-      };
-    }
-    let pushBulletOptions;
-    if (sendOptions.customOptions) {
-      pushBulletOptions = sendOptions.customOptions;
-    } else {
-      pushBulletOptions = {
-        type: 'note',
-        body: sendOptions.message,
-        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10)
-      };
-    }
-    if (sendOptions.extraOptions) {
-      pushBulletOptions = {
-        ...pushBulletOptions,
-        ...sendOptions.extraOptions
-      };
-    }
-    const axiosOptions = {
-      url: this.baseURL,
-      method: 'POST',
-      headers: {
-        'Access-Token': this._KEY,
-        'Content-type': 'application/json'
-      },
-      data: pushBulletOptions
-    };
-    if (this.httpsAgent) {
-      axiosOptions.httpsAgent = this.httpsAgent;
-    }
-    return axios(axiosOptions).then(response => {
-      if (response.data) {
-        if (response.status === 200) {
-          return {
-            status: 200,
-            statusText: 'Success',
-            extraMessage: response
-          };
-        }
-        return {
-          status: 100,
-          statusText: 'Error',
-          extraMessage: response
-        };
-      }
-      return {
-        status: 101,
-        statusText: 'No Response Data',
-        extraMessage: response
-      };
-    }).catch(error => ({
-      status: 102,
-      statusText: 'Request Error',
-      extraMessage: error
-    }));
-  }
-}
 class SimplePush {
   constructor({
     token,
@@ -202,29 +123,32 @@ class SimplePush {
     }));
   }
 }
-class AnPush {
+var _baseURL = /*#__PURE__*/new WeakMap();
+class PushMe {
   constructor({
     token,
+    baseURL,
     key,
-    channel,
     proxy
   }) {
     _defineProperty(this, "_KEY", void 0);
-    _defineProperty(this, "baseURL", 'https://api.anpush.com/push/');
+    _classPrivateFieldInitSpec(this, _baseURL, {
+      writable: true,
+      value: 'https://push.i-i.me'
+    });
     _defineProperty(this, "httpsAgent", void 0);
-    _defineProperty(this, "channel", void 0);
     const $key = {
       token,
-      channel,
+      baseURL,
       ...key
     };
     if (!$key.token) {
       throw new Error('Missing Parameter: token');
     }
-    if ($key.channel) {
-      this.channel = $key.channel;
-    }
     this._KEY = $key.token;
+    if ($key.baseURL) {
+      _classPrivateFieldSet(this, _baseURL, $key.baseURL);
+    }
     if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
     }
@@ -237,36 +161,41 @@ class AnPush {
         extraMessage: null
       };
     }
-    let anPushOptions;
+    let pushMeOptions;
     if (sendOptions.customOptions) {
-      anPushOptions = sendOptions.customOptions;
+      pushMeOptions = sendOptions.customOptions;
     } else {
-      anPushOptions = {
-        channel: this.channel,
-        content: sendOptions.message,
-        title: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10)
+      pushMeOptions = {
+        content: sendOptions.message
       };
+      if (sendOptions.title) {
+        pushMeOptions.title = sendOptions.title;
+      }
+      if (['html', 'markdown'].includes(sendOptions.type || '')) {
+        pushMeOptions.type = sendOptions.type;
+      }
     }
+    pushMeOptions.push_key = this._KEY;
     if (sendOptions.extraOptions) {
-      anPushOptions = {
-        ...anPushOptions,
+      pushMeOptions = {
+        ...pushMeOptions,
         ...sendOptions.extraOptions
       };
     }
     const axiosOptions = {
-      url: `${this.baseURL}${this._KEY}`,
+      url: `${_classPrivateFieldGet(this, _baseURL)}`,
       method: 'POST',
       headers: {
-        'Content-type': 'application/x-www-form-urlencoded'
+        'Content-type': 'application/json'
       },
-      data: anPushOptions
+      data: pushMeOptions
     };
     if (this.httpsAgent) {
       axiosOptions.httpsAgent = this.httpsAgent;
     }
     return axios(axiosOptions).then(response => {
       if (response.data) {
-        if (response.data.code === 200) {
+        if (response.data === 'success') {
           return {
             status: 200,
             statusText: 'Success',
@@ -291,247 +220,98 @@ class AnPush {
     }));
   }
 }
+const pusherMap = {
+  serverchanturbo: ServerChanTurbo.ServerChanTurbo,
+  serverchan: ServerChanTurbo.ServerChanTurbo,
+  pushdeer: PushDeer.PushDeer,
+  telegrambot: TelegramBot.TelegramBot,
+  dingtalk: DingTalk.DingTalk,
+  wxpusher: WxPusher.WxPusher,
+  mail: Mail.Mail,
+  feishu: FeiShu.FeiShu,
+  workweixin: WorkWeixin.WorkWeixin,
+  qqchannel: QqChannel.QqChannel,
+  pushplus: PushPlus.PushPlus,
+  showdoc: Showdoc.Showdoc,
+  xizhi: Xizhi.Xizhi,
+  discord: Discord.Discord,
+  gocqhttp: GoCqhttp.GoCqhttp,
+  qmsg: Qmsg.Qmsg,
+  workweixinbot: WorkWeixinBot.WorkWeixinBot,
+  chanify: Chanify.Chanify,
+  bark: Bark.Bark,
+  googlechat: GoogleChat.GoogleChat,
+  push: Push.Push,
+  slack: Slack.Slack,
+  pushback: Pushback.Pushback,
+  zulip: Zulip.Zulip,
+  rocketchat: RocketChat.RocketChat,
+  gitter: Gitter.Gitter,
+  pushover: Pushover.Pushover,
+  iyuu: Iyuu.Iyuu,
+  ntfy: Ntfy.Ntfy,
+  yifengchuanhua: YiFengChuanHua.YiFengChuanHua,
+  wpush: WPush.WPush,
+  pushbullet: PushBullet.PushBullet,
+  simplepush: SimplePush,
+  // anpush: AnPush
+  pushme: PushMe
+};
 class PushApi {
-  constructor(PushApiConfig) {
+  constructor(configs) {
     _defineProperty(this, "pushers", []);
-    PushApiConfig.forEach(config => {
-      switch (config.name.toLowerCase()) {
-        case 'serverchanturbo':
-        case 'serverchan':
-          this.pushers.push({
-            name: config.name,
-            pusher: new ServerChanTurbo.ServerChanTurbo(config.config)
-          });
-          break;
-        case 'pushdeer':
-          this.pushers.push({
-            name: config.name,
-            pusher: new PushDeer.PushDeer(config.config)
-          });
-          break;
-        case 'telegrambot':
-          this.pushers.push({
-            name: config.name,
-            pusher: new TelegramBot.TelegramBot(config.config)
-          });
-          break;
-        case 'dingtalk':
-          this.pushers.push({
-            name: config.name,
-            pusher: new DingTalk.DingTalk(config.config)
-          });
-          break;
-        case 'wxpusher':
-          this.pushers.push({
-            name: config.name,
-            pusher: new WxPusher.WxPusher(config.config)
-          });
-          break;
-        case 'mail':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Mail.Mail(config.config)
-          });
-          break;
-        case 'feishu':
-          this.pushers.push({
-            name: config.name,
-            pusher: new FeiShu.FeiShu(config.config)
-          });
-          break;
-        case 'workweixin':
-          this.pushers.push({
-            name: config.name,
-            pusher: new WorkWeixin.WorkWeixin(config.config)
-          });
-          break;
-        case 'qqchannel':
-          this.pushers.push({
-            name: config.name,
-            pusher: new QqChannel.QqChannel(config.config)
-          });
-          break;
-        case 'pushplus':
-          this.pushers.push({
-            name: config.name,
-            pusher: new PushPlus.PushPlus(config.config)
-          });
-          break;
-        case 'showdoc':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Showdoc.Showdoc(config.config)
-          });
-          break;
-        case 'xizhi':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Xizhi.Xizhi(config.config)
-          });
-          break;
-        case 'discord':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Discord.Discord(config.config)
-          });
-          break;
-        case 'gocqhttp':
-          this.pushers.push({
-            name: config.name,
-            pusher: new GoCqhttp.GoCqhttp(config.config)
-          });
-          break;
-        case 'qmsg':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Qmsg.Qmsg(config.config)
-          });
-          break;
-        case 'workweixinbot':
-          this.pushers.push({
-            name: config.name,
-            pusher: new WorkWeixinBot.WorkWeixinBot(config.config)
-          });
-          break;
-        case 'chanify':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Chanify.Chanify(config.config)
-          });
-          break;
-        case 'bark':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Bark.Bark(config.config)
-          });
-          break;
-        case 'googlechat':
-          this.pushers.push({
-            name: config.name,
-            pusher: new GoogleChat.GoogleChat(config.config)
-          });
-          break;
-        case 'push':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Push.Push(config.config)
-          });
-          break;
-        case 'slack':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Slack.Slack(config.config)
-          });
-          break;
-        case 'pushback':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Pushback.Pushback(config.config)
-          });
-          break;
-        case 'zulip':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Zulip.Zulip(config.config)
-          });
-          break;
-        case 'rocketchat':
-          this.pushers.push({
-            name: config.name,
-            pusher: new RocketChat.RocketChat(config.config)
-          });
-          break;
-        case 'gitter':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Gitter.Gitter(config.config)
-          });
-          break;
-        case 'pushover':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Pushover.Pushover(config.config)
-          });
-          break;
-        case 'iyuu':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Iyuu.Iyuu(config.config)
-          });
-          break;
-        case 'ntfy':
-          this.pushers.push({
-            name: config.name,
-            pusher: new Ntfy.Ntfy(config.config)
-          });
-          break;
-        case 'yifengchuanhua':
-          this.pushers.push({
-            name: config.name,
-            pusher: new YiFengChuanHua.YiFengChuanHua(config.config)
-          });
-          break;
-        case 'wpush':
-          this.pushers.push({
-            name: config.name,
-            pusher: new WPush.WPush(config.config)
-          });
-          break;
-        case 'pushbullet':
-          this.pushers.push({
-            name: config.name,
-            pusher: new PushBullet(config.config)
-          });
-          break;
-        case 'simplepush':
-          this.pushers.push({
-            name: config.name,
-            pusher: new SimplePush(config.config)
-          });
-          break;
-        case 'anpush':
-          this.pushers.push({
-            name: config.name,
-            pusher: new AnPush(config.config)
-          });
-          break;
-      }
-    });
+    this.pushers = configs.map(({
+      name,
+      config
+    }) => {
+      const Pusher = pusherMap[name.toLowerCase()];
+      return Pusher ? {
+        name,
+        pusher: new Pusher(config)
+      } : null;
+    }).filter(pusher => pusher !== null);
   }
   async send(sendOptions) {
-    return Promise.allSettled(this.pushers.map(async pusher => {
-      if (!Array.isArray(sendOptions)) {
-        return {
-          name: pusher.name,
-          result: await pusher.pusher.send(sendOptions)
-        };
-      }
-      const sendOption = sendOptions.find(option => option.name === pusher.name || option.name === 'default');
-      if (sendOption) {
-        return {
-          name: pusher.name,
-          result: await pusher.pusher.send(sendOption.options)
-        };
-      }
-      return {
-        name: pusher.name,
-        result: {
-          status: 10,
-          statusText: 'Missing Options',
-          extraMessage: sendOptions
+    const results = await Promise.allSettled(this.pushers.map(async ({
+      name,
+      pusher
+    }) => {
+      try {
+        var _sendOptions$find;
+        const options = Array.isArray(sendOptions) ? (_sendOptions$find = sendOptions.find(option => option.name === name || option.name === 'default')) === null || _sendOptions$find === void 0 ? void 0 : _sendOptions$find.options : sendOptions;
+        if (!options) {
+          return {
+            name,
+            result: {
+              status: 10,
+              statusText: 'Missing Options',
+              extraMessage: sendOptions
+            }
+          };
         }
-      };
-    }))
-    // @ts-ignore
-    .then(resusts => resusts.map((result, index) => result.value || {
+        return {
+          name,
+          result: await pusher.send(options)
+        };
+      } catch (error) {
+        return {
+          name,
+          result: {
+            status: 11,
+            statusText: 'Unknown Error',
+            extraMessage: error instanceof Error ? error.message : String(error)
+          }
+        };
+      }
+    }));
+    return results.map((result, index) => result.status === 'fulfilled' ? result.value : {
       name: this.pushers[index].name,
       result: {
         status: 11,
         statusText: 'Unknown Error',
-        // @ts-ignore
         extraMessage: result.reason
       }
-    }));
+    });
   }
 }
 exports.PushApi = PushApi;

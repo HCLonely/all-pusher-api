@@ -30,165 +30,121 @@ import { YiFengChuanHua } from './YiFengChuanHua';
 import { WPush } from './WPush';
 import { PushBullet } from './PushBullet';
 import { SimplePush } from './SimplePush';
-import { AnPush } from './AnPush';
+// import { AnPush } from './AnPush';
+import { PushMe } from './PushMe';
 import { result, sendOptions } from './tool';
 
-class PushApi {
-  pushers: Array<{
-    name: string,
-    pusher: ServerChanTurbo | PushDeer | TelegramBot | DingTalk | WxPusher | Mail | FeiShu | WorkWeixin |
-    QqChannel | PushPlus | Showdoc | Xizhi | Discord | GoCqhttp | Qmsg | WorkWeixinBot | Chanify | Bark |
-    GoogleChat | Push | Slack | Pushback | Zulip | RocketChat | Gitter | Pushover | Iyuu | Ntfy | YiFengChuanHua |
-    WPush | PushBullet | SimplePush | AnPush
-  }> = [];
+type PusherClass = new (config: any) => any; // eslint-disable-line no-unused-vars
 
-  constructor(PushApiConfig: Array<{ name: string, config: any }>) {
-    PushApiConfig.forEach((config) => {
-      switch (config.name.toLowerCase()) {
-      case 'serverchanturbo':
-      case 'serverchan':
-        this.pushers.push({ name: config.name, pusher: new ServerChanTurbo(config.config) });
-        break;
-      case 'pushdeer':
-        this.pushers.push({ name: config.name, pusher: new PushDeer(config.config) });
-        break;
-      case 'telegrambot':
-        this.pushers.push({ name: config.name, pusher: new TelegramBot(config.config) });
-        break;
-      case 'dingtalk':
-        this.pushers.push({ name: config.name, pusher: new DingTalk(config.config) });
-        break;
-      case 'wxpusher':
-        this.pushers.push({ name: config.name, pusher: new WxPusher(config.config) });
-        break;
-      case 'mail':
-        this.pushers.push({ name: config.name, pusher: new Mail(config.config) });
-        break;
-      case 'feishu':
-        this.pushers.push({ name: config.name, pusher: new FeiShu(config.config) });
-        break;
-      case 'workweixin':
-        this.pushers.push({ name: config.name, pusher: new WorkWeixin(config.config) });
-        break;
-      case 'qqchannel':
-        this.pushers.push({ name: config.name, pusher: new QqChannel(config.config) });
-        break;
-      case 'pushplus':
-        this.pushers.push({ name: config.name, pusher: new PushPlus(config.config) });
-        break;
-      case 'showdoc':
-        this.pushers.push({ name: config.name, pusher: new Showdoc(config.config) });
-        break;
-      case 'xizhi':
-        this.pushers.push({ name: config.name, pusher: new Xizhi(config.config) });
-        break;
-      case 'discord':
-        this.pushers.push({ name: config.name, pusher: new Discord(config.config) });
-        break;
-      case 'gocqhttp':
-        this.pushers.push({ name: config.name, pusher: new GoCqhttp(config.config) });
-        break;
-      case 'qmsg':
-        this.pushers.push({ name: config.name, pusher: new Qmsg(config.config) });
-        break;
-      case 'workweixinbot':
-        this.pushers.push({ name: config.name, pusher: new WorkWeixinBot(config.config) });
-        break;
-      case 'chanify':
-        this.pushers.push({ name: config.name, pusher: new Chanify(config.config) });
-        break;
-      case 'bark':
-        this.pushers.push({ name: config.name, pusher: new Bark(config.config) });
-        break;
-      case 'googlechat':
-        this.pushers.push({ name: config.name, pusher: new GoogleChat(config.config) });
-        break;
-      case 'push':
-        this.pushers.push({ name: config.name, pusher: new Push(config.config) });
-        break;
-      case 'slack':
-        this.pushers.push({ name: config.name, pusher: new Slack(config.config) });
-        break;
-      case 'pushback':
-        this.pushers.push({ name: config.name, pusher: new Pushback(config.config) });
-        break;
-      case 'zulip':
-        this.pushers.push({ name: config.name, pusher: new Zulip(config.config) });
-        break;
-      case 'rocketchat':
-        this.pushers.push({ name: config.name, pusher: new RocketChat(config.config) });
-        break;
-      case 'gitter':
-        this.pushers.push({ name: config.name, pusher: new Gitter(config.config) });
-        break;
-      case 'pushover':
-        this.pushers.push({ name: config.name, pusher: new Pushover(config.config) });
-        break;
-      case 'iyuu':
-        this.pushers.push({ name: config.name, pusher: new Iyuu(config.config) });
-        break;
-      case 'ntfy':
-        this.pushers.push({ name: config.name, pusher: new Ntfy(config.config) });
-        break;
-      case 'yifengchuanhua':
-        this.pushers.push({ name: config.name, pusher: new YiFengChuanHua(config.config) });
-        break;
-      case 'wpush':
-        this.pushers.push({ name: config.name, pusher: new WPush(config.config) });
-        break;
-      case 'pushbullet':
-        this.pushers.push({ name: config.name, pusher: new PushBullet(config.config) });
-        break;
-      case 'simplepush':
-        this.pushers.push({ name: config.name, pusher: new SimplePush(config.config) });
-        break;
-      case 'anpush':
-        this.pushers.push({ name: config.name, pusher: new AnPush(config.config) });
-        break;
-      default:
-        break;
-      }
-    });
+const pusherMap: Record<string, PusherClass> = {
+  serverchanturbo: ServerChanTurbo,
+  serverchan: ServerChanTurbo,
+  pushdeer: PushDeer,
+  telegrambot: TelegramBot,
+  dingtalk: DingTalk,
+  wxpusher: WxPusher,
+  mail: Mail,
+  feishu: FeiShu,
+  workweixin: WorkWeixin,
+  qqchannel: QqChannel,
+  pushplus: PushPlus,
+  showdoc: Showdoc,
+  xizhi: Xizhi,
+  discord: Discord,
+  gocqhttp: GoCqhttp,
+  qmsg: Qmsg,
+  workweixinbot: WorkWeixinBot,
+  chanify: Chanify,
+  bark: Bark,
+  googlechat: GoogleChat,
+  push: Push,
+  slack: Slack,
+  pushback: Pushback,
+  zulip: Zulip,
+  rocketchat: RocketChat,
+  gitter: Gitter,
+  pushover: Pushover,
+  iyuu: Iyuu,
+  ntfy: Ntfy,
+  yifengchuanhua: YiFengChuanHua,
+  wpush: WPush,
+  pushbullet: PushBullet,
+  simplepush: SimplePush,
+  // anpush: AnPush
+  pushme: PushMe
+};
+
+interface PushApiConfig {
+  name: string;
+  config: any;
+}
+
+interface SendResult {
+  name: string;
+  result: result;
+}
+
+class PushApi {
+  pushers: Array<{ name: string; pusher: any }> = [];
+
+  constructor(configs: PushApiConfig[]) {
+    this.pushers = configs
+      .map(({ name, config }) => {
+        const Pusher = pusherMap[name.toLowerCase()];
+        return Pusher ? { name, pusher: new Pusher(config) } : null;
+      })
+      .filter((pusher): pusher is { name: string; pusher: any } => pusher !== null);
   }
 
-  async send(sendOptions: Array<{ name: string, options: sendOptions }> | sendOptions): Promise<Array<{
-    name: string
-    result: result
-  }>> {
-    return Promise.allSettled(
-      this.pushers.map(async (pusher) => {
-        if (!Array.isArray(sendOptions)) {
-          return {
-            name: pusher.name,
-            result: await pusher.pusher.send(sendOptions)
-          };
-        }
-        const sendOption = sendOptions.find((option) => option.name === pusher.name || option.name === 'default');
-        if (sendOption) {
-          return {
-            name: pusher.name,
-            result: await pusher.pusher.send(sendOption.options)
-          };
-        }
-        return {
-          name: pusher.name,
-          result: {
-            status: 10,
-            statusText: 'Missing Options',
-            extraMessage: sendOptions
+  async send(
+    sendOptions: Array<{ name: string; options: sendOptions }> | sendOptions
+  ): Promise<SendResult[]> {
+    const results = await Promise.allSettled(
+      this.pushers.map(async ({ name, pusher }) => {
+        try {
+          const options = Array.isArray(sendOptions) ?
+            sendOptions.find((option) => option.name === name || option.name === 'default')?.options :
+            sendOptions;
+
+          if (!options) {
+            return {
+              name,
+              result: {
+                status: 10,
+                statusText: 'Missing Options',
+                extraMessage: sendOptions
+              }
+            };
           }
-        };
-      }))
-      // @ts-ignore
-      .then((resusts) => resusts.map((result, index) => result.value || ({
+
+          return {
+            name,
+            result: await pusher.send(options)
+          };
+        } catch (error) {
+          return {
+            name,
+            result: {
+              status: 11,
+              statusText: 'Unknown Error',
+              extraMessage: error instanceof Error ? error.message : String(error)
+            }
+          };
+        }
+      })
+    );
+
+    return results.map((result, index) => (result.status === 'fulfilled' ?
+      result.value :
+      {
         name: this.pushers[index].name,
         result: {
           status: 11,
           statusText: 'Unknown Error',
-          // @ts-ignore
           extraMessage: result.reason
         }
-      })));
+      })
+    );
   }
 }
 
