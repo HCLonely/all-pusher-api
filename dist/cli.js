@@ -4790,7 +4790,7 @@ class PushApi {
 }
 
 /* eslint-disable max-len */
-commander.program.version('1.5.0').description('多平台推送通知 CLI 工具，基于 all-pusher-api');
+commander.program.name('allpush').version('1.5.0').description('多平台推送通知 CLI 工具，基于 all-pusher-api');
 commander.program.command('send').description('向配置的推送平台发送消息').option('-c, --config <config>', 'JSON 配置字符串，需对引号进行转义。在线生成: https://configer.hclonely.com/?fileLink=https://raw.githubusercontent.com/HCLonely/all-pusher-api/main/config/template.yaml.js').option('-f, --config-file <path>', 'JSON 配置文件路径。在线生成: https://configer.hclonely.com/?fileLink=https://raw.githubusercontent.com/HCLonely/all-pusher-api/main/config/template.yaml.js').requiredOption('-m, --message <text>', '要发送的消息内容').option('-t, --title <text>', '消息标题').action(async options => {
   try {
     if (!options.config && !options.configFile) {
