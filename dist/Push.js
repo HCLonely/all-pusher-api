@@ -15,7 +15,6 @@ class Push {
     _defineProperty(this, "httpsAgent", void 0);
     const $key = {
       token,
-      baseURL,
       ...key
     };
     if (!$key.token) {

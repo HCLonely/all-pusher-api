@@ -205,48 +205,6 @@
         password:
           name: 代理密码
           type: text
-- name: Gitter
-  type: json
-  filename: copy
-  quote: Gitter 配置参数生成器
-  author: HCLonely
-  body:
-    key:
-      name: 认证信息
-      type: object
-      body:
-        token:
-          name: Token
-          type: text
-          required: true
-        roomId:
-          name: roomId
-          type: text
-          required: true
-    proxy:
-      name: 代理设置(可选)
-      type: object
-      body:
-        enable:
-          name: 启用
-          type: boolean
-          defaultValue: false
-        protocol:
-          name: 代理协议
-          type: text
-          defaultValue: http
-        host:
-          name: 代理主机地址
-          type: text
-        port:
-          name: 代理端口
-          type: text
-        username:
-          name: 代理用户名
-          type: text
-        password:
-          name: 代理密码
-          type: text
 - name: GoCqhttp
   type: json
   filename: copy
@@ -737,36 +695,62 @@
         password:
           name: 代理密码
           type: text
-- name: QQ 频道机器人
+- name: QQ 官方机器人
   type: json
   filename: copy
-  quote: QQ 频道机器人配置参数生成器
+  quote: QQ 官方机器人配置参数生成器
   author: HCLonely
   body:
     key:
       name: 认证信息
       type: object
       body:
-        token:
-          name: token
-          desp: QQ频道机器人的 token
-          type: text
-          required: true
         appID:
-          name: appID
-          desp: QQ频道机器人的 ID
+          name: appId
+          desp: QQ官方机器人的 ID
           type: text
           required: true
-        channelID:
-          name: channelID
-          desp: QQ频道的子频道 ID
+        appSecret:
+          name: appSecret
+          desp: QQ官方机器人的 appSecret
           type: text
           required: true
-        sandbox:
-          name: sandbox
-          desp: 使用QQ频道推送时是否启用沙箱
+        userId:
+          name: userId
+          desp: 单聊目标用户 openid，与 groupId, channelId 三选一。
+          type: text
+        groupId:
+          name: groupId
+          desp: 群聊目标群 openid，与 userId, channelId 三选一。
+          type: text
+        channelId:
+          name: channelId
+          desp: QQ频道的子频道 ID，与 userId, groupId 三选一。
+          type: text
+    proxy:
+      name: 代理设置(可选)
+      type: object
+      body:
+        enable:
+          name: 启用
           type: boolean
           defaultValue: false
+        protocol:
+          name: 代理协议
+          type: text
+          defaultValue: http
+        host:
+          name: 代理主机地址
+          type: text
+        port:
+          name: 代理端口
+          type: text
+        username:
+          name: 代理用户名
+          type: text
+        password:
+          name: 代理密码
+          type: text
 - name: RocketChat
   type: json
   filename: copy
@@ -1329,50 +1313,6 @@
         token:
           name: Token
           desp: Token
-          type: text
-          required: true
-    proxy:
-      name: 代理设置(可选)
-      type: object
-      body:
-        enable:
-          name: 启用
-          type: boolean
-          defaultValue: false
-        protocol:
-          name: 代理协议
-          type: text
-          defaultValue: http
-        host:
-          name: 代理主机地址
-          type: text
-        port:
-          name: 代理端口
-          type: text
-        username:
-          name: 代理用户名
-          type: text
-        password:
-          name: 代理密码
-          type: text
-- name: AnPush
-  type: json
-  filename: copy
-  quote: AnPush配置参数生成器
-  author: HCLonely
-  body:
-    key:
-      name: 认证信息
-      type: object
-      body:
-        token:
-          name: Token
-          desp: Token
-          type: text
-          required: true
-        channel:
-          name: channel
-          desp: 推送通道id
           type: text
           required: true
     proxy:

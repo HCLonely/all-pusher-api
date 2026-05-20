@@ -24,5 +24,5 @@ interface proxy {
     password?: string;
 }
 declare const queryStringify: (data: objectData) => string;
-declare const proxy2httpsAgent: (proxy: proxy, protocol?: string) => AxiosRequestConfig['httpsAgent'] | null;
+declare const proxy2httpsAgent: (proxy: proxy, protocol?: string) => AxiosRequestConfig["httpsAgent"] | null;
 export { queryStringify, proxy2httpsAgent, objectData, sendOptions, result, proxy };

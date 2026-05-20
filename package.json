@@ -1,6 +1,6 @@
 {
   "name": "all-pusher-api",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "统一化推送服务API.",
   "main": "dist/index.js",
   "bin": {
@@ -20,13 +20,11 @@
     "@babel/runtime": "^7.24.0",
     "axios": "^1.6.7",
     "commander": "^13.1.0",
-    "nodemailer": "^6.9.12",
-    "qq-guild-bot": "^2.9.5",
-    "resty-client": "^0.0.5",
-    "showdown": "^2.1.0",
+    "nodemailer": "^8.0.7",
+    "marked": "^18.0.4",
     "socks-proxy-agent": "^8.0.2",
     "tunnel": "^0.0.6",
-    "ws": "^8.16.0"
+    "ws": "^8.20.1"
   },
   "repository": {
     "type": "git",
@@ -39,7 +37,6 @@
     "@rollup/plugin-json": "^6.1.0",
     "@types/node": "^20.11.27",
     "@types/nodemailer": "^6.4.14",
-    "@types/showdown": "^2.0.6",
     "@types/tunnel": "^0.0.7",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
@@ -47,6 +44,7 @@
     "eslint": "^8.57.0",
     "rollup": "^4.13.0",
     "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^5.4.2"
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3"
   }
 }

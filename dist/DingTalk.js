@@ -1,13 +1,13 @@
 'use strict';
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
-function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+function _classPrivateMethodInitSpec(e, a) { _checkPrivateRedeclaration(e, a), a.add(e); }
+function _checkPrivateRedeclaration(e, t) { if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object"); }
+function _assertClassBrand(e, t, n) { if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n; throw new TypeError("Private element is not present on this object"); }
 var axios = require('axios');
 var crypto = require('crypto');
 var tool = require('./tool');
-var _sign = /*#__PURE__*/new WeakSet();
+var _DingTalk_brand = /*#__PURE__*/new WeakSet();
 class DingTalk {
   constructor({
     token,
@@ -15,7 +15,7 @@ class DingTalk {
     key,
     proxy
   }) {
-    _classPrivateMethodInitSpec(this, _sign);
+    _classPrivateMethodInitSpec(this, _DingTalk_brand);
     _defineProperty(this, "_KEY", void 0);
     _defineProperty(this, "_SECRET", void 0);
     _defineProperty(this, "baseURL", 'https://oapi.dingtalk.com/robot/send');
@@ -78,7 +78,7 @@ class DingTalk {
       };
     }
     const axiosOptions = {
-      url: `${this.baseURL}?access_token=${this._KEY}${this._SECRET ? `&${tool.queryStringify(_classPrivateMethodGet(this, _sign, _sign2).call(this))}` : ''}`,
+      url: `${this.baseURL}?access_token=${this._KEY}${this._SECRET ? `&${tool.queryStringify(_assertClassBrand(_DingTalk_brand, this, _sign).call(this))}` : ''}`,
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -116,7 +116,7 @@ class DingTalk {
     }));
   }
 }
-function _sign2() {
+function _sign() {
   const timestamp = new Date().getTime();
   const stringToSign = `${timestamp}\n${this._SECRET}`;
   const hash = crypto.createHmac('sha256', this._SECRET).update(stringToSign, 'utf8').digest();

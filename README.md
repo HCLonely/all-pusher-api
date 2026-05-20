@@ -1,6 +1,6 @@
 # all-pusher-api
 
-统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher, ~~NowPush~~, iGot, Chanify, Bark, Push, Slack, Pushback, Zulip, RocketChat, Gitter等平台.
+统一化推送服务Nodejs API. 已支持钉钉, Discord, 邮件, 飞书, PushDeer, PushPlus, QQ, QQ 频道机器人, Server 酱, Showdoc Push, Telegram Bot, 企业微信群机器人, 息知, WxPusher, iGot, Chanify, Bark, Push, Slack, Pushback, Zulip, RocketChat等平台.
 
 **！！！！！仅推送！！！！！不交互！！！！！！**
 
@@ -8,7 +8,8 @@
 
 - [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp) -- GoCqhttp
 - ~~[QQ(Qmsg)](https://qmsg.zendee.cn/api) -- Qmsg~~
-- [QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html) -- QqChannel
+- ~~[QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html) -- QqChannel~~
+- [QQ 官方机器人](https://bot.q.qq.com/wiki/develop/api-v2/) -- QQBot(主动推送能力差)
 - [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access) -- DingTalk
 - [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message) -- Discord
 - [邮件](https://nodemailer.com/) -- Mail
@@ -113,13 +114,13 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
       }
     },
     {
-      name: 'QqChannel',
+      name: 'QQBot',
       config: {
         key: {
-          appID: '******',
-          token: '******'
+          appId: '******',
+          appSecret: '******'
         },
-        channelID: '******'
+        userId: '******'
       }
     },
     {
@@ -350,15 +351,6 @@ const { PushApi } = require('all-pusher-api'); // 多平台同时推送
       }
     },
     {
-      name: 'AnPush',
-      config: {
-        key: {
-          token: '******',
-          channel: '******'
-        }
-      }
-    },
-    {
       name: 'PushMe',
       config: {
         key: {
@@ -533,6 +525,50 @@ allpush send -h
 > 使用-c选项时JSON字符串要压缩为单行，双引号要转义！
 > 使用多个通道同时推送时建议使用-f选项而不是-c选项！
 
+#### QQ 机器人事件监听
+
+> 主要用于获取QQ用户/群/频道的openid
+
+```bash
+# 监听所有事件（默认）
+allpush listen --app-id YOUR_APP_ID --app-secret YOUR_APP_SECRET
+
+# 监听指定事件类型
+allpush listen --app-id YOUR_APP_ID --app-secret YOUR_APP_SECRET --intents PUBLIC_GUILD_MESSAGES,GUILDS
+
+# 查看可用事件类型
+allpush listen --list-intents
+
+# 分片监听（适合大规模事件）
+allpush listen --app-id YOUR_APP_ID --app-secret YOUR_APP_SECRET --shard 0,4
+```
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `--app-id` | `string` | 必填 | QQ 机器人 AppID |
+| `--app-secret` | `string` | 必填 | QQ 机器人 AppSecret |
+| `--intents` | `string` | 全部事件 | 订阅事件类型，逗号分隔 |
+| `--shard` | `string` | `0,1` | 分片参数，格式: index,total |
+| `--list-intents` | - | - | 列出所有可用事件类型 |
+
+**可用事件类型：**
+
+| 名称 | 位值 | 说明 |
+| --- | --- | --- |
+| GUILDS | 1 << 0 | 频道事件（创建/更新/删除/退出） |
+| GUILD_MEMBERS | 1 << 1 | 成员事件（加入/更新/移除） |
+| GUILD_MESSAGES | 1 << 9 | 私域消息事件 |
+| GUILD_MESSAGE_REACTIONS | 1 << 10 | 消息表情表态事件 |
+| DIRECT_MESSAGE | 1 << 12 | 频道私信事件 |
+| GROUP_AND_C2C_EVENT | 1 << 25 | 群聊和单聊事件 |
+| INTERACTION | 1 << 26 | 互动事件 |
+| MESSAGE_AUDIT | 1 << 27 | 消息审核事件 |
+| FORUMS_EVENT | 1 << 28 | 论坛事件 |
+| AUDIO_ACTION | 1 << 29 | 音频事件 |
+| PUBLIC_GUILD_MESSAGES | 1 << 30 | 公域消息事件（含 at 机器人消息） |
+
+> 注意：除 GUILDS、GUILD_MEMBERS、PUBLIC_GUILD_MESSAGES 为基础权限外，其他事件类型需在 QQ 开放平台申请权限后才能订阅。订阅无权限的事件会导致 WebSocket 连接被关闭。
+
 ### 参数
 
 #### pusherConfig
@@ -563,10 +599,11 @@ allpush send -h
 | `touser` | `string` | `null` | 企业微信群机器人[指定接收消息的成员](https://developer.work.weixin.qq.com/document/path/90236#文本消息), 也可在[sendOptions](#sendOptions)中配置 |
 | `uids` | `Array<string>` | `null` | WxPusher 发送目标的 UID, 也可在[sendOptions](#sendOptions)中配置 |
 | `topicIds` | `Array<number>` | `null` | WxPusher 发送目标的 topicId, 也可在[sendOptions](#sendOptions)中配置 |
-| `appID` | `string` | `null` | QQ频道机器人的 ID, 使用QQ频道推送时此选项为**必选** |
-| `token` | `string` | `null` | QQ频道机器人的 token, 使用QQ频道推送时此选项为**必选** |
-| `sandbox` | `boolean` | `false` | 使用QQ频道推送时是否启用沙箱, 可选 |
-| `channelID` | `string` | `null` | QQ频道的子频道 ID, 使用QQ频道推送时此选项为**必选** |
+| `appId` | `string` | `null` | QQ机器人的 appId, 使用QQBot推送时此选项为**必选** |
+| `clientSecret` | `string` | `null` | QQ机器人的 clientSecret, 使用QQBot推送时此选项为**必选** |
+| `userId` | `string` | `null` | QQBot 单聊目标用户 openid, 与 `groupId`, `channelId` 三选一 |
+| `groupId` | `string` | `null` | QQBot 群聊目标群 openid, 与 `userId`, `channelId` 三选一 |
+| `channelId` | `string` | `null` | QQ频道的子频道 ID, 使用QQ频道推送时此选项为**必选** |
 | `user` | `string` | `null` | Pushover 的 user key, 使用 Pushover 推送时此选项为**必选** |
 | `key` | `object` | `null` | 以上参数都可以放到`key`中, [示例](#多平台推送) |
 | - `key.host` | `string` | `null` | 邮件发送服务器地址, 使用邮件推送时此选项为**必选** |
@@ -689,7 +726,7 @@ const results: Array<{
 - WPush: 'text', 'markdown'
 - AnPush: 'text', 'markdown'
 - PushDeer: 'text', 'markdown', 'other'
-- QQ频道: 'text', 'markdown', 'other'
+- QQ官方机器人: 'text', 'markdown', 'other'
 - 企业微信: 'text', 'markdown', 'other'
 - 企业微信群机器人: 'text', 'markdown', 'other'
 - 钉钉: 'text', 'markdown', 'other'

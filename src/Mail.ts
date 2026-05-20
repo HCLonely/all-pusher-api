@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import showdown from 'showdown';
+import { marked } from 'marked';
 import { proxy, result, sendOptions } from './tool';
 
 interface TransportOptions {
@@ -61,7 +61,7 @@ class Mail {
       }
       if (sendOptions.type === 'markdown') {
         // @ts-ignore
-        mailOptions.html = new showdown().Converter().makeHtml(sendOptions.message);
+        mailOptions.html = marked.parse(sendOptions.message);
       }
       if (sendOptions.type === 'html') {
         mailOptions.html = sendOptions.message;

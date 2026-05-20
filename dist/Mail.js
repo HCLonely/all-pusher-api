@@ -2,7 +2,7 @@
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
 var nodemailer = require('nodemailer');
-var showdown = require('showdown');
+var marked = require('marked');
 function _interopNamespaceDefault(e) {
   var n = Object.create(null);
   if (e) {
@@ -60,7 +60,7 @@ class Mail {
       }
       if (sendOptions.type === 'markdown') {
         // @ts-ignore
-        mailOptions.html = new showdown().Converter().makeHtml(sendOptions.message);
+        mailOptions.html = marked.marked.parse(sendOptions.message);
       }
       if (sendOptions.type === 'html') {
         mailOptions.html = sendOptions.message;

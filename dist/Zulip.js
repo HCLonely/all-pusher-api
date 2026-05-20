@@ -1,10 +1,11 @@
 'use strict';
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
-var _classPrivateFieldGet = require("@babel/runtime/helpers/classPrivateFieldGet");
-var _classPrivateFieldSet = require("@babel/runtime/helpers/classPrivateFieldSet");
-function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldInitSpec(e, t, a) { _checkPrivateRedeclaration(e, t), t.set(e, a); }
+function _checkPrivateRedeclaration(e, t) { if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object"); }
+function _classPrivateFieldGet(s, a) { return s.get(_assertClassBrand(s, a)); }
+function _classPrivateFieldSet(s, a, r) { return s.set(_assertClassBrand(s, a), r), r; }
+function _assertClassBrand(e, t, n) { if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n; throw new TypeError("Private element is not present on this object"); }
 var axios = require('axios');
 var tool = require('./tool');
 var _baseUrl = /*#__PURE__*/new WeakMap();
@@ -19,14 +20,10 @@ class Zulip {
   }) {
     _defineProperty(this, "_KEY", void 0);
     _defineProperty(this, "_EMAIL", void 0);
-    _classPrivateFieldInitSpec(this, _baseUrl, {
-      writable: true,
-      value: void 0
-    });
+    _classPrivateFieldInitSpec(this, _baseUrl, void 0);
     _defineProperty(this, "to", void 0);
     _defineProperty(this, "httpsAgent", void 0);
     const $key = {
-      site,
       token,
       email,
       to,
@@ -40,7 +37,7 @@ class Zulip {
     }
     this._KEY = $key.token;
     this._EMAIL = $key.email;
-    _classPrivateFieldSet(this, _baseUrl, `${site || 'https://chat.zulip.org'}/api/v1/messages`);
+    _classPrivateFieldSet(_baseUrl, this, `${site || 'https://chat.zulip.org'}/api/v1/messages`);
     if ($key.to) {
       this.to = $key.to;
     }
@@ -84,7 +81,7 @@ class Zulip {
       zulipOptions.type = 'direct';
     }
     const axiosOptions = {
-      url: _classPrivateFieldGet(this, _baseUrl),
+      url: _classPrivateFieldGet(_baseUrl, this),
       method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',

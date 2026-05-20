@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { queryStringify, proxy2httpsAgent, proxy, result, sendOptions } from './tool';
-import showdown from 'showdown';
+import { marked } from 'marked';
 
 interface PushoverConfig {
   key?: {
@@ -72,7 +72,7 @@ class Pushover {
       }
       if (sendOptions.type === 'markdown') {
         // @ts-ignore
-        pushoverOptions.message = new showdown().Converter().makeHtml(sendOptions.message);
+        pushoverOptions.message = marked.parse(sendOptions.message);
       }
     }
     if (sendOptions.extraOptions) {

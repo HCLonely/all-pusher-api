@@ -13,16 +13,16 @@ const subModule = [
   './Mail',
   './PushDeer',
   './PushPlus',
-  './QqChannel',
+  // './QqChannel',
   './ServerChanTurbo',
   './Showdoc',
   './TelegramBot',
   './WorkWeixin',
   './WxPusher',
   './Xizhi',
-  './Qmsg',
+  // './Qmsg',
   './WorkWeixinBot',
-  './NowPush',
+  // './NowPush',
   './iGot',
   './Chanify',
   './Bark',
@@ -32,18 +32,19 @@ const subModule = [
   './Pushback',
   './Zulip',
   './RocketChat',
-  './Gitter',
+  // './Gitter',
   './Pushover',
   './Iyuu',
   './Ntfy',
   './YiFengChuanHua',
   './WPush',
   './PushBullet',
-  'SimplePush',
+  './SimplePush',
   // 'AnPush',
-  'PushMe'
+  './PushMe',
+  './QQBot'
 ];
-const dependModule = ['fs', 'path', 'crypto', 'axios', 'nodemailer', 'showdown', 'socks-proxy-agent', 'tunnel', 'ws', 'resty-client', 'commander', './tool'];
+const dependModule = ['fs', 'path', 'crypto', 'axios', 'nodemailer', 'marked', 'socks-proxy-agent', 'tunnel', 'ws', 'resty-client', 'commander', './tool'];
 
 export default () => fs.readdirSync('src').filter((fileName) => !['test.ts', 'bot-node-sdk'].includes(fileName) && !/\.d\.ts$/.test(fileName))
   .map((fileName) => ({
@@ -60,7 +61,9 @@ export default () => fs.readdirSync('src').filter((fileName) => !['test.ts', 'bo
       json(),
       typescript({
         removeComments: true,
-        useTsconfigDeclarationDir: true
+        useTsconfigDeclarationDir: true,
+        include: [/.*\.ts$/],
+        exclude: [/\.d\.ts$/]
       }),
       getBabelOutputPlugin({
         presets: [

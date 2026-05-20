@@ -53,17 +53,16 @@ const config = JSON.parse(process.env.CONFIG);
         }
       }
     },
-    {
-      name: 'QqChannel',
-      config: {
-        key: {
-          appID: config.QqChannel.appID,
-          token: config.QqChannel.token,
-          sandbox: true
-        },
-        channelID: config.QqChannel.channelID
-      }
-    },
+    // {
+    //   name: 'QQBot',
+    //   config: {
+    //     key: {
+    //       appId: config.QqChannel.appId,
+    //       appSecret: config.QqChannel.appSecret
+    //     },
+    //     userId: config.QqChannel.userId
+    //   }
+    // },
     {
       name: 'WorkWeixin',
       config: {

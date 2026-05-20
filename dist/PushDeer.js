@@ -1,10 +1,11 @@
 'use strict';
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
-var _classPrivateFieldGet = require("@babel/runtime/helpers/classPrivateFieldGet");
-var _classPrivateFieldSet = require("@babel/runtime/helpers/classPrivateFieldSet");
-function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldInitSpec(e, t, a) { _checkPrivateRedeclaration(e, t), t.set(e, a); }
+function _checkPrivateRedeclaration(e, t) { if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object"); }
+function _classPrivateFieldGet(s, a) { return s.get(_assertClassBrand(s, a)); }
+function _classPrivateFieldSet(s, a, r) { return s.set(_assertClassBrand(s, a), r), r; }
+function _assertClassBrand(e, t, n) { if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n; throw new TypeError("Private element is not present on this object"); }
 var axios = require('axios');
 var tool = require('./tool');
 var _baseURL = /*#__PURE__*/new WeakMap();
@@ -15,10 +16,7 @@ class PushDeer {
     proxy
   }) {
     _defineProperty(this, "_KEY", void 0);
-    _classPrivateFieldInitSpec(this, _baseURL, {
-      writable: true,
-      value: 'https://api2.pushdeer.com/message/push'
-    });
+    _classPrivateFieldInitSpec(this, _baseURL, 'https://api2.pushdeer.com/message/push');
     _defineProperty(this, "httpsAgent", void 0);
     const $key = {
       token,
@@ -29,7 +27,7 @@ class PushDeer {
     }
     this._KEY = $key.token;
     if ($key.baseURL) {
-      _classPrivateFieldSet(this, _baseURL, $key.baseURL);
+      _classPrivateFieldSet(_baseURL, this, $key.baseURL);
     }
     if (proxy && proxy.enable) {
       this.httpsAgent = tool.proxy2httpsAgent(proxy);
@@ -66,7 +64,7 @@ class PushDeer {
       };
     }
     const axiosOptions = {
-      url: _classPrivateFieldGet(this, _baseURL),
+      url: _classPrivateFieldGet(_baseURL, this),
       method: 'POST',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded'

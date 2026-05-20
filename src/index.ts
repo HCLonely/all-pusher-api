@@ -6,13 +6,13 @@ import { WxPusher } from './WxPusher';
 import { Mail } from './Mail';
 import { FeiShu } from './FeiShu';
 import { WorkWeixin } from './WorkWeixin';
-import { QqChannel } from './QqChannel';
+// import { QqChannel } from './QqChannel';
 import { PushPlus } from './PushPlus';
 import { Showdoc } from './Showdoc';
 import { Xizhi } from './Xizhi';
 import { Discord } from './Discord';
 import { GoCqhttp } from './GoCqhttp';
-import { Qmsg } from './Qmsg';
+// import { Qmsg } from './Qmsg';
 import { WorkWeixinBot } from './WorkWeixinBot';
 import { Chanify } from './Chanify';
 import { Bark } from './Bark';
@@ -22,7 +22,7 @@ import { Slack } from './Slack';
 import { Pushback } from './Pushback';
 import { Zulip } from './Zulip';
 import { RocketChat } from './RocketChat';
-import { Gitter } from './Gitter';
+// import { Gitter } from './Gitter';
 import { Pushover } from './Pushover';
 import { Iyuu } from './Iyuu';
 import { Ntfy } from './Ntfy';
@@ -32,6 +32,7 @@ import { PushBullet } from './PushBullet';
 import { SimplePush } from './SimplePush';
 // import { AnPush } from './AnPush';
 import { PushMe } from './PushMe';
+import { QQBot } from './QQBot';
 import { result, sendOptions } from './tool';
 
 type PusherClass = new (config: any) => any; // eslint-disable-line no-unused-vars
@@ -46,13 +47,13 @@ const pusherMap: Record<string, PusherClass> = {
   mail: Mail,
   feishu: FeiShu,
   workweixin: WorkWeixin,
-  qqchannel: QqChannel,
+  // qqchannel: QqChannel,
   pushplus: PushPlus,
   showdoc: Showdoc,
   xizhi: Xizhi,
   discord: Discord,
   gocqhttp: GoCqhttp,
-  qmsg: Qmsg,
+  // qmsg: Qmsg,
   workweixinbot: WorkWeixinBot,
   chanify: Chanify,
   bark: Bark,
@@ -62,7 +63,7 @@ const pusherMap: Record<string, PusherClass> = {
   pushback: Pushback,
   zulip: Zulip,
   rocketchat: RocketChat,
-  gitter: Gitter,
+  // gitter: Gitter,
   pushover: Pushover,
   iyuu: Iyuu,
   ntfy: Ntfy,
@@ -71,7 +72,8 @@ const pusherMap: Record<string, PusherClass> = {
   pushbullet: PushBullet,
   simplepush: SimplePush,
   // anpush: AnPush
-  pushme: PushMe
+  pushme: PushMe,
+  qqbot: QQBot
 };
 
 interface PushApiConfig {

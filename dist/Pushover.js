@@ -3,7 +3,7 @@
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
 var axios = require('axios');
 var tool = require('./tool');
-var showdown = require('showdown');
+var marked = require('marked');
 class Pushover {
   constructor({
     token,
@@ -61,7 +61,7 @@ class Pushover {
       }
       if (sendOptions.type === 'markdown') {
         // @ts-ignore
-        pushoverOptions.message = new showdown().Converter().makeHtml(sendOptions.message);
+        pushoverOptions.message = marked.marked.parse(sendOptions.message);
       }
     }
     if (sendOptions.extraOptions) {

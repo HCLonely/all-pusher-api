@@ -2,4 +2,7 @@ node_modules/
 .history/
 test.*
 .vscode/
+.claude/
 examples
+
+docs

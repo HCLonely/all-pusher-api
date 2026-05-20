@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { proxy2httpsAgent, proxy, result, sendOptions } from './tool';
-import showdown from 'showdown';
+import { marked } from 'marked';
 
 interface WxPusherConfig {
   key?: {
@@ -74,7 +74,7 @@ class WxPusher {
       }
       if (sendOptions.type === 'markdown') {
         // @ts-ignore
-        wxPusherOptions.content = new showdown().Converter().makeHtml(sendOptions.message);
+        wxPusherOptions.content = marked.parse(sendOptions.message);
       }
     }
 

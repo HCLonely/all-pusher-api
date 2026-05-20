@@ -3,7 +3,7 @@
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
 var axios = require('axios');
 var tool = require('./tool');
-var showdown = require('showdown');
+var marked = require('marked');
 class WxPusher {
   constructor({
     token,
@@ -60,7 +60,7 @@ class WxPusher {
       }
       if (sendOptions.type === 'markdown') {
         // @ts-ignore
-        wxPusherOptions.content = new showdown().Converter().makeHtml(sendOptions.message);
+        wxPusherOptions.content = marked.marked.parse(sendOptions.message);
       }
     }
     if (!wxPusherOptions.uids && this.uids) {

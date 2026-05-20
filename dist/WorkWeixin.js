@@ -1,12 +1,12 @@
 'use strict';
 
 var _defineProperty = require("@babel/runtime/helpers/defineProperty");
-function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+function _classPrivateMethodInitSpec(e, a) { _checkPrivateRedeclaration(e, a), a.add(e); }
+function _checkPrivateRedeclaration(e, t) { if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object"); }
+function _assertClassBrand(e, t, n) { if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n; throw new TypeError("Private element is not present on this object"); }
 var axios = require('axios');
 var tool = require('./tool');
-var _getToken = /*#__PURE__*/new WeakSet();
+var _WorkWeixin_brand = /*#__PURE__*/new WeakSet();
 class WorkWeixin {
   constructor({
     corpid,
@@ -16,7 +16,7 @@ class WorkWeixin {
     key,
     proxy
   }) {
-    _classPrivateMethodInitSpec(this, _getToken);
+    _classPrivateMethodInitSpec(this, _WorkWeixin_brand);
     _defineProperty(this, "_CORPID", void 0);
     _defineProperty(this, "_SECRET", void 0);
     _defineProperty(this, "_AGENT_ID", void 0);
@@ -101,7 +101,7 @@ class WorkWeixin {
       };
     }
     if (!this._TOKEN) {
-      const result = await _classPrivateMethodGet(this, _getToken, _getToken2).call(this);
+      const result = await _assertClassBrand(_WorkWeixin_brand, this, _getToken).call(this);
       if (result.status !== 200) {
         return result;
       }
@@ -144,7 +144,7 @@ class WorkWeixin {
     }));
   }
 }
-async function _getToken2() {
+async function _getToken() {
   return axios.get(`https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${this._CORPID}&corpsecret=${this._SECRET}`).then(response => {
     if (response.data.access_token) {
       this._TOKEN = response.data.access_token;

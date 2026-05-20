@@ -3,6 +3,7 @@
 
 import { program } from 'commander';
 import { PushApi } from './index';
+import { QQBotEvent } from './QQBotEvent';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -73,6 +74,65 @@ program
     } catch (error: any) {
       console.error('发生错误:', error.message);
       console.error('错误详情:', error.stack);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('listen')
+  .description('通过 WebSocket 订阅并监听 QQ 机器人事件，接收到事件时输出到控制台')
+  .option('--app-id <id>', 'QQ 机器人 AppID')
+  .option('--app-secret <secret>', 'QQ 机器人 AppSecret')
+  .option('--intents <intents>', '订阅事件类型，逗号分隔', 'GUILDS,GUILD_MEMBERS,GUILD_MESSAGES,GUILD_MESSAGE_REACTIONS,DIRECT_MESSAGE,GROUP_AND_C2C_EVENT,INTERACTION,MESSAGE_AUDIT,FORUMS_EVENT,AUDIO_ACTION,PUBLIC_GUILD_MESSAGES')
+  .option('--shard <shard>', '分片参数，格式: index,total (如 0,1)', '0,1')
+  .option('--list-intents', '列出所有可用的 Intents 事件类型')
+  .action(async (options) => {
+    try {
+      if (options.listIntents) {
+        QQBotEvent.listIntents();
+        process.exit(0);
+      }
+
+      if (!options.appId) {
+        console.error('错误：必须提供 --app-id 参数！');
+        process.exit(1);
+      }
+      if (!options.appSecret) {
+        console.error('错误：必须提供 --app-secret 参数！');
+        process.exit(1);
+      }
+
+      const intentKeys = options.intents.split(',').map((s: string) => s.trim()).filter(Boolean);
+      const intents = QQBotEvent.parseIntents(intentKeys);
+      const shardParts = options.shard.split(',').map(Number);
+      if (shardParts.length !== 2 || shardParts.some(isNaN)) {
+        console.error('错误：--shard 格式必须为 "index,total"，如 "0,1"');
+        process.exit(1);
+      }
+      const shard: [number, number] = [shardParts[0], shardParts[1]];
+
+      console.error(`启动 QQ 机器人事件监听: intents=${intentKeys.join(',')}(${intents}), shard=[${shard}]`);
+      const event = new QQBotEvent({
+        appId: options.appId,
+        appSecret: options.appSecret,
+        intents,
+        shard
+      });
+
+      process.on('SIGINT', () => {
+        console.error('\n收到中断信号，正在关闭...');
+        event.stop();
+        process.exit(0);
+      });
+      process.on('SIGTERM', () => {
+        console.error('收到终止信号，正在关闭...');
+        event.stop();
+        process.exit(0);
+      });
+
+      await event.start();
+    } catch (error: any) {
+      console.error('发生错误:', error.message);
       process.exit(1);
     }
   });
