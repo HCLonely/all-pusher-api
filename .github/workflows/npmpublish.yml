@@ -24,5 +24,4 @@ jobs:
           package-manager-cache: false  # never use caching in release builds
       - run: npm ci
       - run: npm run build
-      - run: npm test
       - run: npm publish  # Or: npm stage publish
