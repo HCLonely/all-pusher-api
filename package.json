@@ -1,6 +1,6 @@
 {
   "name": "all-pusher-api",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "统一化推送服务API.",
   "main": "dist/index.js",
   "bin": {
@@ -20,8 +20,8 @@
     "@babel/runtime": "^7.24.0",
     "axios": "^1.6.7",
     "commander": "^13.1.0",
-    "nodemailer": "^8.0.7",
     "marked": "^18.0.4",
+    "nodemailer": "^8.0.7",
     "socks-proxy-agent": "^8.0.2",
     "tunnel": "^0.0.6",
     "ws": "^8.20.1"
@@ -34,7 +34,9 @@
     "@babel/plugin-transform-runtime": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
     "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^20.11.27",
     "@types/nodemailer": "^6.4.14",
     "@types/tunnel": "^0.0.7",

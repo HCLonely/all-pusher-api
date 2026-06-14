@@ -3,6 +3,8 @@ import json from '@rollup/plugin-json';
 import { getBabelOutputPlugin } from '@rollup/plugin-babel';
 import * as fs from 'fs';
 import path from 'path';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 const subModule = [
   './Custom',
@@ -77,7 +79,11 @@ export default () => fs.readdirSync('src').filter((fileName) => !['test.ts', 'bo
         plugins: [
           '@babel/plugin-transform-runtime'
         ]
-      })
+      }),
+      resolve({
+        preferBuiltins: false
+      }),
+      commonjs()
     ],
     external: fileName === 'index.ts' ? [...subModule, ...dependModule] : dependModule
   }));
