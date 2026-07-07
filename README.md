@@ -52,7 +52,7 @@ npm install all-pusher-api -S
 
 ## 使用
 
-> 具体参数说明请查看[说明文档](https://all-push-api.vercel.app/)
+> 具体参数说明请查看[说明文档](https://all-pusher-api.vercel.app/)
 
 ### Example
 
