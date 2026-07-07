@@ -4,5 +4,6 @@ test.*
 .vscode/
 .claude/
 examples
-
-docs
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+docs/.vitepress/*.log
