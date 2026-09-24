@@ -82,10 +82,7 @@ export default () => fs.readdirSync('src').filter((fileName) => !['test.ts', 'bo
       getBabelOutputPlugin({
         presets: [
           [
-            '@babel/preset-env',
-            {
-              targets: 'node 10'
-            }
+            '@babel/preset-env'
           ]
         ],
         plugins: [

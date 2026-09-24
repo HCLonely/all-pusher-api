@@ -53,16 +53,32 @@ const config = JSON.parse(process.env.CONFIG);
         }
       }
     },
-    // {
-    //   name: 'QQBot',
-    //   config: {
-    //     key: {
-    //       appId: config.QqChannel.appId,
-    //       appSecret: config.QqChannel.appSecret
-    //     },
-    //     userId: config.QqChannel.userId
-    //   }
-    // },
+    {
+      name: 'QQBot',
+      config: {
+        key: {
+          appId: config.QQBot.appId,
+          appSecret: config.QQBot.appSecret
+        },
+        userId: config.QQBot.userId
+      }
+    },
+    {
+      name: 'Qmsg',
+      config: {
+        key: {
+          token: config.Qmsg.token
+        }
+      }
+    },
+    {
+      name: 'NotifyX',
+      config: {
+        key: {
+          token: config.NotifyX.token
+        }
+      }
+    },
     {
       name: 'WorkWeixin',
       config: {

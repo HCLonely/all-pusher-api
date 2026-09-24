@@ -1,5 +1,6 @@
 'use strict';
 
+var _slicedToArray = require("@babel/runtime/helpers/slicedToArray");
 var tunnel = require('tunnel');
 var socksProxyAgent = require('socks-proxy-agent');
 function _interopNamespaceDefault(e) {
@@ -10,31 +11,39 @@ function _interopNamespaceDefault(e) {
         var d = Object.getOwnPropertyDescriptor(e, k);
         Object.defineProperty(n, k, d.get ? d : {
           enumerable: true,
-          get: function () {
+          get: function get() {
             return e[k];
           }
         });
       }
     });
   }
-  n.default = e;
+  n["default"] = e;
   return Object.freeze(n);
 }
 var tunnel__namespace = /*#__PURE__*/_interopNamespaceDefault(tunnel);
-const queryStringify = data => Object.entries(data).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-const proxy2httpsAgent = (proxy, protocol = 'https') => {
+var queryStringify = function queryStringify(data) {
+  return Object.entries(data).map(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      key = _ref2[0],
+      value = _ref2[1];
+    return "".concat(key, "=").concat(encodeURIComponent(value));
+  }).join('&');
+};
+var proxy2httpsAgent = function proxy2httpsAgent(proxy) {
+  var protocol = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'https';
   if (proxy.host && proxy.port) {
     var _proxy$protocol;
-    let agent;
+    var agent;
     if ((_proxy$protocol = proxy.protocol) !== null && _proxy$protocol !== void 0 && _proxy$protocol.includes('socks')) {
-      agent = new socksProxyAgent.SocksProxyAgent(`socks://${proxy.username && proxy.password ? `${proxy.username}:${proxy.password}@` : ''}${proxy.host}:${proxy.port}`);
+      agent = new socksProxyAgent.SocksProxyAgent("socks://".concat(proxy.username && proxy.password ? "".concat(proxy.username, ":").concat(proxy.password, "@") : '').concat(proxy.host, ":").concat(proxy.port));
     } else {
-      const proxyOptions = {
+      var proxyOptions = {
         host: proxy.host,
         port: proxy.port
       };
       if (proxy.username && proxy.password) {
-        proxyOptions.proxyAuth = `${proxy.username}:${proxy.password}`;
+        proxyOptions.proxyAuth = "".concat(proxy.username, ":").concat(proxy.password);
       }
       if (protocol === 'http') {
         if (proxy.protocol === 'https') {
