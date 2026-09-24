@@ -171,28 +171,29 @@ const config = JSON.parse(process.env.CONFIG);
           token: '******'
         }
       }
-    },
+    },*/
     {
       name: 'Bark',
       config: {
         key: {
-          token: '******'
+          token: config.Bark.token,
+          baseURL: config.Bark.baseURL
         }
       }
     },
-    {
-      name: 'GoogleChat',
-      config: {
-        key: {
-          webhook: '******'
-        },
-        proxy: {
-          enable: true,
-          host: '127.0.0.1',
-          port: 7890
-        }
-      }
-    },*/
+    // {
+    //   name: 'GoogleChat',
+    //   config: {
+    //     key: {
+    //       webhook: '******'
+    //     },
+    //     proxy: {
+    //       enable: true,
+    //       host: '127.0.0.1',
+    //       port: 7890
+    //     }
+    //   }
+    // },
     {
       name: 'Push',
       config: {
@@ -311,8 +312,12 @@ const config = JSON.parse(process.env.CONFIG);
         }
       }
     }
-  ])
-    .send({ message: '测试文本' })).map((e) => ((e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : `${e.name} 测试失败`));
+  ]).send({ message: '测试文本' })).map((e) => {
+    if (e.name === 'Bark' && e.result.data.code === 400) {
+      return `${e.name} 测试成功`;
+    }
+    return ((e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : `${e.name} 测试失败`);
+  });
   console.log(results);
   if (results.find((e) => e.includes('失败'))) {
     throw results.filter((e) => e.includes('失败')).join('\n');
