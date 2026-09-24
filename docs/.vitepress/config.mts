@@ -12,6 +12,7 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/getting-started' },
       { text: '推送服务', link: '/services' },
+      { text: '支持状态', link: '/platform-status' },
       { text: 'GitHub', link: 'https://github.com/HCLonely/all-pusher-api' }
     ],
     sidebar: [
@@ -27,6 +28,7 @@ export default defineConfig({
         text: '推送服务',
         items: [
           { text: '服务总览', link: '/services' },
+          { text: '支持状态', link: '/platform-status' },
           { text: 'Bark', link: '/services#bark' },
           { text: 'Chanify', link: '/services#chanify' },
           { text: 'DingTalk', link: '/services#dingtalk' },

@@ -1,10 +1,13 @@
 name: Api Test
 on:
+  workflow_dispatch:
   schedule:
     - cron: '36 11 * * 6'
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -14,7 +17,21 @@ jobs:
           node-version: 24.x
       - run: npm install
       - run: npm run build
+      - run: node --test test/platform-status.cjs
       - name: Test
+        id: api-test
         env:
           CONFIG: ${{secrets.CONFIG}}
         run: node test/all-push-api.js
+      - name: Update platform status documentation
+        if: ${{ !cancelled() && steps.api-test.outcome != 'skipped' }}
+        run: |
+          git add docs/platform-status.md
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: update platform test status"
+          git pull --rebase --autostash
+          git push

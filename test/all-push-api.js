@@ -1,96 +1,131 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
-const { PushApi } = require('../dist/index.js');
-const config = JSON.parse(process.env.CONFIG);
-(async () => {
-  const results = (await new PushApi([
+const fs = require('node:fs');
+const path = require('node:path');
+const { version } = require('../package.json');
+
+const docsDirectory = path.resolve(__dirname, '../docs');
+const reportPath = path.join(docsDirectory, 'platform-status.md');
+
+function getPlatforms() {
+  return [...fs.readFileSync(path.join(docsDirectory, 'services.md'), 'utf8')
+    .matchAll(/^## (\w+)\r?$/gm)].map((match) => match[1]);
+}
+
+function writeReport(results, outputPath = reportPath, testedAt = new Date().toISOString()) {
+  const rows = getPlatforms().map((name) => {
+    const status = results.get(name) || '⚠️无法测试';
+    return `| [${name}](./services#${name.toLowerCase()}) | ${status} |`;
+  });
+  fs.writeFileSync(outputPath, [
+    '# 推送平台支持状态',
+    '',
+    `当前版本：\`${version}\``,
+    '',
+    `测试时间（UTC）：${testedAt}`,
+    '',
+    '本页由 `test/all-push-api.js` 自动生成，展示本次测试结果。',
+    '',
+    '- ✅️成功：平台测试返回成功状态（200–299），或命中 Bark 返回 code 400 的既有特殊规则。',
+    '- ❌️失败：平台测试返回失败状态或执行异常。',
+    '- ⚠️无法测试：未配置测试凭据、未启用测试或不支持通过 PushApi 测试。',
+    '',
+    '无法测试不代表平台不受支持；失败也可能由凭据或网络问题引起。',
+    '',
+    '| 推送平台 | 支持状态 |',
+    '| --- | --- |',
+    ...rows,
+    ''
+  ].join('\n'));
+}
+
+function getTestConfigs(config) {
+  return [
     {
       name: 'ServerChanTurbo',
-      config: {
+      config: () => ({
         key: {
           token: config.ServerChanTurbo.token
         }
-      }
+      })
     },
     {
       name: 'PushDeer',
-      config: {
+      config: () => ({
         key: {
           token: config.PushDeer.token
         }
-      }
+      })
     },
     {
       name: 'WxPusher',
-      config: {
+      config: () => ({
         key: {
           token: config.WxPusher.token,
           uids: config.WxPusher.uids
         }
-      }
+      })
     },
     {
       name: 'PushPlus',
-      config: {
+      config: () => ({
         key: {
           token: config.PushPlus.token
         }
-      }
+      })
     },
     {
       name: 'Showdoc',
-      config: {
+      config: () => ({
         key: {
           token: config.Showdoc.token
         }
-      }
+      })
     },
     {
       name: 'Xizhi',
-      config: {
+      config: () => ({
         key: {
           token: config.Xizhi.token
         }
-      }
+      })
     },
     {
       name: 'QQBot',
-      config: {
+      config: () => ({
         key: {
           appId: config.QQBot.appId,
           appSecret: config.QQBot.appSecret
         },
         userId: config.QQBot.userId
-      }
+      })
     },
     {
       name: 'Qmsg',
-      config: {
+      config: () => ({
         key: {
           token: config.Qmsg.token
         }
-      }
+      })
     },
     {
       name: 'NotifyX',
-      config: {
+      config: () => ({
         key: {
           token: config.NotifyX.token
         }
-      }
+      })
     },
     {
       name: 'WorkWeixin',
-      config: {
+      config: () => ({
         corpid: config.WorkWeixin.corpid,
         secret: config.WorkWeixin.secret,
         agentid: config.WorkWeixin.agentid,
         touser: config.WorkWeixin.touser
-      }
+      })
     },
     {
       name: 'Mail',
-      config: {
+      config: () => ({
         key: {
           host: config.Mail.host,
           port: 465,
@@ -104,222 +139,206 @@ const config = JSON.parse(process.env.CONFIG);
           from: config.Mail.from,
           to: config.Mail.to
         }
-      }
+      })
     },
     {
       name: 'TelegramBot',
-      config: {
+      config: () => ({
         token: config.TelegramBot.token,
         chat_id: config.TelegramBot.chat_id
-      }
+      })
     },
     {
       name: 'DingTalk',
-      config: {
+      config: () => ({
         key: {
           token: config.DingTalk.token,
           secret: config.DingTalk.secret
         }
-      }
+      })
     },
     {
       name: 'FeiShu',
-      config: {
+      config: () => ({
         key: {
           token: config.FeiShu.token,
           secret: config.FeiShu.secret
         }
-      }
+      })
     },
     {
       name: 'Discord',
-      config: {
+      config: () => ({
         webhook: config.Discord.webhook
-      }
+      })
     },
-    // {
-    //   name: 'GoCqhttp',
-    //   config: {
-    //     key: {
-    //       token: config.GoCqhttp.token,
-    //       baseUrl: config.GoCqhttp.baseUrl,
-    //       user_id: config.GoCqhttp.user_id
-    //     }
-    //   }
-    // },
     {
       name: 'IGot',
-      config: {
+      config: () => ({
         key: {
           token: config.IGot.token
         }
-      }
+      })
     },
     {
       name: 'WorkWeixinBot',
-      config: {
+      config: () => ({
         key: {
           webhook: config.WorkWeixinBot.webhook
         }
-      }
+      })
     },
-    /*
-    {
-      name: 'Chanify',
-      config: {
-        key: {
-          token: '******'
-        }
-      }
-    },*/
+
     {
       name: 'Bark',
-      config: {
+      config: () => ({
         key: {
           token: config.Bark.token,
           baseURL: config.Bark.baseURL
         }
-      }
+      })
     },
-    // {
-    //   name: 'GoogleChat',
-    //   config: {
-    //     key: {
-    //       webhook: '******'
-    //     },
-    //     proxy: {
-    //       enable: true,
-    //       host: '127.0.0.1',
-    //       port: 7890
-    //     }
-    //   }
-    // },
     {
       name: 'Push',
-      config: {
+      config: () => ({
         key: {
           token: config.Push.token
         }
-      }
+      })
     },
     {
       name: 'Slack',
-      config: {
+      config: () => ({
         key: {
           webhook: config.Slack.webhook
         }
-      }
+      })
     },
     {
       name: 'Pushback',
-      config: {
+      config: () => ({
         key: {
           token: config.Pushback.token,
           userId: config.Pushback.userId
         }
-      }
+      })
     },
     {
       name: 'Zulip',
-      config: {
+      config: () => ({
         key: {
           site: config.Zulip.site,
           token: config.Zulip.token,
           email: config.Zulip.email,
           to: config.Zulip.to
         }
-      }
-    }, /*
-    {
-      name: 'RocketChat',
-      config: {
-        key: {
-          webhook: '******'
-        }
-      }
-    },*/
+      })
+    },
     {
       name: 'Pushover',
-      config: {
+      config: () => ({
         key: {
           token: config.Pushover.token,
           user: config.Pushover.user
         }
-      }
+      })
     },
     {
       name: 'Iyuu',
-      config: {
+      config: () => ({
         key: {
           token: config.Iyuu.token
         }
-      }
+      })
     },
     {
       name: 'Ntfy',
-      config: {
+      config: () => ({
         key: {
           token: config.Ntfy.token
         }
-      }
+      })
     },
     {
       name: 'YiFengChuanHua',
-      config: {
+      config: () => ({
         key: {
           token: config.YiFengChuanHua.token
         }
-      }
+      })
     },
     {
       name: 'WPush',
-      config: {
+      config: () => ({
         key: {
           token: config.WPush.token
         }
-      }
+      })
     },
     {
       name: 'PushBullet',
-      config: {
+      config: () => ({
         key: {
           token: config.PushBullet.token
         }
-      }
+      })
     },
     {
       name: 'SimplePush',
-      config: {
+      config: () => ({
         key: {
           token: config.SimplePush.token
         }
-      }
+      })
     },
-    // {
-    //   name: 'AnPush',
-    //   config: {
-    //     key: {
-    //       token: config.AnPush.token,
-    //       channel: config.AnPush.channel
-    //     }
-    //   }
-    // },
     {
       name: 'PushMe',
-      config: {
+      config: () => ({
         key: {
           token: config.PushMe.token
         }
-      }
+      })
     }
-  ]).send({ message: '测试文本' })).map((e) => {
-    if (e.name === 'Bark' && e.result.data.code === 400) {
-      return `${e.name} 测试成功`;
+  ].filter(({ name }) => config[name] && typeof config[name] === 'object' &&
+    Object.values(config[name]).some((value) => value !== '' && value !== null && value !== undefined));
+}
+
+async function runTests(config, PushApi, outputPath = reportPath) {
+  const results = new Map();
+  await Promise.all(getTestConfigs(config).map(async ({ name, config: createConfig }) => {
+    try {
+      const api = new PushApi([{ name, config: createConfig() }]);
+      const responses = await api.send({ message: '测试文本' });
+      const response = responses.find((entry) => entry.name === name);
+      if (!response) return;
+      const status = response.result?.status;
+      // Preserve Bark's code 400 exception, including the current wrapped response format.
+      const barkSuccess = name === 'Bark' &&
+        (response.result?.data?.code === 400 || response.result?.extraMessage?.data?.code === 400);
+      results.set(name, (barkSuccess || (status >= 200 && status < 300)) ? '✅️成功' : '❌️失败');
+    } catch {
+      results.set(name, '❌️失败');
     }
-    return ((e.result.status >= 200 && e.result.status < 300) ? `${e.name} 测试成功` : `${e.name} 测试失败`);
+  }));
+  // Persist failures before setting the process exit code; never write credentials or API responses.
+  writeReport(results, outputPath);
+  return results;
+}
+
+if (require.main === module) {
+  (async () => {
+    const config = JSON.parse(process.env.CONFIG || '{}');
+    if (!config || typeof config !== 'object' || Array.isArray(config)) {
+      throw new Error('CONFIG must be a JSON object');
+    }
+    const { PushApi } = require('../dist/index.js');
+    const results = await runTests(config, PushApi);
+    console.log(getPlatforms().map((name) => `${name} ${results.get(name) || '⚠️无法测试'}`).join('\n'));
+    if ([...results.values()].includes('❌️失败')) process.exitCode = 1;
+  })().catch(() => {
+    console.error('测试脚本执行失败，请检查 CONFIG 格式、构建产物和文档写入权限。');
+    process.exitCode = 1;
   });
-  console.log(results);
-  if (results.find((e) => e.includes('失败'))) {
-    throw results.filter((e) => e.includes('失败')).join('\n');
-  }
-})();
+}
+
+module.exports = { runTests, writeReport };
