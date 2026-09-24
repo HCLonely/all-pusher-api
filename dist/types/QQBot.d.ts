@@ -25,7 +25,7 @@ declare class QQBot {
     protected _CLIENT_SECRET: string;
     protected _TOKEN?: string;
     protected _TOKEN_EXPIRE_AT: number;
-    readonly tokenURL = "https://bots.qq.com/app/getAppAccessToken";
+    readonly tokenURL = "https://api.bot.qq.com/app/getAppAccessToken";
     readonly baseUrl: string;
     httpsAgent?: AxiosRequestConfig['httpsAgent'];
     userId?: string;

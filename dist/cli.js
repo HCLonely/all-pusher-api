@@ -1336,6 +1336,108 @@ class GoCqhttp {
     }));
   }
 }
+class Qmsg {
+  constructor({
+    token,
+    group,
+    key,
+    proxy
+  }) {
+    _defineProperty(this, "_KEY", void 0);
+    _defineProperty(this, "_GROUP", void 0);
+    _defineProperty(this, "baseURL", 'https://qmsg.zendee.cn/v3/jsend/');
+    _defineProperty(this, "httpsAgent", void 0);
+    const $key = {
+      token,
+      group,
+      ...key
+    };
+    if (!$key.token) {
+      throw new Error('Missing Parameter: token');
+    }
+    this._KEY = $key.token;
+    this._GROUP = $key.group;
+    if (proxy && proxy.enable) {
+      this.httpsAgent = tool.proxy2httpsAgent(proxy);
+    }
+  }
+  async send(sendOptions) {
+    if (!sendOptions.message && !sendOptions.customOptions) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: message',
+        extraMessage: null
+      };
+    }
+    let qmsgOptions;
+    if (sendOptions.customOptions) {
+      qmsgOptions = {
+        ...sendOptions.customOptions
+      };
+    } else {
+      qmsgOptions = {
+        msg: sendOptions.title ? `${sendOptions.title}\n${sendOptions.message}` : sendOptions.message
+      };
+      if (this._GROUP) {
+        qmsgOptions.group = this._GROUP;
+      }
+    }
+    qmsgOptions = {
+      ...qmsgOptions,
+      ...sendOptions.extraOptions
+    };
+    if (typeof qmsgOptions.msg !== 'string' || !qmsgOptions.msg.trim()) {
+      return {
+        status: 0,
+        statusText: 'Missing Parameter: msg',
+        extraMessage: null
+      };
+    }
+    if (qmsgOptions.msg.length > 1000) {
+      return {
+        status: 103,
+        statusText: 'Invalid Parameter: msg exceeds 1000 characters',
+        extraMessage: null
+      };
+    }
+    const axiosOptions = {
+      url: `${this.baseURL}${encodeURIComponent(this._KEY)}`,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      data: qmsgOptions
+    };
+    if (this.httpsAgent) {
+      axiosOptions.httpsAgent = this.httpsAgent;
+    }
+    return axios(axiosOptions).then(response => {
+      if (!response.data) {
+        return {
+          status: 101,
+          statusText: 'No Response Data',
+          extraMessage: response
+        };
+      }
+      if (response.data.success === true) {
+        return {
+          status: 200,
+          statusText: 'Success',
+          extraMessage: response
+        };
+      }
+      return {
+        status: 100,
+        statusText: 'Error',
+        extraMessage: response
+      };
+    }).catch(error => ({
+      status: 102,
+      statusText: 'Request Error',
+      extraMessage: error
+    }));
+  }
+}
 class WorkWeixinBot {
   constructor({
     webhook,
@@ -2850,7 +2952,7 @@ class QQBot {
     _defineProperty(this, "_CLIENT_SECRET", void 0);
     _defineProperty(this, "_TOKEN", void 0);
     _defineProperty(this, "_TOKEN_EXPIRE_AT", 0);
-    _defineProperty(this, "tokenURL", 'https://bots.qq.com/app/getAppAccessToken');
+    _defineProperty(this, "tokenURL", 'https://api.bot.qq.com/app/getAppAccessToken');
     _defineProperty(this, "baseUrl", void 0);
     _defineProperty(this, "httpsAgent", void 0);
     _defineProperty(this, "userId", void 0);
@@ -2875,7 +2977,7 @@ class QQBot {
     }
     this._APP_ID = $key.appId;
     this._CLIENT_SECRET = $key.appSecret;
-    this.baseUrl = $key.baseUrl || 'https://api.sgroup.qq.com';
+    this.baseUrl = $key.baseUrl || 'https://api.bot.qq.com';
     this.userId = $key.userId;
     this.groupId = $key.groupId;
     this.channelId = $key.channelId;
@@ -2977,7 +3079,7 @@ class QQBot {
         }
         return {
           status: 100,
-          statusText: 'Error',
+          statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Error', response.data),
           extraMessage: response
         };
       }
@@ -2987,7 +3089,7 @@ class QQBot {
         extraMessage: response
       };
     }).catch(error => {
-      var _error$response;
+      var _error$response, _error$response2;
       if ((error === null || error === void 0 || (_error$response = error.response) === null || _error$response === void 0 || (_error$response = _error$response.data) === null || _error$response === void 0 ? void 0 : _error$response.code) === 304023) {
         return {
           status: 201,
@@ -2997,7 +3099,7 @@ class QQBot {
       }
       return {
         status: 102,
-        statusText: 'Request Error',
+        statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Request Error', error === null || error === void 0 || (_error$response2 = error.response) === null || _error$response2 === void 0 ? void 0 : _error$response2.data),
         extraMessage: error
       };
     });
@@ -3032,14 +3134,22 @@ async function _getToken2() {
     }
     return {
       status: 104,
-      statusText: 'Get "access_token" Failed',
+      statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Get "access_token" Failed', response.data),
       extraMessage: response
     };
-  }).catch(error => ({
-    status: 104,
-    statusText: 'Get "access_token" Failed',
-    extraMessage: error
-  }));
+  }).catch(error => {
+    var _error$response3;
+    return {
+      status: 104,
+      statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Get "access_token" Failed', error === null || error === void 0 || (_error$response3 = error.response) === null || _error$response3 === void 0 ? void 0 : _error$response3.data),
+      extraMessage: error
+    };
+  });
+}
+function _errorText(prefix, data) {
+  if (!data || typeof data !== 'object') return prefix;
+  const details = [data.code !== undefined ? `code=${data.code}` : '', data.err_code !== undefined ? `err_code=${data.err_code}` : '', typeof data.message === 'string' ? data.message : ''].filter(Boolean);
+  return details.length ? `${prefix}: ${details.join(', ')}` : prefix;
 }
 const pusherMap = {
   serverchanturbo: ServerChanTurbo,
@@ -3057,7 +3167,7 @@ const pusherMap = {
   xizhi: Xizhi,
   discord: Discord,
   gocqhttp: GoCqhttp,
-  // qmsg: Qmsg,
+  qmsg: Qmsg,
   workweixinbot: WorkWeixinBot,
   chanify: Chanify,
   bark: Bark,

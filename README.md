@@ -7,7 +7,7 @@
 ## 已支持平台
 
 - [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp) -- GoCqhttp
-- ~~[QQ(Qmsg)](https://qmsg.zendee.cn/api) -- Qmsg~~
+- [QQ(Qmsg)](https://qmsg.zendee.cn/docs/) -- Qmsg（单聊 / 群聊）
 - [QQ 官方机器人](https://bot.q.qq.com/wiki/develop/api-v2/) -- QQBot(主动推送能力差)
 - [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access) -- DingTalk
 - [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message) -- Discord
@@ -183,7 +183,7 @@ allpush send -h
 - 爱语飞飞: 'text'
 - SimplePush: 'text'
 - QQ(go-cqhttp): 'text', 'other'
-- ~~Qmsg: 'text', 'other'~~
+- Qmsg: 'text'
 - Discord: 'text', 'other'
 - 飞书: 'text', 'other'
 - PushBullet: 'text', 'other'

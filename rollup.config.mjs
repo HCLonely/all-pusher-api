@@ -22,10 +22,10 @@ const subModule = [
   './WorkWeixin',
   './WxPusher',
   './Xizhi',
-  // './Qmsg',
+  './Qmsg',
   './WorkWeixinBot',
   // './NowPush',
-  './iGot',
+  // './iGot',
   './Chanify',
   './Bark',
   './GoogleChat',
@@ -63,7 +63,16 @@ export default () => fs.readdirSync('src').filter((fileName) => !['test.ts', 'bo
       json(),
       typescript({
         removeComments: true,
-        useTsconfigDeclarationDir: true,
+        // Each entry owns its rolling cache directories.
+        cacheRoot: path.join('node_modules', '.cache', 'rollup-plugin-typescript2', fileName),
+        // Emit declarations once via build:types, not once for every Rollup entry.
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: false,
+            declarationDir: null,
+            declarationMap: false
+          }
+        },
         include: [/.*\.ts$/],
         exclude: [/\.d\.ts$/]
       }),

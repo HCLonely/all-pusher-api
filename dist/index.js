@@ -14,6 +14,7 @@ var Showdoc = require('./Showdoc');
 var Xizhi = require('./Xizhi');
 var Discord = require('./Discord');
 var GoCqhttp = require('./GoCqhttp');
+var Qmsg = require('./Qmsg');
 var WorkWeixinBot = require('./WorkWeixinBot');
 var Chanify = require('./Chanify');
 var Bark = require('./Bark');
@@ -48,7 +49,7 @@ const pusherMap = {
   xizhi: Xizhi.Xizhi,
   discord: Discord.Discord,
   gocqhttp: GoCqhttp.GoCqhttp,
-  // qmsg: Qmsg,
+  qmsg: Qmsg.Qmsg,
   workweixinbot: WorkWeixinBot.WorkWeixinBot,
   chanify: Chanify.Chanify,
   bark: Bark.Bark,

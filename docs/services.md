@@ -506,6 +506,41 @@ await new PushPlus({
 
 支持类型：`text`、`markdown`、`html`。默认请求体包含 `token`、`title`、`content`、`template`。
 
+## Qmsg
+
+类名：`Qmsg`，`PushApi` 和 CLI 使用名称 `Qmsg`（不区分大小写）。
+
+官方 API 文档：[Qmsg v3](https://qmsg.zendee.cn/docs/)
+
+| 配置项 | 必填 | 说明 |
+| --- | --- | --- |
+| `key.token` | 是 | 控制台获取的 API Key，需先完成机器人好友绑定。 |
+| `key.group` | 否 | 目标 QQ 群号字符串，需先在控制台添加并绑定群；省略时发送到绑定的单聊。 |
+| `proxy` | 否 | [统一代理配置](./guide/api.md#代理)。 |
+
+`token` 和 `group` 也可放在配置顶层，`key` 中的同名配置优先。
+
+```js
+const { Qmsg } = require('all-pusher-api/dist/Qmsg');
+
+const pusher = new Qmsg({ key: { token: 'YOUR_API_KEY' } });
+await pusher.send({ message: '任务完成' });
+// 群推送也可通过 key.group 设置默认目标。
+await pusher.send({ message: '任务完成', extraOptions: { group: '123456789' } });
+```
+
+CLI 配置文件示例：
+
+```json
+[{ "name": "Qmsg", "config": { "key": { "token": "YOUR_API_KEY", "group": "123456789" } } }]
+```
+
+支持类型：`text`。使用 `POST https://qmsg.zendee.cn/v3/jsend/{key}`，JSON 请求体为 `{ msg, group? }`。有标题时以换行拼接到正文前。最终消息不能为空或超过 1000 个字符（包含标题和换行），超长返回 `103`，不自动截断或拆分。
+
+`extraOptions` 可以覆盖 `msg` 和 `group`。`customOptions` 完全替换默认请求体（也不继承配置中的群号），例如 `{ msg: '任务完成', group: '123456789' }`；之后仍会合并 `extraOptions`。
+
+根据响应的 `success === true` 返回 `200`，表示请求已受理，实际投递为异步处理；消息 ID 在 `result.extraMessage.data.data`。本适配器不自动轮询状态或重试。普通服务同一 Key 每 5 秒最多提交一次、每日最多 500 次，调用方需控制频率。
+
 ## QQBot
 
 类名：`QQBot`
@@ -519,7 +554,7 @@ await new PushPlus({
 | `key.userId` | 否 | 单聊目标用户 openid。 |
 | `key.groupId` | 否 | 群聊目标群 openid。 |
 | `key.channelId` | 否 | 频道子频道 ID。 |
-| `key.baseUrl` | 否 | QQ Bot API 地址，通常无需修改。 |
+| `key.baseUrl` | 否 | QQ Bot API 地址，默认 `https://api.bot.qq.com`，通常无需修改。 |
 
 ```js
 const { QQBot } = require('all-pusher-api/dist/QQBot');
@@ -538,6 +573,10 @@ await new QQBot({
 `userId`、`groupId`、`channelId` 至少提供一个，也可以在发送时通过 `extraOptions` 或 `customOptions` 指定。
 
 支持类型：`text`、`markdown`、`other`。QQ 官方机器人主动推送能力受平台权限限制。
+
+单聊的 `userId` 请使用当前机器人收到的 `C2C_MESSAGE_CREATE` 事件中的 `d.author.user_openid`，参见[官方单聊事件文档](https://bot.q.qq.com/wiki/develop/api-v2/autogen/event/c2c_message_create.html)。不要使用 QQ 号、群成员 ID 或其他机器人的用户标识。
+
+请求失败时，`statusText` 会包含 QQ 返回的业务错误码及描述；完整响应体可从 `extraMessage.response.data` 获取。例如 HTTP 400、`code=11255`、`err_code=40011028` 表示服务端返回“请求的资源不存在(用户/群已注销)”，应核对目标 OpenID 和机器人，而不是反复刷新 Access Token。
 
 ## RocketChat
 

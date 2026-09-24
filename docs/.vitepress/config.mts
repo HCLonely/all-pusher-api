@@ -35,6 +35,7 @@ export default defineConfig({
           { text: 'GoCqhttp', link: '/services#gocqhttp' },
           { text: 'GoogleChat', link: '/services#googlechat' },
           { text: 'Mail', link: '/services#mail' },
+          { text: 'Qmsg', link: '/services#qmsg' },
           { text: 'QQBot', link: '/services#qqbot' },
           { text: 'TelegramBot', link: '/services#telegrambot' },
           { text: 'WorkWeixin', link: '/services#workweixin' },

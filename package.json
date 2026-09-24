@@ -9,7 +9,9 @@
   "scripts": {
     "test": "node test/test.js",
     "test:unit": "node --test test/regressions.js",
-    "build": "rollup --config rollup.config.mjs",
+    "test:qmsg": "node --test test/qmsg.js",
+    "build": "npm run build:types && rollup --config rollup.config.mjs",
+    "build:types": "tsc --project tsconfig.json --emitDeclarationOnly",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"

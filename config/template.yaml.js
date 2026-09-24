@@ -827,6 +827,49 @@
         password:
           name: 代理密码
           type: text
+- name: Qmsg
+  type: json
+  filename: copy
+  quote: Qmsg 配置参数生成器
+  author: HCLonely
+  body:
+    key:
+      name: 认证信息
+      type: object
+      body:
+        token:
+          name: token
+          desp: 在 https://qmsg.zendee.cn 控制台获取 API Key，并完成机器人绑定.
+          type: text
+          required: true
+        group:
+          name: QQ 群号(可选)
+          desp: 留空发送到绑定单聊；群推送需先在控制台添加并绑定群.
+          type: text
+    proxy:
+      name: 代理设置(可选)
+      type: object
+      body:
+        enable:
+          name: 启用
+          type: boolean
+          defaultValue: false
+        protocol:
+          name: 代理协议
+          type: text
+          defaultValue: http
+        host:
+          name: 代理主机地址
+          type: text
+        port:
+          name: 代理端口
+          type: text
+        username:
+          name: 代理用户名
+          type: text
+        password:
+          name: 代理密码
+          type: text
 - name: Showdoc
   type: json
   filename: copy

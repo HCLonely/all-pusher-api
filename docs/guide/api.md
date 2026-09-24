@@ -17,7 +17,7 @@ new PushApi([
 ]);
 ```
 
-`name` 不区分大小写，当前入口支持的名称包括 `ServerChanTurbo`、`PushDeer`、`TelegramBot`、`DingTalk`、`WxPusher`、`Mail`、`FeiShu`、`WorkWeixin`、`PushPlus`、`Showdoc`、`Xizhi`、`Discord`、`GoCqhttp`、`WorkWeixinBot`、`Chanify`、`Bark`、`GoogleChat`、`Push`、`Slack`、`Pushback`、`Zulip`、`RocketChat`、`Pushover`、`Iyuu`、`Ntfy`、`YiFengChuanHua`、`WPush`、`PushBullet`、`SimplePush`、`PushMe`、`QQBot`。
+`name` 不区分大小写，当前入口支持的名称包括 `ServerChanTurbo`、`PushDeer`、`TelegramBot`、`DingTalk`、`WxPusher`、`Mail`、`FeiShu`、`WorkWeixin`、`PushPlus`、`Showdoc`、`Xizhi`、`Discord`、`GoCqhttp`、`Qmsg`、`WorkWeixinBot`、`Chanify`、`Bark`、`GoogleChat`、`Push`、`Slack`、`Pushback`、`Zulip`、`RocketChat`、`Pushover`、`Iyuu`、`Ntfy`、`YiFengChuanHua`、`WPush`、`PushBullet`、`SimplePush`、`PushMe`、`QQBot`。
 
 ## sendOptions
 

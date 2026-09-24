@@ -37,7 +37,7 @@ class QQBot {
   protected _CLIENT_SECRET: string;
   protected _TOKEN?: string;
   protected _TOKEN_EXPIRE_AT = 0;
-  readonly tokenURL = 'https://bots.qq.com/app/getAppAccessToken';
+  readonly tokenURL = 'https://api.bot.qq.com/app/getAppAccessToken';
   readonly baseUrl: string;
   httpsAgent?: AxiosRequestConfig['httpsAgent'];
   userId?: string;
@@ -65,7 +65,7 @@ class QQBot {
 
     this._APP_ID = $key.appId;
     this._CLIENT_SECRET = $key.appSecret;
-    this.baseUrl = $key.baseUrl || 'https://api.sgroup.qq.com';
+    this.baseUrl = $key.baseUrl || 'https://api.bot.qq.com';
     this.userId = $key.userId;
     this.groupId = $key.groupId;
     this.channelId = $key.channelId;
@@ -176,7 +176,7 @@ class QQBot {
         }
         return {
           status: 100,
-          statusText: 'Error',
+          statusText: this.#errorText('Error', response.data),
           extraMessage: response
         };
       }
@@ -195,7 +195,7 @@ class QQBot {
       }
       return {
         status: 102,
-        statusText: 'Request Error',
+        statusText: this.#errorText('Request Error', error?.response?.data),
         extraMessage: error
       };
     });
@@ -230,14 +230,24 @@ class QQBot {
       }
       return {
         status: 104,
-        statusText: 'Get "access_token" Failed',
+        statusText: this.#errorText('Get "access_token" Failed', response.data),
         extraMessage: response
       };
     }).catch((error) => ({
       status: 104,
-      statusText: 'Get "access_token" Failed',
+      statusText: this.#errorText('Get "access_token" Failed', error?.response?.data),
       extraMessage: error
     }));
+  }
+
+  #errorText(prefix: string, data: any): string {
+    if (!data || typeof data !== 'object') return prefix;
+    const details = [
+      data.code !== undefined ? `code=${data.code}` : '',
+      data.err_code !== undefined ? `err_code=${data.err_code}` : '',
+      typeof data.message === 'string' ? data.message : ''
+    ].filter(Boolean);
+    return details.length ? `${prefix}: ${details.join(', ')}` : prefix;
   }
 }
 

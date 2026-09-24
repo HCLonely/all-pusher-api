@@ -12,7 +12,7 @@ import { Showdoc } from './Showdoc';
 import { Xizhi } from './Xizhi';
 import { Discord } from './Discord';
 import { GoCqhttp } from './GoCqhttp';
-// import { Qmsg } from './Qmsg';
+import { Qmsg } from './Qmsg';
 import { WorkWeixinBot } from './WorkWeixinBot';
 import { Chanify } from './Chanify';
 import { Bark } from './Bark';
@@ -53,7 +53,7 @@ const pusherMap: Record<string, PusherClass> = {
   xizhi: Xizhi,
   discord: Discord,
   gocqhttp: GoCqhttp,
-  // qmsg: Qmsg,
+  qmsg: Qmsg,
   workweixinbot: WorkWeixinBot,
   chanify: Chanify,
   bark: Bark,

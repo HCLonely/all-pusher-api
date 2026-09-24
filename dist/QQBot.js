@@ -23,7 +23,7 @@ class QQBot {
     _defineProperty(this, "_CLIENT_SECRET", void 0);
     _defineProperty(this, "_TOKEN", void 0);
     _defineProperty(this, "_TOKEN_EXPIRE_AT", 0);
-    _defineProperty(this, "tokenURL", 'https://bots.qq.com/app/getAppAccessToken');
+    _defineProperty(this, "tokenURL", 'https://api.bot.qq.com/app/getAppAccessToken');
     _defineProperty(this, "baseUrl", void 0);
     _defineProperty(this, "httpsAgent", void 0);
     _defineProperty(this, "userId", void 0);
@@ -48,7 +48,7 @@ class QQBot {
     }
     this._APP_ID = $key.appId;
     this._CLIENT_SECRET = $key.appSecret;
-    this.baseUrl = $key.baseUrl || 'https://api.sgroup.qq.com';
+    this.baseUrl = $key.baseUrl || 'https://api.bot.qq.com';
     this.userId = $key.userId;
     this.groupId = $key.groupId;
     this.channelId = $key.channelId;
@@ -150,7 +150,7 @@ class QQBot {
         }
         return {
           status: 100,
-          statusText: 'Error',
+          statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Error', response.data),
           extraMessage: response
         };
       }
@@ -160,7 +160,7 @@ class QQBot {
         extraMessage: response
       };
     }).catch(error => {
-      var _error$response;
+      var _error$response, _error$response2;
       if ((error === null || error === void 0 || (_error$response = error.response) === null || _error$response === void 0 || (_error$response = _error$response.data) === null || _error$response === void 0 ? void 0 : _error$response.code) === 304023) {
         return {
           status: 201,
@@ -170,7 +170,7 @@ class QQBot {
       }
       return {
         status: 102,
-        statusText: 'Request Error',
+        statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Request Error', error === null || error === void 0 || (_error$response2 = error.response) === null || _error$response2 === void 0 ? void 0 : _error$response2.data),
         extraMessage: error
       };
     });
@@ -205,13 +205,21 @@ async function _getToken() {
     }
     return {
       status: 104,
-      statusText: 'Get "access_token" Failed',
+      statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Get "access_token" Failed', response.data),
       extraMessage: response
     };
-  }).catch(error => ({
-    status: 104,
-    statusText: 'Get "access_token" Failed',
-    extraMessage: error
-  }));
+  }).catch(error => {
+    var _error$response3;
+    return {
+      status: 104,
+      statusText: _assertClassBrand(_QQBot_brand, this, _errorText).call(this, 'Get "access_token" Failed', error === null || error === void 0 || (_error$response3 = error.response) === null || _error$response3 === void 0 ? void 0 : _error$response3.data),
+      extraMessage: error
+    };
+  });
+}
+function _errorText(prefix, data) {
+  if (!data || typeof data !== 'object') return prefix;
+  const details = [data.code !== undefined ? `code=${data.code}` : '', data.err_code !== undefined ? `err_code=${data.err_code}` : '', typeof data.message === 'string' ? data.message : ''].filter(Boolean);
+  return details.length ? `${prefix}: ${details.join(', ')}` : prefix;
 }
 exports.QQBot = QQBot;
