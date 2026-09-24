@@ -121,16 +121,16 @@ const config = JSON.parse(process.env.CONFIG);
         webhook: config.Discord.webhook
       }
     },
-    {
-      name: 'GoCqhttp',
-      config: {
-        key: {
-          token: config.GoCqhttp.token,
-          baseUrl: config.GoCqhttp.baseUrl,
-          user_id: config.GoCqhttp.user_id
-        }
-      }
-    },
+    // {
+    //   name: 'GoCqhttp',
+    //   config: {
+    //     key: {
+    //       token: config.GoCqhttp.token,
+    //       baseUrl: config.GoCqhttp.baseUrl,
+    //       user_id: config.GoCqhttp.user_id
+    //     }
+    //   }
+    // },
     {
       name: 'IGot',
       config: {

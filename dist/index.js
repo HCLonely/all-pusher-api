@@ -90,8 +90,8 @@ class PushApi {
       pusher
     }) => {
       try {
-        var _sendOptions$find;
-        const options = Array.isArray(sendOptions) ? (_sendOptions$find = sendOptions.find(option => option.name === name || option.name === 'default')) === null || _sendOptions$find === void 0 ? void 0 : _sendOptions$find.options : sendOptions;
+        var _sendOptions$find$opt, _sendOptions$find, _sendOptions$find2;
+        const options = Array.isArray(sendOptions) ? (_sendOptions$find$opt = (_sendOptions$find = sendOptions.find(option => option.name === name)) === null || _sendOptions$find === void 0 ? void 0 : _sendOptions$find.options) !== null && _sendOptions$find$opt !== void 0 ? _sendOptions$find$opt : (_sendOptions$find2 = sendOptions.find(option => option.name === 'default')) === null || _sendOptions$find2 === void 0 ? void 0 : _sendOptions$find2.options : sendOptions;
         if (!options) {
           return {
             name,

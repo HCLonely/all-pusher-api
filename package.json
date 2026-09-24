@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "node test/test.js",
+    "test:unit": "node --test test/regressions.js",
     "build": "rollup --config rollup.config.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",

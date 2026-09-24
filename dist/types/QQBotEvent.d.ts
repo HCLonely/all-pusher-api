@@ -23,6 +23,9 @@ declare class QQBotEvent {
     private lastSeq;
     private heartbeatInterval?;
     private heartbeatMs;
+    private stopped;
+    private generation;
+    private reconnectTimer?;
     constructor(config: QQBotEventConfig);
     start(): Promise<void>;
     stop(): void;

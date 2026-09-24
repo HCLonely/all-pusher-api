@@ -105,7 +105,8 @@ class PushApi {
       this.pushers.map(async ({ name, pusher }) => {
         try {
           const options = Array.isArray(sendOptions) ?
-            sendOptions.find((option) => option.name === name || option.name === 'default')?.options :
+            (sendOptions.find((option) => option.name === name)?.options ??
+              sendOptions.find((option) => option.name === 'default')?.options) :
             sendOptions;
 
           if (!options) {

@@ -56,7 +56,7 @@ class Mail {
         ...this.options,
         subject: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10)
       };
-      if (sendOptions.type === 'text') {
+      if (!sendOptions.type || sendOptions.type === 'text') {
         mailOptions.text = sendOptions.message;
       }
       if (sendOptions.type === 'markdown') {

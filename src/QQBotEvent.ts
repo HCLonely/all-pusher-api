@@ -54,6 +54,10 @@ class QQBotEvent {
   // eslint-disable-next-line no-undef
   private heartbeatInterval?: NodeJS.Timeout;
   private heartbeatMs = 45000;
+  private stopped = true;
+  private generation = 0;
+  // eslint-disable-next-line no-undef
+  private reconnectTimer?: NodeJS.Timeout;
 
   constructor(config: QQBotEventConfig) {
     if (!config.appId) throw new Error('Missing Parameter: appId');
@@ -71,19 +75,33 @@ class QQBotEvent {
   }
 
   async start(): Promise<void> {
-    await this.#ensureToken();
-    const wssUrl = await this.#getGatewayUrl();
-    this.#log('info', `Gateway URL: ${wssUrl}`);
-    this.#connect(wssUrl);
+    if (!this.stopped) return;
+    this.stopped = false;
+    const { generation } = this;
+    try {
+      const wssUrl = await this.#getGatewayUrl();
+      if (this.stopped || generation !== this.generation) return;
+      this.#log('info', `Gateway URL: ${wssUrl}`);
+      this.#connect(wssUrl);
+    } catch (error) {
+      if (generation !== this.generation) return;
+      this.stopped = true;
+      throw error;
+    }
   }
 
   stop(): void {
     this.#log('info', 'Stopping...');
-    this.#clearHeartbeat();
-    if (this.ws) {
-      this.ws.close(1000);
-      this.ws = undefined;
+    this.stopped = true;
+    this.generation++;
+    if (this.reconnectTimer !== undefined) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = undefined;
     }
+    this.#clearHeartbeat();
+    const { ws } = this;
+    this.ws = undefined;
+    ws?.close(1000);
   }
 
   async #getToken(): Promise<string> {
@@ -125,13 +143,16 @@ class QQBotEvent {
   }
 
   #connect(url: string): void {
-    this.ws = new WebSocket(url);
+    const ws = new WebSocket(url);
+    this.ws = ws;
 
-    this.ws.on('open', () => {
+    ws.on('open', () => {
+      if (this.ws !== ws || this.stopped) return;
       this.#log('info', 'WebSocket connected');
     });
 
-    this.ws.on('message', (data: WebSocket.Data) => {
+    ws.on('message', (data: WebSocket.Data) => {
+      if (this.ws !== ws || this.stopped) return;
       try {
         const payload = JSON.parse(data.toString());
         this.#handlePayload(payload);
@@ -140,13 +161,16 @@ class QQBotEvent {
       }
     });
 
-    this.ws.on('close', (code: number, reason: Buffer) => {
+    ws.on('close', (code: number, reason: Buffer) => {
+      if (this.ws !== ws) return;
+      this.ws = undefined;
       this.#log('info', `WebSocket closed: code=${code}, reason=${reason.toString()}`);
       this.#clearHeartbeat();
       this.#tryReconnect();
     });
 
-    this.ws.on('error', (err: Error) => {
+    ws.on('error', (err: Error) => {
+      if (this.ws !== ws || this.stopped) return;
       this.#log('error', `WebSocket error: ${err.message}`);
     });
   }
@@ -155,7 +179,7 @@ class QQBotEvent {
     const { op, d, s, t, id } = payload;
     const opName = OPCODES[op] || `Unknown(${op})`;
 
-    if (s !== null) {
+    if (typeof s === 'number' && Number.isFinite(s)) {
       this.lastSeq = s;
     }
 
@@ -269,29 +293,29 @@ class QQBotEvent {
 
   #reconnect(): void {
     this.#clearHeartbeat();
-    if (this.ws) {
-      this.ws.close(1000);
-    }
-    setTimeout(async () => {
-      try {
-        const wssUrl = await this.#getGatewayUrl();
-        this.#connect(wssUrl);
-      } catch (err: any) {
-        this.#log('error', `Reconnect failed: ${err.message}`);
-      }
-    }, 1000);
+    const { ws } = this;
+    this.ws = undefined;
+    ws?.close(1000);
+    this.#tryReconnect(1000);
   }
 
-  #tryReconnect(): void {
-    setTimeout(async () => {
+  #tryReconnect(delay = 3000): void {
+    if (this.stopped || this.ws || this.reconnectTimer !== undefined) return;
+    const { generation } = this;
+    this.reconnectTimer = setTimeout(async () => {
+      if (this.stopped || generation !== this.generation) return;
       try {
-        if (this.ws) return;
         const wssUrl = await this.#getGatewayUrl();
+        if (this.stopped || generation !== this.generation) return;
+        this.reconnectTimer = undefined;
         this.#connect(wssUrl);
       } catch (err: any) {
+        if (this.stopped || generation !== this.generation) return;
+        this.reconnectTimer = undefined;
         this.#log('error', `Reconnect failed: ${err.message}`);
+        this.#tryReconnect();
       }
-    }, 3000);
+    }, delay);
   }
 
   #log(level: string, msg: string): void {

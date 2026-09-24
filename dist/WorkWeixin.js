@@ -60,7 +60,9 @@ class WorkWeixin {
     }
     let workWeixinOptions;
     if (sendOptions.customOptions) {
-      workWeixinOptions = sendOptions.customOptions;
+      workWeixinOptions = {
+        ...sendOptions.customOptions
+      };
       if (!workWeixinOptions.agentid) {
         workWeixinOptions.agentid = this._AGENT_ID;
       }

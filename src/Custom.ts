@@ -85,7 +85,7 @@ class Custom {
     }
     if (axiosOptions.method?.toUpperCase() === 'GET') {
       axiosOptions.data = null;
-      axiosOptions.url += queryStringify(sendOptions);
+      axiosOptions.params = sendOptions;
     }
     return axios(axiosOptions).then((response) => {
       if (response.data) {

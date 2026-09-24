@@ -41,7 +41,9 @@ class TelegramBot {
     }
     let telegramBotOptions;
     if (sendOptions.customOptions) {
-      telegramBotOptions = sendOptions.customOptions;
+      telegramBotOptions = {
+        ...sendOptions.customOptions
+      };
     } else {
       telegramBotOptions = {
         text: sendOptions.message

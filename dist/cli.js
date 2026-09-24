@@ -253,7 +253,9 @@ class TelegramBot {
     }
     let telegramBotOptions;
     if (sendOptions.customOptions) {
-      telegramBotOptions = sendOptions.customOptions;
+      telegramBotOptions = {
+        ...sendOptions.customOptions
+      };
     } else {
       telegramBotOptions = {
         text: sendOptions.message
@@ -569,7 +571,7 @@ class Mail {
         ...this.options,
         subject: sendOptions.title || sendOptions.message.split('\n')[0].trim().slice(0, 10)
       };
-      if (sendOptions.type === 'text') {
+      if (!sendOptions.type || sendOptions.type === 'text') {
         mailOptions.text = sendOptions.message;
       }
       if (sendOptions.type === 'markdown') {
@@ -767,7 +769,9 @@ class WorkWeixin {
     }
     let workWeixinOptions;
     if (sendOptions.customOptions) {
-      workWeixinOptions = sendOptions.customOptions;
+      workWeixinOptions = {
+        ...sendOptions.customOptions
+      };
       if (!workWeixinOptions.agentid) {
         workWeixinOptions.agentid = this._AGENT_ID;
       }
@@ -3095,8 +3099,8 @@ class PushApi {
       pusher
     }) => {
       try {
-        var _sendOptions$find;
-        const options = Array.isArray(sendOptions) ? (_sendOptions$find = sendOptions.find(option => option.name === name || option.name === 'default')) === null || _sendOptions$find === void 0 ? void 0 : _sendOptions$find.options : sendOptions;
+        var _sendOptions$find$opt, _sendOptions$find, _sendOptions$find2;
+        const options = Array.isArray(sendOptions) ? (_sendOptions$find$opt = (_sendOptions$find = sendOptions.find(option => option.name === name)) === null || _sendOptions$find === void 0 ? void 0 : _sendOptions$find.options) !== null && _sendOptions$find$opt !== void 0 ? _sendOptions$find$opt : (_sendOptions$find2 = sendOptions.find(option => option.name === 'default')) === null || _sendOptions$find2 === void 0 ? void 0 : _sendOptions$find2.options : sendOptions;
         if (!options) {
           return {
             name,
@@ -3176,6 +3180,10 @@ class QQBotEvent {
     // eslint-disable-next-line no-undef
     _defineProperty(this, "heartbeatInterval", void 0);
     _defineProperty(this, "heartbeatMs", 45000);
+    _defineProperty(this, "stopped", true);
+    _defineProperty(this, "generation", 0);
+    // eslint-disable-next-line no-undef
+    _defineProperty(this, "reconnectTimer", void 0);
     if (!config.appId) throw new Error('Missing Parameter: appId');
     if (!config.appSecret) throw new Error('Missing Parameter: appSecret');
     this.appId = config.appId;
@@ -3188,18 +3196,36 @@ class QQBotEvent {
     }
   }
   async start() {
-    await _assertClassBrand(_QQBotEvent_brand, this, _ensureToken).call(this);
-    const wssUrl = await _assertClassBrand(_QQBotEvent_brand, this, _getGatewayUrl).call(this);
-    _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'info', `Gateway URL: ${wssUrl}`);
-    _assertClassBrand(_QQBotEvent_brand, this, _connect).call(this, wssUrl);
+    if (!this.stopped) return;
+    this.stopped = false;
+    const {
+      generation
+    } = this;
+    try {
+      const wssUrl = await _assertClassBrand(_QQBotEvent_brand, this, _getGatewayUrl).call(this);
+      if (this.stopped || generation !== this.generation) return;
+      _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'info', `Gateway URL: ${wssUrl}`);
+      _assertClassBrand(_QQBotEvent_brand, this, _connect).call(this, wssUrl);
+    } catch (error) {
+      if (generation !== this.generation) return;
+      this.stopped = true;
+      throw error;
+    }
   }
   stop() {
     _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'info', 'Stopping...');
-    _assertClassBrand(_QQBotEvent_brand, this, _clearHeartbeat).call(this);
-    if (this.ws) {
-      this.ws.close(1000);
-      this.ws = undefined;
+    this.stopped = true;
+    this.generation++;
+    if (this.reconnectTimer !== undefined) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = undefined;
     }
+    _assertClassBrand(_QQBotEvent_brand, this, _clearHeartbeat).call(this);
+    const {
+      ws
+    } = this;
+    this.ws = undefined;
+    ws === null || ws === void 0 || ws.close(1000);
   }
   static parseIntents(keys) {
     return keys.reduce((acc, key) => {
@@ -3263,11 +3289,14 @@ async function _getGatewayUrl() {
   return url;
 }
 function _connect(url) {
-  this.ws = new WebSocket(url);
-  this.ws.on('open', () => {
+  const ws = new WebSocket(url);
+  this.ws = ws;
+  ws.on('open', () => {
+    if (this.ws !== ws || this.stopped) return;
     _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'info', 'WebSocket connected');
   });
-  this.ws.on('message', data => {
+  ws.on('message', data => {
+    if (this.ws !== ws || this.stopped) return;
     try {
       const payload = JSON.parse(data.toString());
       _assertClassBrand(_QQBotEvent_brand, this, _handlePayload).call(this, payload);
@@ -3275,12 +3304,15 @@ function _connect(url) {
       _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'error', `Failed to parse message: ${data.toString().slice(0, 200)}`);
     }
   });
-  this.ws.on('close', (code, reason) => {
+  ws.on('close', (code, reason) => {
+    if (this.ws !== ws) return;
+    this.ws = undefined;
     _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'info', `WebSocket closed: code=${code}, reason=${reason.toString()}`);
     _assertClassBrand(_QQBotEvent_brand, this, _clearHeartbeat).call(this);
     _assertClassBrand(_QQBotEvent_brand, this, _tryReconnect).call(this);
   });
-  this.ws.on('error', err => {
+  ws.on('error', err => {
+    if (this.ws !== ws || this.stopped) return;
     _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'error', `WebSocket error: ${err.message}`);
   });
 }
@@ -3293,7 +3325,7 @@ function _handlePayload(payload) {
     id
   } = payload;
   const opName = OPCODES[op] || `Unknown(${op})`;
-  if (s !== null) {
+  if (typeof s === 'number' && Number.isFinite(s)) {
     this.lastSeq = s;
   }
   switch (op) {
@@ -3416,28 +3448,32 @@ function _clearHeartbeat() {
 }
 function _reconnect() {
   _assertClassBrand(_QQBotEvent_brand, this, _clearHeartbeat).call(this);
-  if (this.ws) {
-    this.ws.close(1000);
-  }
-  setTimeout(async () => {
-    try {
-      const wssUrl = await _assertClassBrand(_QQBotEvent_brand, this, _getGatewayUrl).call(this);
-      _assertClassBrand(_QQBotEvent_brand, this, _connect).call(this, wssUrl);
-    } catch (err) {
-      _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'error', `Reconnect failed: ${err.message}`);
-    }
-  }, 1000);
+  const {
+    ws
+  } = this;
+  this.ws = undefined;
+  ws === null || ws === void 0 || ws.close(1000);
+  _assertClassBrand(_QQBotEvent_brand, this, _tryReconnect).call(this, 1000);
 }
-function _tryReconnect() {
-  setTimeout(async () => {
+function _tryReconnect(delay = 3000) {
+  if (this.stopped || this.ws || this.reconnectTimer !== undefined) return;
+  const {
+    generation
+  } = this;
+  this.reconnectTimer = setTimeout(async () => {
+    if (this.stopped || generation !== this.generation) return;
     try {
-      if (this.ws) return;
       const wssUrl = await _assertClassBrand(_QQBotEvent_brand, this, _getGatewayUrl).call(this);
+      if (this.stopped || generation !== this.generation) return;
+      this.reconnectTimer = undefined;
       _assertClassBrand(_QQBotEvent_brand, this, _connect).call(this, wssUrl);
     } catch (err) {
+      if (this.stopped || generation !== this.generation) return;
+      this.reconnectTimer = undefined;
       _assertClassBrand(_QQBotEvent_brand, this, _log).call(this, 'error', `Reconnect failed: ${err.message}`);
+      _assertClassBrand(_QQBotEvent_brand, this, _tryReconnect).call(this);
     }
-  }, 3000);
+  }, delay);
 }
 function _log(level, msg) {
   console.error(`[QQBotEvent][${level.toUpperCase()}] ${msg}`);

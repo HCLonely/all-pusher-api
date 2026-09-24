@@ -72,7 +72,7 @@ class Custom {
     }
     if (((_axiosOptions$method2 = axiosOptions.method) === null || _axiosOptions$method2 === void 0 ? void 0 : _axiosOptions$method2.toUpperCase()) === 'GET') {
       axiosOptions.data = null;
-      axiosOptions.url += tool.queryStringify(sendOptions);
+      axiosOptions.params = sendOptions;
     }
     return axios(axiosOptions).then(response => {
       if (response.data) {

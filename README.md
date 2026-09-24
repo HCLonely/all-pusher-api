@@ -8,7 +8,6 @@
 
 - [QQ(go-cqhttp)](https://github.com/Mrs4s/go-cqhttp) -- GoCqhttp
 - ~~[QQ(Qmsg)](https://qmsg.zendee.cn/api) -- Qmsg~~
-- ~~[QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html) -- QqChannel~~
 - [QQ 官方机器人](https://bot.q.qq.com/wiki/develop/api-v2/) -- QQBot(主动推送能力差)
 - [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access) -- DingTalk
 - [Discord](https://discord.com/developers/docs/resources/webhook#edit-webhook-message) -- Discord
@@ -23,8 +22,6 @@
 - [Showdoc Push](https://push.showdoc.com.cn/#/) -- Showdoc
 - [息知](https://xz.qqoq.net/#/index) -- Xizhi
 - [WxPusher](https://wxpusher.zjiecode.com/docs/) -- WxPusher
-- ~~[NowPush](https://www.nowpush.app/index.html) -- NowPush~~
-- [iGot](http://hellyw.com/) -- IGot
 - [Chanify](https://github.com/chanify/chanify-ios) -- Chanify
 - [Bark](https://github.com/Finb/Bark) -- Bark
 - [GoogleChat](https://developers.google.com/chat/how-tos/webhooks) -- GoogleChat
@@ -33,7 +30,6 @@
 - [Pushback](https://pushback.io/docs/getting-started) -- Pushback
 - [Zulip](https://zulip.com/api/send-message) -- Zulip
 - [RocketChat](https://docs.rocket.chat/guides/administration/admin-panel/integrations#incoming-webhook-script) -- RocketChat
-- ~~[Gitter](https://developer.gitter.im/docs/messages-resource) -- Gitter~~
 - [Pushover](https://pushover.net/) -- Pushover
 - [爱语飞飞](https://iyuu.cn/) -- Iyuu
 - [Ntfy](https://docs.ntfy.sh/publish/) -- Ntfy
@@ -41,8 +37,12 @@
 - [WPush](https://wpush.cn/) -- WPush
 - [PushBullet](https://www.pushbullet.com/) -- PushBullet
 - [SimplePush](https://simplepush.io/) -- SimplePush
-- ~~[AnPush](https://anpush.com/) -- AnPush~~
 - [PushMe](https://push.i-i.me/) -- PushMe
+- ~~[AnPush](https://anpush.com/) -- AnPush~~
+- ~~[Gitter](https://developer.gitter.im/docs/messages-resource) -- Gitter~~
+- ~~[NowPush](https://www.nowpush.app/index.html) -- NowPush~~
+- ~~[iGot](http://hellyw.com/) -- IGot~~
+- ~~[QQ 频道机器人](https://bot.q.qq.com/wiki/develop/api/openapi/message/post_messages.html) -- QqChannel~~
 
 ## 安装
 
