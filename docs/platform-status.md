@@ -2,7 +2,7 @@
 
 当前版本：`1.5.2`
 
-测试时间（UTC）：尚未运行
+测试时间（UTC）：2026-09-24T07:49:14.674Z
 
 本页由 `test/all-push-api.js` 自动生成，展示本次测试结果。
 
@@ -14,38 +14,38 @@
 
 | 推送平台 | 支持状态 |
 | --- | --- |
-| [Bark](./services#bark) | ⚠️无法测试 |
+| [Bark](./services#bark) | ❌️失败 |
 | [Chanify](./services#chanify) | ⚠️无法测试 |
-| [DingTalk](./services#dingtalk) | ⚠️无法测试 |
-| [Discord](./services#discord) | ⚠️无法测试 |
-| [FeiShu](./services#feishu) | ⚠️无法测试 |
+| [DingTalk](./services#dingtalk) | ✅️成功 |
+| [Discord](./services#discord) | ✅️成功 |
+| [FeiShu](./services#feishu) | ✅️成功 |
 | [GoCqhttp](./services#gocqhttp) | ⚠️无法测试 |
 | [GoogleChat](./services#googlechat) | ⚠️无法测试 |
 | [IGot](./services#igot) | ⚠️无法测试 |
-| [Iyuu](./services#iyuu) | ⚠️无法测试 |
-| [Mail](./services#mail) | ⚠️无法测试 |
-| [NotifyX](./services#notifyx) | ⚠️无法测试 |
-| [Ntfy](./services#ntfy) | ⚠️无法测试 |
-| [Push](./services#push) | ⚠️无法测试 |
-| [Pushback](./services#pushback) | ⚠️无法测试 |
-| [PushBullet](./services#pushbullet) | ⚠️无法测试 |
-| [PushDeer](./services#pushdeer) | ⚠️无法测试 |
-| [PushMe](./services#pushme) | ⚠️无法测试 |
-| [Pushover](./services#pushover) | ⚠️无法测试 |
-| [PushPlus](./services#pushplus) | ⚠️无法测试 |
-| [Qmsg](./services#qmsg) | ⚠️无法测试 |
-| [QQBot](./services#qqbot) | ⚠️无法测试 |
+| [Iyuu](./services#iyuu) | ✅️成功 |
+| [Mail](./services#mail) | ✅️成功 |
+| [NotifyX](./services#notifyx) | ✅️成功 |
+| [Ntfy](./services#ntfy) | ✅️成功 |
+| [Push](./services#push) | ✅️成功 |
+| [Pushback](./services#pushback) | ✅️成功 |
+| [PushBullet](./services#pushbullet) | ❌️失败 |
+| [PushDeer](./services#pushdeer) | ✅️成功 |
+| [PushMe](./services#pushme) | ✅️成功 |
+| [Pushover](./services#pushover) | ✅️成功 |
+| [PushPlus](./services#pushplus) | ✅️成功 |
+| [Qmsg](./services#qmsg) | ✅️成功 |
+| [QQBot](./services#qqbot) | ✅️成功 |
 | [RocketChat](./services#rocketchat) | ⚠️无法测试 |
-| [ServerChanTurbo](./services#serverchanturbo) | ⚠️无法测试 |
-| [Showdoc](./services#showdoc) | ⚠️无法测试 |
-| [SimplePush](./services#simplepush) | ⚠️无法测试 |
-| [Slack](./services#slack) | ⚠️无法测试 |
-| [TelegramBot](./services#telegrambot) | ⚠️无法测试 |
-| [WorkWeixin](./services#workweixin) | ⚠️无法测试 |
-| [WorkWeixinBot](./services#workweixinbot) | ⚠️无法测试 |
-| [WPush](./services#wpush) | ⚠️无法测试 |
-| [WxPusher](./services#wxpusher) | ⚠️无法测试 |
-| [Xizhi](./services#xizhi) | ⚠️无法测试 |
-| [YiFengChuanHua](./services#yifengchuanhua) | ⚠️无法测试 |
-| [Zulip](./services#zulip) | ⚠️无法测试 |
+| [ServerChanTurbo](./services#serverchanturbo) | ✅️成功 |
+| [Showdoc](./services#showdoc) | ✅️成功 |
+| [SimplePush](./services#simplepush) | ✅️成功 |
+| [Slack](./services#slack) | ✅️成功 |
+| [TelegramBot](./services#telegrambot) | ✅️成功 |
+| [WorkWeixin](./services#workweixin) | ✅️成功 |
+| [WorkWeixinBot](./services#workweixinbot) | ✅️成功 |
+| [WPush](./services#wpush) | ✅️成功 |
+| [WxPusher](./services#wxpusher) | ✅️成功 |
+| [Xizhi](./services#xizhi) | ✅️成功 |
+| [YiFengChuanHua](./services#yifengchuanhua) | ✅️成功 |
+| [Zulip](./services#zulip) | ✅️成功 |
 | [Custom](./services#custom) | ⚠️无法测试 |
