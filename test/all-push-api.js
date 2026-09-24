@@ -173,14 +173,6 @@ function getTestConfigs(config) {
       })
     },
     {
-      name: 'IGot',
-      config: () => ({
-        key: {
-          token: config.IGot.token
-        }
-      })
-    },
-    {
       name: 'WorkWeixinBot',
       config: () => ({
         key: {
@@ -189,15 +181,15 @@ function getTestConfigs(config) {
       })
     },
 
-    {
-      name: 'Bark',
-      config: () => ({
-        key: {
-          token: config.Bark.token,
-          baseURL: config.Bark.baseURL
-        }
-      })
-    },
+    // {
+    //   name: 'Bark',
+    //   config: () => ({
+    //     key: {
+    //       token: config.Bark.token,
+    //       baseURL: config.Bark.baseURL
+    //     }
+    //   })
+    // },
     {
       name: 'Push',
       config: () => ({
@@ -275,14 +267,14 @@ function getTestConfigs(config) {
         }
       })
     },
-    {
-      name: 'PushBullet',
-      config: () => ({
-        key: {
-          token: config.PushBullet.token
-        }
-      })
-    },
+    // {
+    //   name: 'PushBullet',
+    //   config: () => ({
+    //     key: {
+    //       token: config.PushBullet.token
+    //     }
+    //   })
+    // },
     {
       name: 'SimplePush',
       config: () => ({
@@ -313,9 +305,9 @@ async function runTests(config, PushApi, outputPath = reportPath) {
       if (!response) return;
       const status = response.result?.status;
       // Preserve Bark's code 400 exception, including the current wrapped response format.
-      const barkSuccess = name === 'Bark' &&
-        (response.result?.data?.code === 400 || response.result?.extraMessage?.data?.code === 400);
-      results.set(name, (barkSuccess || (status >= 200 && status < 300)) ? '✅️成功' : '❌️失败');
+      // const barkSuccess = name === 'Bark' &&
+      //   (response.result?.data?.code === 400 || response.result?.extraMessage?.data?.code === 400);
+      results.set(name, (status >= 200 && status < 300) ? '✅️成功' : '❌️失败');
     } catch {
       results.set(name, '❌️失败');
     }

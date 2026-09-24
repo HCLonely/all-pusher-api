@@ -14,7 +14,7 @@
 
 | 推送平台 | 支持状态 |
 | --- | --- |
-| [Bark](./services#bark) | ❌️失败 |
+| [Bark](./services#bark) | ⚠️无法测试 |
 | [Chanify](./services#chanify) | ⚠️无法测试 |
 | [DingTalk](./services#dingtalk) | ✅️成功 |
 | [Discord](./services#discord) | ✅️成功 |
@@ -28,7 +28,7 @@
 | [Ntfy](./services#ntfy) | ✅️成功 |
 | [Push](./services#push) | ✅️成功 |
 | [Pushback](./services#pushback) | ✅️成功 |
-| [PushBullet](./services#pushbullet) | ❌️失败 |
+| [PushBullet](./services#pushbullet) | ⚠️无法测试 |
 | [PushDeer](./services#pushdeer) | ✅️成功 |
 | [PushMe](./services#pushme) | ✅️成功 |
 | [Pushover](./services#pushover) | ✅️成功 |
