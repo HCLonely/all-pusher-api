@@ -33,6 +33,7 @@
 - [Pushover](https://pushover.net/) -- Pushover
 - [爱语飞飞](https://iyuu.cn/) -- Iyuu
 - [Ntfy](https://docs.ntfy.sh/publish/) -- Ntfy
+- [码达 (NotifyX)](https://www.notifyx.cn/help) -- NotifyX
 - [一封传话](https://www.phprm.com/push/h5/) -- YiFengChuanHua
 - [WPush](https://wpush.cn/) -- WPush
 - [PushBullet](https://www.pushbullet.com/) -- PushBullet

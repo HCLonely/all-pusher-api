@@ -296,6 +296,41 @@ await new Mail({
 
 支持类型：`text`、`markdown`、`html`。`markdown` 会转换为 HTML 发送。
 
+## NotifyX
+
+类名：`NotifyX`，`PushApi` 的平台名称不区分大小写。
+
+官方 API 文档：[码达 (NotifyX)](https://www.notifyx.cn/help)
+
+| 配置项 | 必填 | 说明 |
+| --- | --- | --- |
+| `key.token` | 是 | NotifyX 控制台生成的 API 密钥，也可使用顶层 `token`。 |
+| `proxy` | 否 | [统一代理配置](./guide/api.md#代理)。 |
+
+```js
+const { NotifyX } = require('all-pusher-api/dist/NotifyX');
+
+await new NotifyX({ key: { token: '******' } }).send({
+  title: '发布完成',
+  message: '## 更新内容\n新版本已部署。',
+  type: 'markdown',
+  extraOptions: {
+    description: '版本更新通知',
+    team: '1234567890'
+  }
+});
+```
+
+通过统一 API 或 CLI 使用时，配置为 `{ "name": "NotifyX", "config": { "key": { "token": "******" } } }`。
+
+默认以 JSON POST 请求 `https://www.notifyx.cn/api/v1/send/:key`，将 `message` 映射为 `content`。未提供 `title` 时取正文首行去除两端空白后的前 10 个字符。正文支持文本和 Markdown，`type` 不会作为接口参数发送。
+
+`extraOptions` 可设置 `description`、`team` 或覆盖默认字段；`customOptions` 可提供完整请求体（包含必填的 `title` 和 `content`），之后仍会合并 `extraOptions`。
+
+平台字段长度上限：`title` 100 字符、`content` 2000 字符、`description` 500 字符、`team` 32 字符。请按这些限制提供内容。
+
+响应 `status: "queued"` 映射为统一结果 `status: 200`，仅表示消息已加入队列；原始响应保留在 `extraMessage` 中。
+
 ## Ntfy
 
 类名：`Ntfy`

@@ -26,6 +26,7 @@ import { RocketChat } from './RocketChat';
 import { Pushover } from './Pushover';
 import { Iyuu } from './Iyuu';
 import { Ntfy } from './Ntfy';
+import { NotifyX } from './NotifyX';
 import { YiFengChuanHua } from './YiFengChuanHua';
 import { WPush } from './WPush';
 import { PushBullet } from './PushBullet';
@@ -67,6 +68,7 @@ const pusherMap: Record<string, PusherClass> = {
   pushover: Pushover,
   iyuu: Iyuu,
   ntfy: Ntfy,
+  notifyx: NotifyX,
   yifengchuanhua: YiFengChuanHua,
   wpush: WPush,
   pushbullet: PushBullet,

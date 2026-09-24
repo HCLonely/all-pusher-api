@@ -38,6 +38,7 @@ const subModule = [
   './Pushover',
   './Iyuu',
   './Ntfy',
+  './NotifyX',
   './YiFengChuanHua',
   './WPush',
   './PushBullet',
@@ -63,6 +64,8 @@ export default () => fs.readdirSync('src').filter((fileName) => !['test.ts', 'bo
       json(),
       typescript({
         removeComments: true,
+        // Disable disk caching on Windows to avoid EPERM during cache directory rotation.
+        clean: process.platform === 'win32',
         // Each entry owns its rolling cache directories.
         cacheRoot: path.join('node_modules', '.cache', 'rollup-plugin-typescript2', fileName),
         // Emit declarations once via build:types, not once for every Rollup entry.

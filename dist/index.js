@@ -27,6 +27,7 @@ var RocketChat = require('./RocketChat');
 var Pushover = require('./Pushover');
 var Iyuu = require('./Iyuu');
 var Ntfy = require('./Ntfy');
+var NotifyX = require('./NotifyX');
 var YiFengChuanHua = require('./YiFengChuanHua');
 var WPush = require('./WPush');
 var PushBullet = require('./PushBullet');
@@ -63,6 +64,7 @@ const pusherMap = {
   pushover: Pushover.Pushover,
   iyuu: Iyuu.Iyuu,
   ntfy: Ntfy.Ntfy,
+  notifyx: NotifyX.NotifyX,
   yifengchuanhua: YiFengChuanHua.YiFengChuanHua,
   wpush: WPush.WPush,
   pushbullet: PushBullet.PushBullet,
