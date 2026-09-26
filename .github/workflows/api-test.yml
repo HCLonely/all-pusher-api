@@ -2,7 +2,7 @@ name: Api Test
 on:
   workflow_dispatch:
   schedule:
-    - cron: '36 11 * * 6'
+    - cron: '36 11 1,15 * *'
 jobs:
   test:
     runs-on: ubuntu-latest
