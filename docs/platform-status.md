@@ -2,7 +2,7 @@
 
 当前版本：`1.6.0`
 
-测试时间（UTC）：2026-10-15T15:44:06.486Z
+测试时间（UTC）：2026-11-01T17:14:51.881Z
 
 本页由 `test/all-push-api.js` 自动生成，展示本次测试结果。
 
@@ -24,7 +24,7 @@
 | [IGot](./services#igot) | ⚠️无法测试 |
 | [Iyuu](./services#iyuu) | ✅️成功 |
 | [Mail](./services#mail) | ✅️成功 |
-| [NotifyX](./services#notifyx) | ✅️成功 |
+| [NotifyX](./services#notifyx) | ❌️失败 |
 | [Ntfy](./services#ntfy) | ✅️成功 |
 | [Push](./services#push) | ✅️成功 |
 | [Pushback](./services#pushback) | ✅️成功 |
